@@ -1,6 +1,21 @@
 import telebot
 import sys
 import time
+import random
+streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c',
+'https://youtu.be/eG-vjxeg2Og',
+'https://youtu.be/dzI95u7kgrQ',
+'https://youtu.be/Zk3N8ePW8f4',
+'https://youtu.be/AGLeP30qOu8',
+'https://youtu.be/t0AVXlHzkoQ',
+'https://youtu.be/_671f3kAMYY',
+'https://youtu.be/dT_XT9lld04',
+'https://youtu.be/ZLrx_-AkEDw',
+'https://youtu.be/1BzQrDGrces',
+'https://youtu.be/zzLeJ3V-aqA',
+'https://youtu.be/8zErbnThKVQ',
+'https://youtu.be/_fwPrnJtafA',
+'https://youtu.be/aYR3Gl_nmH0']
 bot = telebot.TeleBot('1955658538:AAGDDsLSNqDuClkSvPtE3AiDEAm0jdxOxMo')
 @bot.message_handler(content_types=['text'])
 def start_command(message):
@@ -44,6 +59,9 @@ def start_command(message):
                 bot.send_message(message.chat.id, "Хорошего!")
             elif word == "Добрейшего":
                 bot.send_message(message.chat.id, "Добрейшего!")
+            elif word == "Добрейший":
+                bot.send_message(message.chat.id, "Добрейший")
+
 
             #Ночь
             if word == "Спокойной" or word == "Споке" or word == "Спок":
@@ -83,5 +101,11 @@ def start_command(message):
             #приятного аппетита
             if word == "Приятного":
                 bot.send_message(message.chat.id,"Приятного!")
+
+            #стримы Перца
+            if word == 'стрим':
+                random_stream = random.choice(streams)
+                bot.send_message(message.chat.id,"Посморите как этот стрим:")
+                bot.send_message(message.chat.id,random_stream)
 
 bot.polling()
