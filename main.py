@@ -80,4 +80,8 @@ def start_command(message):
             if word == "Удачи":
                 bot.reply_to(message,"Удачи! Да прибудет с тобой сила (в ньютонах)")
 
+            #приятного аппетита
+            if word == "Приятного":
+                bot.send_message(message.chat.id,"Приятного!")
+
 bot.polling()
