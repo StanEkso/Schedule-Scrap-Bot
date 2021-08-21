@@ -2,11 +2,7 @@ import telebot
 import sys
 import time
 import random
-streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c',
-'https://youtu.be/eG-vjxeg2Og',
-'https://youtu.be/dzI95u7kgrQ',
-'https://youtu.be/Zk3N8ePW8f4',
-'https://youtu.be/AGLeP30qOu8',
+streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c','https://youtu.be/eG-vjxeg2Og','https://youtu.be/dzI95u7kgrQ','https://youtu.be/Zk3N8ePW8f4','https://youtu.be/AGLeP30qOu8',
 'https://youtu.be/t0AVXlHzkoQ',
 'https://youtu.be/_671f3kAMYY',
 'https://youtu.be/dT_XT9lld04',
@@ -17,6 +13,12 @@ streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c',
 'https://youtu.be/_fwPrnJtafA',
 'https://youtu.be/aYR3Gl_nmH0']
 bot = telebot.TeleBot('1955658538:AAGDDsLSNqDuClkSvPtE3AiDEAm0jdxOxMo')
+
+@bot.message_handler(commands=['stream'])
+def stream(message):
+    random_stream = random.choice(streams)
+    bot.send_message(message.chat.id,"Посморите как этот стрим:")
+    bot.send_message(message.chat.id,random_stream)
 @bot.message_handler(content_types=['text'])
 def start_command(message):
     try:
@@ -102,10 +104,7 @@ def start_command(message):
             if word == "Приятного":
                 bot.send_message(message.chat.id,"Приятного!")
 
-            #стримы Перца
-            if word == 'Cтрим':
-                random_stream = random.choice(streams)
-                bot.send_message(message.chat.id,"Посморите как этот стрим:")
-                bot.send_message(message.chat.id,random_stream)
+
+            
 
 bot.polling()
