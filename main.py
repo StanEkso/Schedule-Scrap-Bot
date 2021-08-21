@@ -73,7 +73,7 @@ def start_command(message):
             elif word == "Булить":
                 bot.reply_to(message,"Себя забуль.")
             elif word == "Бот":
-                bot.reply_to(message,"Я высшая форма жизни, а ты просто мешок с костями")
+                bot.reply_to(message,"Я высшая форма жизни!")
 
 
             #удачи
