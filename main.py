@@ -103,7 +103,7 @@ def start_command(message):
                 bot.send_message(message.chat.id,"Приятного!")
 
             #стримы Перца
-            if word == 'стрим':
+            if word == 'Cтрим':
                 random_stream = random.choice(streams)
                 bot.send_message(message.chat.id,"Посморите как этот стрим:")
                 bot.send_message(message.chat.id,random_stream)
