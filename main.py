@@ -38,7 +38,7 @@ def start_command(message):
                 if x.isalpha() or x.isnumeric() is True:
                     word1 = word1 + str(x)
             word = word1.capitalize()
-            if sended <= 2:
+            if sended < 2:
                 ## Утро
                 if word == "Добрый" or word == "Дабрый":
                     bot.send_message(message.chat.id, "Добрый!")
