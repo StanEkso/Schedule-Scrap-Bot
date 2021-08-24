@@ -91,10 +91,10 @@ def start_command(message):
                 #Ответы на приветствия
                 if word == "Hello":
                     bot.reply_to(message, "Hello!")
-                    sended == 1
+                    sended += 1
                 elif word == "Привет":
                     bot.reply_to(message,"Привет!")
-                    sended == 1
+                    sended += 1
                 elif word == "Хай":
                     bot.reply_to(message, "Хай!")
                     sended += 1
