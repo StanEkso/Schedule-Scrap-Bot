@@ -14,6 +14,8 @@ streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c','https:
 'https://youtu.be/aYR3Gl_nmH0']
 bot = telebot.TeleBot('1955658538:AAGDDsLSNqDuClkSvPtE3AiDEAm0jdxOxMo')
 
+mtcounter = 0
+
 @bot.message_handler(commands=['stream'])
 def stream(message):
     random_stream = random.choice(streams)
@@ -215,7 +217,12 @@ def start_command(message):
 def mainteance(message):
     if message.text == '/mainteancemode':
         bot.register_next_step_handler(message,start_command)
+        bot.send_message(message.from_user.id,"MAINTEANCE MODE DISABLED")
     else: 
         bot.register_next_step_handler(message,mainteance)
+        mtcounter += 1
+        if mtcounter == 10:
+            bot.send_message(message.chat.id,"BOT IS IN MAINTEANCE MODE NOW. CONTACT @Ekso4")
+            mtcounter = 0
 
 bot.polling()
