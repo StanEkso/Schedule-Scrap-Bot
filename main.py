@@ -228,6 +228,7 @@ def mainteance(message):
         bot.send_message(message.from_user.id,"MAINTEANCE MODE DISABLED")
     elif message.from_user.id == mt_owner.get("user_id") and message.text == "/stats":
         bot.send_message(message.from_user.id,("Счетчик сообщений до предупреждения: "+str(mtcounter)))
+        bot.register_next_step_handler(message,mainteance)
     else: 
         mtcounter += 1
         if mtcounter == 10:
