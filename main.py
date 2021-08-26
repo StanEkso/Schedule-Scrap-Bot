@@ -233,7 +233,9 @@ def mainteance(message):
     elif message.text == "/mainteanceinfo":
         time = mt_owner.get("timeofstart").split()
         mt_time = time[3] + " | " + time[2] + " " + time[1] + " " + time[-1]
-        bot.send_message(message.chat.id,("MAINTEANCE INFO:\n STARTED BY: "+mt_owner.get("first_name")+" "+mt_owner.get("last_name")+"\n START TIME: "+mt_time))
+        bot.send_message(message.chat.id,("MAINTEANCE INFO:\n STARTED BY: "+
+        str(mt_owner.get("first_name"))+" "+str(mt_owner.get("last_name"))+
+        "\n START TIME: "+str(mt_time)))
     else: 
         mtcounter += 1
         if mtcounter == 10:
