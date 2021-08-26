@@ -23,7 +23,14 @@ def stream(message):
 @bot.message_handler(commands=['mainteancemode'])
 def mainteancemode(message):
     if message.chat.type == "private":
+        global mt_owner
         bot.send_message(message.from_user.id,'MAINTEANCE MODE ENABLED!')
+        mt_owner = {
+            "user_id" : message.from_user.id,
+            "first_name" : message.from_user.first_name,
+            "last_name" : message.from_user.last_name,
+            "username" : message.from_user.username
+        }
         bot.register_next_step_handler(message,mainteance)
 @bot.message_handler(content_types=['text'])
 def start_command(message):
@@ -219,11 +226,14 @@ def mainteance(message):
     if message.text == '/mainteancemode':
         bot.register_next_step_handler(message,start_command)
         bot.send_message(message.from_user.id,"MAINTEANCE MODE DISABLED")
+    elif message.from_user.id == mt_owner.get("user_id") and message.text == "/stats":
+        bot.send_message(message.from_user.id,("Счетчик сообщений до предупреждения: "+str(mtcounter)))
     else: 
-        bot.register_next_step_handler(message,mainteance)
         mtcounter += 1
         if mtcounter == 10:
             bot.send_message(message.chat.id,"BOT IS IN MAINTEANCE MODE NOW. CONTACT @Ekso4")
             mtcounter = 0
+        bot.register_next_step_handler(message,mainteance)
+
 
 bot.polling()
