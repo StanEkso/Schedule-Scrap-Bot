@@ -232,14 +232,15 @@ def mainteance(message):
         bot.register_next_step_handler(message,mainteance)
     elif message.text == "/mainteanceinfo":
         time = mt_owner.get("timeofstart").split()
-        mt_time = time[3] + " | " + time[2] + " " + time[1] + " " + time[-1]
-        bot.send_message(message.chat.id,("MAINTEANCE INFO:\n STARTED BY: "+
+        mt_time = time[3]
+        bot.send_message(message.chat.id,("MAINTEANCE INFO:\nSTARTED BY: "+
         str(mt_owner.get("first_name"))+" "+str(mt_owner.get("last_name"))+
-        "\n START TIME: "+str(mt_time)))
+        "\nSTART TIME: "+str(mt_time)))
+        bot.register_next_step_handler(message,mainteance)
     else: 
         mtcounter += 1
         if mtcounter == 10:
-            bot.send_message(message.chat.id,"BOT IS IN MAINTEANCE MODE NOW.\n Type /mainteanceinfo for more information")
+            bot.send_message(message.chat.id,"BOT IS IN MAINTEANCE MODE NOW.\nType /mainteanceinfo for more information")
             mtcounter = 0
         bot.register_next_step_handler(message,mainteance)
 
