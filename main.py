@@ -29,7 +29,8 @@ def mainteancemode(message):
             "user_id" : message.from_user.id,
             "first_name" : message.from_user.first_name,
             "last_name" : message.from_user.last_name,
-            "username" : message.from_user.username
+            "username" : message.from_user.username,
+            "timeofstart" : time.ctime(message.date)
         }
         bot.register_next_step_handler(message,mainteance)
 @bot.message_handler(content_types=['text'])
@@ -229,10 +230,16 @@ def mainteance(message):
     elif message.from_user.id == mt_owner.get("user_id") and message.text == "/stats":
         bot.send_message(message.from_user.id,("Счетчик сообщений до предупреждения: "+str(mtcounter)))
         bot.register_next_step_handler(message,mainteance)
+    elif message.text == "/mainteanceinfo":
+        time = mt_owner.get("timeofstart").split()
+        mt_time = time[3] + " | " + time[2] + " " + time[1] + " " + time[-1]
+        bot.send_message(message.chat.id,("MAINTEANCE INFO:\n"
+        "STARTED BY: "+mt_owner.get("first_name")+" "+mt_owner.get("last_name")+"\n"
+        "START TIME: "+mt_time"))
     else: 
         mtcounter += 1
         if mtcounter == 10:
-            bot.send_message(message.chat.id,"BOT IS IN MAINTEANCE MODE NOW. CONTACT @Ekso4")
+            bot.send_message(message.chat.id,"BOT IS IN MAINTEANCE MODE NOW.\n Type /mainteanceinfo for more information")
             mtcounter = 0
         bot.register_next_step_handler(message,mainteance)
 
