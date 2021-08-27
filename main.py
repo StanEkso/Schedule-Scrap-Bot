@@ -34,16 +34,6 @@ def mainteancemode(message):
         }
         bot.register_next_step_handler(message,mainteance)
 
-@bot.message_handler(content_types=["new_chat_members"])
-def handler_new_member(message):
-    first_name = message.new_chat_member.first_name
-    last_name = message.new_chat_member.last_name
-    chat_name = message.chat.title
-    if last_name != None:
-        full_name = first_name + last_name
-    else:
-        full_name = first_name
-    bot.send_message(message.chat.id, "{0}, добро пожаловать в беседу <{1}>".format(full_name,chat_name))
 @bot.message_handler(content_types=['text'])
 def start_command(message):
     global mtcounter
