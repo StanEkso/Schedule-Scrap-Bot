@@ -14,6 +14,14 @@ streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c','https:
 'https://youtu.be/aYR3Gl_nmH0']
 bot = telebot.TeleBot('1955658538:AAGDDsLSNqDuClkSvPtE3AiDEAm0jdxOxMo')
 
+examples = [
+    'добрый','доброе',"доброго","нихао","коничива","guten","гутен",
+    "добрым","доброй","хорошего","добрейшее","добрейшего","добрейший",
+    'спокойной',"добрых","сладких",
+    "hello","hallo","hi","привет","хай"
+]
+
+
 @bot.message_handler(commands=['stream'])
 def stream(message):
     random_stream = random.choice(streams)
@@ -33,7 +41,6 @@ def mainteancemode(message):
             "timeofstart" : time.ctime(message.date)
         }
         bot.register_next_step_handler(message,mainteance)
-
 @bot.message_handler(content_types=['text'])
 def start_command(message):
     global mtcounter
@@ -54,119 +61,11 @@ def start_command(message):
             for x in word:
                 if x.isalpha() or x.isnumeric() is True:
                     word1 = word1 + str(x)
-            word = word1.capitalize()
+            word = word1.lower()
             if sended < 2:
-                ## Утро
-                if word == "Добрый" or word == "Дабрый":
-                    try:
-                        bot.send_message(message.chat.id, "Добрый!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Доброе":
-                    try:
-                        bot.send_message(message.chat.id, "Доброе!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Нихао":
-                    try:
-                        bot.send_message(message.chat.id, "Нихао!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Коничива":
-                    try:
-                        bot.send_message(message.chat.id, "Коничива!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Guten":
-                    try:
-                        bot.send_message(message.chat.id, "Guten morgen!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Гутен":
-                    try:
-                        bot.send_message(message.chat.id, "Guten morgen!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Доброго":
-                    try:
-                        bot.send_message(message.chat.id, "Доброго!")
-                        sended += 1
-                    except:
-                        pass
-                      
-                elif word == "Добрым":
-                    try:
-                        bot.send_message(message.chat.id, "С добрым!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Доброй":
-                    try:
-                        bot.send_message(message.chat.id, "Доброй!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Хорошего":
-                    try:
-                        bot.send_message(message.chat.id, "Хорошего!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Добрейшего":
-                    try:
-                        bot.send_message(message.chat.id, "Добрейшего!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Добрейший":
-                    try:
-                        bot.send_message(message.chat.id, "Добрейший")
-                        sended += 1
-                    except:
-                        pass
-
-
-                #Ночь
-                if word == "Спокойной" or word == "Споке" or word == "Спок":
-                    try:
-                        bot.send_message(message.chat.id, "Спокойной!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Добрых":
-                    try:
-                        bot.send_message(message.chat.id, "Добрых!")
-                        sended += 1
-                    except:
-                        pass
-
-
-
-                #Ответы на приветствия
-                if word == "Hello":
-                    try:
-                        bot.reply_to(message, "Hello!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Привет":
-                    try:
-                        bot.reply_to(message,"Привет!")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "Хай":
-                    try:
-                        bot.reply_to(message, "Хай!")
-                        sended += 1
-                    except:
-                        pass
+                for example in examples:
+                    if word == example:
+                        bot.send_message(message.chat.id,(example.capitalize()+"!"))
                 #непозитивные ответы
                 if word == "Недоброе":
                     try:
@@ -174,31 +73,31 @@ def start_command(message):
                         sended += 1
                     except:
                         pass
-                elif word == "Токсик" or word == "Таксик":
+                elif word == "токсик" or word == "таксик":
                     try:
                         bot.reply_to(message,"Не надо так")
                         sended += 1
                     except:
                         pass
-                elif word == "Душнила":
+                elif word == "душнила":
                     try:
                         bot.reply_to(message,"Не стоит...")
                         sended += 1
                     except:
                         pass
-                elif word == "Сосать":
+                elif word == "сосать":
                     try:
                         bot.reply_to(message,"Осуждаю... 🤡")
                         sended += 1
                     except:
                         pass
-                elif word == "Булить":
+                elif word == "булить":
                     try:
                         bot.reply_to(message,"Себя забуль.")
                         sended += 1
                     except:
                         pass
-                elif word == "Бот":
+                elif word == "бот":
                     try:
                         bot.reply_to(message,"Я высшая форма жизни!")
                         sended += 1
@@ -207,7 +106,7 @@ def start_command(message):
 
 
                 #удачи
-                if word == "Удачи":
+                if word == "удачи":
                     try:
                         bot.reply_to(message,"Удачи! Да прибудет с тобой сила (в ньютонах)")
                         sended += 1
@@ -215,7 +114,7 @@ def start_command(message):
                         pass
 
                 #приятного аппетита
-                if word == "Приятного":
+                if word == "приятного":
                     try:
                         bot.send_message(message.chat.id,"Приятного!")
                         sended += 1
