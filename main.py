@@ -29,8 +29,12 @@ exampleFile.close()
 
 @bot.message_handler(commands=['addnewword'])
 def new_word(message):
+    print("Реакция на команду")
     if message.from_user.id == 376185154:
+        print("Нужный пользователь")
+        print("захваченный текст "+message.text[message.text.find(" "):])
         examples.append(message.text[message.text.find(" "):])
+
 @bot.message_handler(commands=['stream'])
 def stream(message):
     random_stream = random.choice(streams)
