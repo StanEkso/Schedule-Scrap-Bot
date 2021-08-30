@@ -24,6 +24,7 @@ examples = [
 
 exampleFile = open('examples.txt','r')
 for line in exampleFile:
+    print(line)
     examples.append(line)
 exampleFile.close()
 
