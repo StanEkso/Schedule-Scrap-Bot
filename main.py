@@ -25,6 +25,11 @@ examples = [
 exampleFile = open('examples.txt','r')
 for line in exampleFile:
     line = line.lower()
+    line1 = ""
+    for x in line:
+            if x.isalpha() or x.isnumeric() is True:
+                line1 = line1 + str(x)
+    line = line1
     examples.append(line)
 exampleFile.close()
 print(examples)
@@ -34,8 +39,11 @@ def new_word(message):
     print("Реакция на команду")
     if message.from_user.id == 376185154:
         print("Нужный пользователь")
-        print("захваченный текст "+message.text[message.text.find(" "):])
-        examples.append(message.text[message.text.find(" ")+1:])
+        word = message.text[message.text.find(" "):]
+        print("захваченный текст "+word)
+        examples.append(word.lower())
+        exampleFile = open('examples.txt','a')
+        exampleFile.write(word.lower()+"\n")
 
 @bot.message_handler(commands=['stream'])
 def stream(message):
@@ -69,72 +77,72 @@ def start_command(message):
     inputS = input.split()
     if inputS[0] == "/asbot":
         bot.send_message(-1001519670451, message.text[message.text.find(" "):])
-    if sended == 0:
-        for i in inputS:
-            word = str(i)
-            word1 = ""
-            for x in word:
-                if x.isalpha() or x.isnumeric() is True:
-                    word1 = word1 + str(x)
-            word = word1.lower()
-            if sended < 2:
-                for example in examples:
-                    if word == example:
-                        bot.send_message(message.chat.id,(example.capitalize()+"!"))
-                #непозитивные ответы
-                if word == "Недоброе":
-                    try:
-                        bot.reply_to(message,"Ну что же, бывает и такое")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "токсик" or word == "таксик":
-                    try:
-                        bot.reply_to(message,"Не надо так")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "душнила":
-                    try:
-                        bot.reply_to(message,"Не стоит...")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "сосать":
-                    try:
-                        bot.reply_to(message,"Осуждаю... 🤡")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "булить":
-                    try:
-                        bot.reply_to(message,"Себя забуль.")
-                        sended += 1
-                    except:
-                        pass
-                elif word == "бот":
-                    try:
-                        bot.reply_to(message,"Я высшая форма жизни!")
-                        sended += 1
-                    except:
-                        pass
+    for i in inputS:
+        word = str(i)
+        word1 = ""
+        for x in word:
+            if x.isalpha() or x.isnumeric() is True:
+                word1 = word1 + str(x)
+        word = word1.lower()
+        if sended < 2:
+            for example in examples:
+                if word == example:
+                    bot.send_message(message.chat.id,(example.capitalize()+"!"))
+                    sended += 1
+            #непозитивные ответы
+            if word == "Недоброе":
+                try:
+                    bot.reply_to(message,"Ну что же, бывает и такое")
+                    sended += 1
+                except:
+                    pass
+            elif word == "токсик" or word == "таксик":
+                try:
+                    bot.reply_to(message,"Не надо так")
+                    sended += 1
+                except:
+                    pass
+            elif word == "душнила":
+                try:
+                    bot.reply_to(message,"Не стоит...")
+                    sended += 1
+                except:
+                    pass
+            elif word == "сосать":
+                try:
+                    bot.reply_to(message,"Осуждаю... 🤡")
+                    sended += 1
+                except:
+                    pass
+            elif word == "булить":
+                try:
+                    bot.reply_to(message,"Себя забуль.")
+                    sended += 1
+                except:
+                    pass
+            elif word == "бот":
+                try:
+                    bot.reply_to(message,"Я высшая форма жизни!")
+                    sended += 1
+                except:
+                    pass
 
 
-                #удачи
-                if word == "удачи":
-                    try:
-                        bot.reply_to(message,"Удачи! Да прибудет с тобой сила (в ньютонах)")
-                        sended += 1
-                    except:
-                        pass
+            #удачи
+            if word == "удачи":
+                try:
+                    bot.reply_to(message,"Удачи! Да прибудет с тобой сила (в ньютонах)")
+                    sended += 1
+                except:
+                    pass
 
-                #приятного аппетита
-                if word == "приятного":
-                    try:
-                        bot.send_message(message.chat.id,"Приятного!")
-                        sended += 1
-                    except:
-                        pass
+            #приятного аппетита
+            if word == "приятного":
+                try:
+                    bot.send_message(message.chat.id,"Приятного!")
+                    sended += 1
+                except:
+                    pass
 
 @bot.message_handler(content_types=['text'])
 def mainteance(message):
