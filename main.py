@@ -27,6 +27,7 @@ for line in exampleFile:
     print(line)
     examples.append(line)
 exampleFile.close()
+print(examples)
 
 @bot.message_handler(commands=['addnewword'])
 def new_word(message):
