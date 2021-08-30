@@ -39,11 +39,14 @@ def new_word(message):
     print("Реакция на команду")
     if message.from_user.id == 376185154:
         print("Нужный пользователь")
-        word = message.text[message.text.find(" "):]
+        word = message.text[message.text.find(" ")+1:]
         print("захваченный текст "+word)
         examples.append(word.lower())
         exampleFile = open('examples.txt','a')
         exampleFile.write(word.lower()+"\n")
+        exampleFile.close()
+        bot.send_message(message.from_user.id,"Добавлено слово: \n"+
+        word)
 
 @bot.message_handler(commands=['stream'])
 def stream(message):
