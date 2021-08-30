@@ -24,7 +24,7 @@ examples = [
 
 exampleFile = open('examples.txt','r')
 for line in exampleFile:
-    print(line)
+    line = line.lower()
     examples.append(line)
 exampleFile.close()
 print(examples)
@@ -35,7 +35,7 @@ def new_word(message):
     if message.from_user.id == 376185154:
         print("Нужный пользователь")
         print("захваченный текст "+message.text[message.text.find(" "):])
-        examples.append(message.text[message.text.find(" "):])
+        examples.append(message.text[message.text.find(" ")+1:])
 
 @bot.message_handler(commands=['stream'])
 def stream(message):
