@@ -2,6 +2,9 @@ import telebot
 import sys
 import time
 import random
+
+# -*- coding: utf-8 -*-
+
 streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c','https://youtu.be/eG-vjxeg2Og','https://youtu.be/dzI95u7kgrQ','https://youtu.be/Zk3N8ePW8f4','https://youtu.be/AGLeP30qOu8',
 'https://youtu.be/t0AVXlHzkoQ',
 'https://youtu.be/_671f3kAMYY',
@@ -15,14 +18,9 @@ streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c','https:
 bot = telebot.TeleBot('1955658538:AAGDDsLSNqDuClkSvPtE3AiDEAm0jdxOxMo')
 
 
-examples = set(
-    'добрый','доброе',"доброго","нихао","коничива","guten","гутен",
-    "добрым","доброй","хорошего","добрейшее","добрейшего","добрейший",
-    'спокойной',"добрых","сладких",
-    "hello","hallo","hi","привет","хай"
-)
+examples = set ()
 
-exampleFile = open('examples.txt','r')
+exampleFile = open('examples.txt','r',encoding="utf-8")
 for line in exampleFile:
     line = line.lower()
     line1 = ""
@@ -30,7 +28,7 @@ for line in exampleFile:
             if x.isalpha() or x.isnumeric() is True:
                 line1 = line1 + str(x)
     line = line1
-    examples.append(line)
+    examples.add(line)
 exampleFile.close()
 print(examples)
 
@@ -38,15 +36,19 @@ print(examples)
 def new_word(message):
     print("Реакция на команду")
     if message.from_user.id == 376185154:
-        exampleFile = open('examples.txt','a')
+        
         print("Нужный пользователь")
         word = message.text[message.text.find(" ")+1:]
         print("захваченный текст "+word)
-        examples.append(word.lower())
-        exampleFile.write(word.lower()+"\n")
-        exampleFile.close()
-        bot.send_message(message.from_user.id,"Добавлено слово: \n"+
-        word)
+        if not(word.capitalize()) in examples:
+            exampleFile = open('examples.txt','a',encoding="utf-8")
+            examples.add(word.lower())
+            exampleFile.write(word.lower()+"\n")
+            exampleFile.close()
+            bot.send_message(message.from_user.id,"Добавлено слово: \n"+
+            word)
+        else:
+            bot.send_message(message.from_user.id,"Это слово уже есть в списке...")
 
 @bot.message_handler(commands=['stream'])
 def stream(message):
