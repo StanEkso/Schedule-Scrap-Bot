@@ -15,12 +15,12 @@ streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c','https:
 bot = telebot.TeleBot('1955658538:AAGDDsLSNqDuClkSvPtE3AiDEAm0jdxOxMo')
 
 
-examples = [
+examples = set(
     'добрый','доброе',"доброго","нихао","коничива","guten","гутен",
     "добрым","доброй","хорошего","добрейшее","добрейшего","добрейший",
     'спокойной',"добрых","сладких",
     "hello","hallo","hi","привет","хай"
-]
+)
 
 exampleFile = open('examples.txt','r')
 for line in exampleFile:
@@ -38,11 +38,11 @@ print(examples)
 def new_word(message):
     print("Реакция на команду")
     if message.from_user.id == 376185154:
+        exampleFile = open('examples.txt','a')
         print("Нужный пользователь")
         word = message.text[message.text.find(" ")+1:]
         print("захваченный текст "+word)
         examples.append(word.lower())
-        exampleFile = open('examples.txt','a')
         exampleFile.write(word.lower()+"\n")
         exampleFile.close()
         bot.send_message(message.from_user.id,"Добавлено слово: \n"+
