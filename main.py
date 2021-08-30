@@ -14,6 +14,12 @@ streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c','https:
 'https://youtu.be/aYR3Gl_nmH0']
 bot = telebot.TeleBot('1955658538:AAGDDsLSNqDuClkSvPtE3AiDEAm0jdxOxMo')
 
+
+exampleFile = open('examples.txt','r')
+for line in exampleFile:
+    examples.append(line)
+exampleFile.close()
+
 examples = [
     'добрый','доброе',"доброго","нихао","коничива","guten","гутен",
     "добрым","доброй","хорошего","добрейшее","добрейшего","добрейший",
@@ -21,7 +27,10 @@ examples = [
     "hello","hallo","hi","привет","хай"
 ]
 
-
+@bot.message_handler(commands=['addnewword'])
+def new_word(message):
+    if message.from_user.id == 376185154:
+        examples.append(message.text[message.text.find(" "):])
 @bot.message_handler(commands=['stream'])
 def stream(message):
     random_stream = random.choice(streams)
