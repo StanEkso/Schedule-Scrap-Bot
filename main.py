@@ -34,12 +34,8 @@ print(examples)
 
 @bot.message_handler(commands=['addnewword'])
 def new_word(message):
-    print("Реакция на команду")
     if message.from_user.id == 376185154:
-        
-        print("Нужный пользователь")
         word = message.text[message.text.find(" ")+1:]
-        print("захваченный текст "+word)
         if not(word.capitalize()) in examples:
             exampleFile = open('examples.txt','a',encoding="utf-8")
             examples.add(word.lower())
