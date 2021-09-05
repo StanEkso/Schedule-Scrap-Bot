@@ -2,6 +2,7 @@ import telebot
 import sys
 import time
 import random
+import raspisanie
 
 # -*- coding: utf-8 -*-
 
@@ -30,7 +31,41 @@ for line in exampleFile:
     line = line1
     examples.add(line)
 exampleFile.close()
-print(examples)
+
+@bot.message_handler(commands=['расписание'])
+def table(message):
+    print(message.text)
+    msg = message.text.lower()
+    print(msg)
+    msg = msg.split()
+    print(msg)
+    if len(msg) == 1:
+        day = time.ctime(message.date)[:3].lower()
+    else:
+        day = msg[1]
+    print(day)
+    for i in raspisanie.monList:
+        if day == i:
+            bot.send_message(message.chat.id,raspisanie.mon)
+    for i in raspisanie.tueList:
+        if day == i:
+            bot.send_message(message.chat.id,raspisanie.tue)
+    for i in raspisanie.wedList:
+        if day == i:
+            bot.send_message(message.chat.id,raspisanie.wed)
+    for i in raspisanie.thuList:
+        if day == i:
+            bot.send_message(message.chat.id,raspisanie.thu)
+    for i in raspisanie.friList:
+        if day == i:
+            bot.send_message(message.chat.id,raspisanie.fri)
+    for i in raspisanie.satList:
+        if day == i:
+            bot.send_message(message.chat.id,raspisanie.sat)
+    if day == "sun":
+        bot.send_message(message.chat.id,"Какие пары... Спи давай!")
+
+    
 
 @bot.message_handler(commands=['addnewword'])
 def new_word(message):
