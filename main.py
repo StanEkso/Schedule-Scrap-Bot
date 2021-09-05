@@ -62,8 +62,9 @@ def table(message):
     for i in raspisanie.satList:
         if day == i:
             bot.send_message(message.chat.id,raspisanie.sat)
-    if day == "sun":
-        bot.send_message(message.chat.id,"Какие пары... Спи давай!")
+    for i in raspisanie.sunList:
+        if day == i:
+            bot.send_message(message.chat.id,raspisanie.sun)
 
     
 
