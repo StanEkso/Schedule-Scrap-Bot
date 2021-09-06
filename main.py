@@ -32,7 +32,7 @@ for line in exampleFile:
     examples.add(line)
 exampleFile.close()
 
-@bot.message_handler(commands=['расписание'])
+@bot.message_handler(commands=['расписание','schedule'])
 def table(message):
     print(message.text)
     msg = message.text.lower()
