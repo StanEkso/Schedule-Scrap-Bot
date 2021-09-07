@@ -1,22 +1,43 @@
 import telebot
+from telebot import types
 import sys
 import time
 import random
 import raspisanie
 
-# -*- coding: utf-8 -*-
+#schedule = types.InlineKeyboardMarkup()
+#show = types.InlineKeyboardButton(text="Просмотреть", callback_data='show')
+#schedule.add(show)
 
-streams = ['https://youtu.be/czjXw_GmZMU','https://youtu.be/5ypwKTMpp8c','https://youtu.be/eG-vjxeg2Og','https://youtu.be/dzI95u7kgrQ','https://youtu.be/Zk3N8ePW8f4','https://youtu.be/AGLeP30qOu8',
-'https://youtu.be/t0AVXlHzkoQ',
-'https://youtu.be/_671f3kAMYY',
-'https://youtu.be/dT_XT9lld04',
-'https://youtu.be/ZLrx_-AkEDw',
-'https://youtu.be/1BzQrDGrces',
-'https://youtu.be/zzLeJ3V-aqA',
-'https://youtu.be/8zErbnThKVQ',
-'https://youtu.be/_fwPrnJtafA',
-'https://youtu.be/aYR3Gl_nmH0']
+days = ['mon','tue','wed','thu','fri','sat']
+msgs = []
+msgs.append(raspisanie.mon)
+msgs.append(raspisanie.tue)
+msgs.append(raspisanie.wed)
+msgs.append(raspisanie.thu)
+msgs.append(raspisanie.fri)
+msgs.append(raspisanie.sat)
+
+reply_markup = types.InlineKeyboardMarkup()
+buttonPrev = types.InlineKeyboardButton(text="◀", callback_data='prev')
+buttonOK = types.InlineKeyboardButton(text="OK", callback_data="ok")
+buttonNext = types.InlineKeyboardButton(text="▶", callback_data='next')
+buttonMon = types.InlineKeyboardButton(text="ПН", callback_data="mon")
+buttonTue = types.InlineKeyboardButton(text="ВТ", callback_data="tue")
+buttonWed = types.InlineKeyboardButton(text="СР", callback_data="wed")
+buttonThu = types.InlineKeyboardButton(text="ЧТ", callback_data="thu")
+buttonFri = types.InlineKeyboardButton(text="ПТ", callback_data="fri")
+buttonSat = types.InlineKeyboardButton(text="СБ", callback_data="sat")
+reply_markup.add(buttonPrev, buttonOK, buttonNext)
+reply_markup.row().add(buttonMon,buttonTue,buttonWed) \
+        .row().add(buttonThu,buttonFri,buttonSat)
 bot = telebot.TeleBot('1955658538:AAGDDsLSNqDuClkSvPtE3AiDEAm0jdxOxMo')
+
+def schedule(call):
+    for i in zip(days, msgs):
+        if day == i[0]:
+            msg = i[1]
+    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg, reply_markup=reply_markup)
 
 
 examples = set ()
@@ -34,37 +55,41 @@ exampleFile.close()
 
 @bot.message_handler(commands=['расписание','schedule'])
 def table(message):
-    print(message.chat.type)
+    schedule = types.InlineKeyboardMarkup()
+    show = types.InlineKeyboardButton(text="Просмотреть", callback_data='show')
+    schedule.add(show)
     if message.chat.id  == -1001580924097 or message.chat.type == 'private':
-        msg = message.text.lower()
-        msg = msg.split()
-        if len(msg) == 1:
-            day = time.ctime(message.date)[:3].lower()
-        else:
-            day = msg[1]
-        for i in raspisanie.monList:
-            if day == i:
-                bot.send_message(message.chat.id,raspisanie.mon)
-        for i in raspisanie.tueList:
-            if day == i:
-                bot.send_message(message.chat.id,raspisanie.tue)
-        for i in raspisanie.wedList:
-            if day == i:
-                bot.send_message(message.chat.id,raspisanie.wed)
-        for i in raspisanie.thuList:
-            if day == i:
-                bot.send_message(message.chat.id,raspisanie.thu)
-        for i in raspisanie.friList:
-            if day == i:
-                bot.send_message(message.chat.id,raspisanie.fri)
-        for i in raspisanie.satList:
-            if day == i:
-                bot.send_message(message.chat.id,raspisanie.sat)
-        for i in raspisanie.sunList:
-            if day == i:
-                bot.send_message(message.chat.id,raspisanie.sun)
-    else:
-        pass
+        bot.send_message(message.chat.id,"Просмотреть расписание?",reply_markup=schedule)
+    #    msg = message.text.lower()
+    #    msg = msg.split()
+    #    if len(msg) == 1:
+    #        day = time.ctime(message.date)[:3].lower()
+    #    else:
+    #        day = msg[1]
+    #    print(day)
+    #    for i in raspisanie.monList:
+    #        if day == i:
+    #            bot.send_message(message.chat.id,raspisanie.mon)
+    #    for i in raspisanie.tueList:
+    #        if day == i:
+    #            bot.send_message(message.chat.id,raspisanie.tue)
+    #    for i in raspisanie.wedList:
+    #       if day == i:
+    #            bot.send_message(message.chat.id,raspisanie.wed)
+    #    for i in raspisanie.thuList:
+    #        if day == i:
+    #            bot.send_message(message.chat.id,raspisanie.thu)
+    #    for i in raspisanie.friList:
+    #        if day == i:
+    #            bot.send_message(message.chat.id,raspisanie.fri)
+    #    for i in raspisanie.satList:
+    #        if day == i:
+    #            bot.send_message(message.chat.id,raspisanie.sat)
+    #    for i in raspisanie.sunList:
+    #        if day == i:
+    #            bot.send_message(message.chat.id,raspisanie.sun)
+    #else:
+    #    pass
     
 
 @bot.message_handler(commands=['addnewword'])
@@ -81,11 +106,6 @@ def new_word(message):
         else:
             bot.send_message(message.from_user.id,"Это слово уже есть в списке...")
 
-@bot.message_handler(commands=['stream'])
-def stream(message):
-    random_stream = random.choice(streams)
-    bot.send_message(message.chat.id,"Посморите как этот стрим:")
-    bot.send_message(message.chat.id,random_stream)
 
 @bot.message_handler(commands=['mainteancemode'])
 def mainteancemode(message):
@@ -203,5 +223,78 @@ def mainteance(message):
             mtcounter = 0
         bot.register_next_step_handler(message,mainteance)
 
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback(call):
+    schedule = types.InlineKeyboardMarkup()
+    show = types.InlineKeyboardButton(text="Просмотреть", callback_data='show')
+    schedule.add(show)
+    global sended
+    global day
+    if call.data == "show":
+        sended = 0
+        if sended == 0:
+            day = time.ctime(call.message.date)[:3].lower()
+        bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text="Выберите день",
+                              reply_markup=reply_markup)
+    elif call.data == "ok":
+        try:
+            sended = 0
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text="Расписание закрыто",
+                                  reply_markup=schedule)
+        except:
+            pass
+    elif call.data == "prev":
+        try:
+            if day == "mon":
+                day = "sat"
+            elif day == "tue":
+                day = "mon"
+            elif day == "wed":
+                day = 'tue'
+            elif day == "thu":
+                day = 'wed'
+            elif day == "fri":
+                day = 'thu'
+            elif day == "sat":
+                day = 'fri'
+            for i in zip(days, msgs):
+                if day == i[0]:
+                    msg = i[1]
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
+                                  reply_markup=reply_markup)
+        except:
+            pass
+
+
+    elif call.data == "next":
+        try:
+            if day == "mon":
+                day = 'tue'
+            elif day == "tue":
+                day = 'wed'
+            elif day == "wed":
+                day = 'thu'
+            elif day == "thu":
+                day = 'fri'
+            elif day == "fri":
+                day = 'sat'
+            elif day == "sat":
+                day = 'mon'
+
+            for i in zip(days, msgs):
+                if day == i[0]:
+                    msg = i[1]
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
+                                  reply_markup=reply_markup)
+        except:
+            pass
+    else:
+        day = call.data
+        for i in zip(days, msgs):
+            if day == i[0]:
+                msg = i[1]
+        bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
+                              reply_markup=reply_markup)
 
 bot.polling()
