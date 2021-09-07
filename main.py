@@ -34,38 +34,37 @@ exampleFile.close()
 
 @bot.message_handler(commands=['расписание','schedule'])
 def table(message):
-    print(message.text)
-    msg = message.text.lower()
-    print(msg)
-    msg = msg.split()
-    print(msg)
-    if len(msg) == 1:
-        day = time.ctime(message.date)[:3].lower()
+    print(message.chat.type)
+    if message.chat.id  == -1001580924097 or message.chat.type == 'private':
+        msg = message.text.lower()
+        msg = msg.split()
+        if len(msg) == 1:
+            day = time.ctime(message.date)[:3].lower()
+        else:
+            day = msg[1]
+        for i in raspisanie.monList:
+            if day == i:
+                bot.send_message(message.chat.id,raspisanie.mon)
+        for i in raspisanie.tueList:
+            if day == i:
+                bot.send_message(message.chat.id,raspisanie.tue)
+        for i in raspisanie.wedList:
+            if day == i:
+                bot.send_message(message.chat.id,raspisanie.wed)
+        for i in raspisanie.thuList:
+            if day == i:
+                bot.send_message(message.chat.id,raspisanie.thu)
+        for i in raspisanie.friList:
+            if day == i:
+                bot.send_message(message.chat.id,raspisanie.fri)
+        for i in raspisanie.satList:
+            if day == i:
+                bot.send_message(message.chat.id,raspisanie.sat)
+        for i in raspisanie.sunList:
+            if day == i:
+                bot.send_message(message.chat.id,raspisanie.sun)
     else:
-        day = msg[1]
-    print(day)
-    for i in raspisanie.monList:
-        if day == i:
-            bot.send_message(message.chat.id,raspisanie.mon)
-    for i in raspisanie.tueList:
-        if day == i:
-            bot.send_message(message.chat.id,raspisanie.tue)
-    for i in raspisanie.wedList:
-        if day == i:
-            bot.send_message(message.chat.id,raspisanie.wed)
-    for i in raspisanie.thuList:
-        if day == i:
-            bot.send_message(message.chat.id,raspisanie.thu)
-    for i in raspisanie.friList:
-        if day == i:
-            bot.send_message(message.chat.id,raspisanie.fri)
-    for i in raspisanie.satList:
-        if day == i:
-            bot.send_message(message.chat.id,raspisanie.sat)
-    for i in raspisanie.sunList:
-        if day == i:
-            bot.send_message(message.chat.id,raspisanie.sun)
-
+        pass
     
 
 @bot.message_handler(commands=['addnewword'])
