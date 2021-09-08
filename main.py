@@ -197,6 +197,8 @@ def mainteance(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
     global sended
+    global day
+    day = call_days.get(call.message.id)
     schedule = types.InlineKeyboardMarkup()
     show = types.InlineKeyboardButton(text="Просмотреть", callback_data='show')
     schedule.add(show)
@@ -206,9 +208,9 @@ def callback(call):
             day = time.ctime(call.message.date)[:3].lower()
         else:
             day = call_days.get(call.message.id)
-        call_days[id] = call_days.get(call.message.id)
+        call_days[id] = day
         for i in zip(days, msgs):
-            if call_days.get(call.message.id) == i[0]:
+            if day == i[0]:
                 msg = i[1]
         try:
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
@@ -231,9 +233,9 @@ def callback(call):
         except:
             pass
     elif call.data == "prev":
-        day = call_days.get(call.message.id)
-        print(day)
         try:
+            if day == None:
+                day = time.ctime(call.message.date)[:3].lower()
             if day == "mon":
                 day = "sat"
             elif day == "tue":
@@ -257,8 +259,9 @@ def callback(call):
 
 
     elif call.data == "next":
-        day = call_days.get(call.message.id)
         try:
+            if day == None:
+                day = time.ctime(call.message.date)[:3].lower()
             if day == "mon":
                 day = 'tue'
             elif day == "tue":
@@ -271,6 +274,7 @@ def callback(call):
                 day = 'sat'
             elif day == "sat":
                 day = 'mon'
+
 
             for i in zip(days, msgs):
                 if day == i[0]:
