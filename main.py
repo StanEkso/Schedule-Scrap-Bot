@@ -203,15 +203,26 @@ def callback(call):
     if call.data == "show":
         id = call.message.id
         if sended == 0:
-            day1 = time.ctime(call.message.date)[:3].lower()
-            call_days[id] = day1
-        day = call_days.get(call.message.id)
+            day = time.ctime(call.message.date)[:3].lower()
+        else:
+            day = call_days.get(call.message.id)
+        call_days[id] = day
         for i in zip(days, msgs):
             if day == i[0]:
                 msg = i[1]
-        bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
-                              reply_markup=reply_markup)
-        sended = 1
+        try:
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
+                                reply_markup=reply_markup)
+            sended = 1
+        except:
+            day = time.ctime(call.message.date)[:3].lower()
+            for i in zip(days, msgs):
+                if day == i[0]:
+                    msg = i[1]
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
+                                  reply_markup=reply_markup)
+            sended = 1
+
     elif call.data == "ok":
         try:
             sended = 0
@@ -221,6 +232,7 @@ def callback(call):
             pass
     elif call.data == "prev":
         day = call_days.get(call.message.id)
+        print(day)
         try:
             if day == "mon":
                 day = "sat"
