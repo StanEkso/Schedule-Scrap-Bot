@@ -208,7 +208,7 @@ def callback(call):
             day = call_days.get(call.message.id)
         call_days[id] = call_days.get(call.message.id)
         for i in zip(days, msgs):
-            if day == i[0]:
+            if call_days.get(call.message.id) == i[0]:
                 msg = i[1]
         try:
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
