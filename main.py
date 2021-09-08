@@ -206,7 +206,7 @@ def callback(call):
             day = time.ctime(call.message.date)[:3].lower()
         else:
             day = call_days.get(call.message.id)
-        call_days[id] = day
+        call_days[id] = call_days.get(call.message.id)
         for i in zip(days, msgs):
             if day == i[0]:
                 msg = i[1]
