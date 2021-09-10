@@ -57,6 +57,7 @@ def table(message):
     schedule.add(show)
     if message.chat.id == -1001580924097 or message.chat.type == 'private':
         bot.send_message(message.chat.id, "Просмотреть расписание?", reply_markup=schedule)
+    bot.delete_message(message.chat.id,message_id=message.id)
 
 
 @bot.message_handler(commands=['addnewword'])
