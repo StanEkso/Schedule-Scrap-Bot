@@ -5,7 +5,7 @@ import time
 import random
 import raspisanie
 
-days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun']
 call_days = {}
 msgs = []
 msgs.append(raspisanie.mon)
@@ -14,6 +14,7 @@ msgs.append(raspisanie.wed)
 msgs.append(raspisanie.thu)
 msgs.append(raspisanie.fri)
 msgs.append(raspisanie.sat)
+msgs.append(raspisanie.sun)
 
 sended = 0
 
@@ -32,8 +33,15 @@ reply_markup.row().add(buttonMon, buttonTue, buttonWed) \
     .row().add(buttonThu, buttonFri, buttonSat)
 bot = telebot.TeleBot('1955658538:AAGDDsLSNqDuClkSvPtE3AiDEAm0jdxOxMo')
 
-
-
+badwords = {
+    "недоброе": "Ну, что же, бывает всякое. Даже такое.",
+    "булить": "Кого булить? Себя забуль",
+    "токсик": "Не надо так",
+    "душнила": "Не стоит",
+    "сосать": "Осуждаю...",
+    "бот":"Я высшая форма жизни",
+    "удачи":"Удачи! Да прибудет с тобой сила всемирного тяготения"
+}
 
 examples = set()
 
@@ -57,7 +65,7 @@ def table(message):
     schedule.add(show)
     if message.chat.id == -1001580924097 or message.chat.type == 'private':
         bot.send_message(message.chat.id, "Просмотреть расписание?", reply_markup=schedule)
-    bot.delete_message(message.chat.id,message_id=message.id)
+    bot.delete_message(message.chat.id, message_id=message.id)
 
 
 @bot.message_handler(commands=['addnewword'])
@@ -116,58 +124,13 @@ def start_command(message):
                     bot.send_message(message.chat.id, (example.capitalize() + "!"))
                     sended += 1
             # непозитивные ответы
-            if word == "Недоброе":
-                try:
-                    bot.reply_to(message, "Ну что же, бывает и такое")
-                    sended += 1
-                except:
-                    pass
-            elif word == "токсик" or word == "таксик":
-                try:
-                    bot.reply_to(message, "Не надо так")
-                    sended += 1
-                except:
-                    pass
-            elif word == "душнила":
-                try:
-                    bot.reply_to(message, "Не стоит...")
-                    sended += 1
-                except:
-                    pass
-            elif word == "сосать":
-                try:
-                    bot.reply_to(message, "Осуждаю... 🤡")
-                    sended += 1
-                except:
-                    pass
-            elif word == "булить":
-                try:
-                    bot.reply_to(message, "Себя забуль.")
-                    sended += 1
-                except:
-                    pass
-            elif word == "бот":
-                try:
-                    bot.reply_to(message, "Я высшая форма жизни!")
-                    sended += 1
-                except:
-                    pass
-
-            # удачи
-            if word == "удачи":
-                try:
-                    bot.reply_to(message, "Удачи! Да прибудет с тобой сила (в ньютонах)")
-                    sended += 1
-                except:
-                    pass
-
-            # приятного аппетита
-            if word == "приятного":
-                try:
-                    bot.send_message(message.chat.id, "Приятного!")
-                    sended += 1
-                except:
-                    pass
+            for example in badwords.keys():
+                if word == example:
+                    try:
+                        bot.reply_to(message=message,text=badwords.get(word))
+                        sended += 1
+                    except:
+                        pass
 
 
 @bot.message_handler(content_types=['text'])
@@ -215,7 +178,7 @@ def callback(call):
                 msg = i[1]
         try:
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
-                                reply_markup=reply_markup)
+                                  reply_markup=reply_markup)
             sended = 1
         except:
             day = time.ctime(call.message.date)[:3].lower()
@@ -249,6 +212,8 @@ def callback(call):
                 day = 'thu'
             elif day == "sat":
                 day = 'fri'
+            elif day == "sun":
+                day = 'sat'
             for i in zip(days, msgs):
                 if day == i[0]:
                     msg = i[1]
@@ -275,7 +240,8 @@ def callback(call):
                 day = 'sat'
             elif day == "sat":
                 day = 'mon'
-
+            elif day == 'sun':
+                day = 'mon'
 
             for i in zip(days, msgs):
                 if day == i[0]:
@@ -283,7 +249,7 @@ def callback(call):
 
             call_days[call.message.id] = day
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id,
-                                  text=msg,reply_markup=reply_markup)
+                                  text=msg, reply_markup=reply_markup)
         except:
             pass
     else:
