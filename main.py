@@ -65,22 +65,24 @@ def table(message):
     schedule.add(show)
     if message.chat.id == -1001580924097 or message.chat.type == 'private':
         bot.send_message(message.chat.id, "Просмотреть расписание?", reply_markup=schedule)
-    bot.delete_message(message.chat.id, message_id=message.id)
+    try:
+        bot.delete_message(message.chat.id, message_id=message.id)
+    except:
+        pass
 
 
-@bot.message_handler(commands=['addnewword'])
-def new_word(message):
+
+
+@bot.message_handler(commands=['delit'])
+def delete_msg(message):
     if message.from_user.id == 376185154:
-        word = message.text[message.text.find(" ") + 1:]
-        if not (word.capitalize()) in examples:
-            exampleFile = open('examples.txt', 'a', encoding="utf-8")
-            examples.add(word.lower())
-            exampleFile.write(word.lower() + "\n")
-            exampleFile.close()
-            bot.send_message(message.from_user.id, "Добавлено слово: \n" +
-                             word)
-        else:
-            bot.send_message(message.from_user.id, "Это слово уже есть в списке...")
+        if message.reply_to_message != None:
+            try:
+                bot.delete_message(message.chat.id, message.reply_to_message.message_id)
+                bot.delete_message(message.chat.id, message.id)
+            except:
+                pass
+
 
 
 @bot.message_handler(commands=['mainteancemode'])
@@ -100,6 +102,7 @@ def mainteancemode(message):
 
 @bot.message_handler(content_types=['text'])
 def start_command(message):
+    print(message.chat.id)
     global mtcounter
     mtcounter = 0
     sended = 0
