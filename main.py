@@ -195,7 +195,6 @@ def mainteance(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
-    parsing()
     global sended
     global day
     day = call_days.get(call.message.id)
@@ -203,6 +202,7 @@ def callback(call):
     show = types.InlineKeyboardButton(text="Просмотреть", callback_data='show')
     schedule.add(show)
     if call.data == "show":
+        parsing()
         id = call.message.id
         if sended == 0:
             day = time.ctime(call.message.date)[:3].lower()
