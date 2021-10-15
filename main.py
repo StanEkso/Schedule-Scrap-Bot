@@ -239,23 +239,12 @@ def callback(call):
         try:
             if day == None:
                 day = time.ctime(call.message.date)[:3].lower()
-            if day == "mon":
-                day = "sat"
-            elif day == "tue":
-                day = "mon"
-            elif day == "wed":
-                day = 'tue'
-            elif day == "thu":
-                day = 'wed'
-            elif day == "fri":
-                day = 'thu'
-            elif day == "sat":
-                day = 'fri'
-            elif day == "sun":
-                day = 'sat'
+            else:
+                day = days[days.index(day)-1]
+            
             for i in zip(days, msgs):
-                if day == i[0]:
-                    msg = i[1]
+                 if day == i[0]:
+                     msg = i[1]
             call_days[call.message.id] = day
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
                                   reply_markup=reply_markup)
@@ -265,22 +254,10 @@ def callback(call):
 
     elif call.data == "next":
         try:
-            if day == None:
-                day = time.ctime(call.message.date)[:3].lower()
-            if day == "mon":
-                day = 'tue'
-            elif day == "tue":
-                day = 'wed'
-            elif day == "wed":
-                day = 'thu'
-            elif day == "thu":
-                day = 'fri'
-            elif day == "fri":
-                day = 'sat'
-            elif day == "sat":
-                day = 'mon'
-            elif day == 'sun':
-                day = 'mon'
+            if days.index(day) != len(days) - 1:
+                day = days[days.index(day) + 1]
+            else:
+                day = days[0]
 
             for i in zip(days, msgs):
                 if day == i[0]:
