@@ -5,6 +5,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 global msgs
+sended = 0
 def parsing():
     global msgs
     mon = "Расписание 02 группы на Понедельник: \n"
@@ -30,18 +31,29 @@ def parsing():
     room = soup.find_all('td', {'class':'room'})
     weekday = soup.find_all('td', {'class':'weekday'})
     for i in zip(time,remarks,subjectteachers,lecturepractice,room, weekday):
+        type = i[3].text
+        if type == "л": type = "Лекция"
+        elif type == "п":   type = "Практика"
+        else:   type =""
         if i[5].text.lower() == "понедельник":
-            mon += i[0].text + " " + i[1].text + " " +i[2].text + " " + i[3].text + " " + i[4].text + '\n'
+            mon += i[0].text + " " + i[1].text + " " +i[2].text + " " + type + " " + i[4].text + '\n'
         elif i[5].text.lower() == "вторник":
-            tue += i[0].text + " " + i[1].text + " " +i[2].text + " " + i[3].text + " " + i[4].text + '\n'
+            tue += i[0].text + " " + i[1].text + " " +i[2].text + " " + type + " " + i[4].text + '\n'
         elif i[5].text.lower() == "среда":
-            wed += i[0].text + " " + i[1].text + " " + i[2].text + " " + i[3].text + " " + i[4].text + '\n'
+            wed += i[0].text + " " + i[1].text + " " + i[2].text + " " + type + " " + i[4].text + '\n'
         elif i[5].text.lower() == "четверг":
-            thu += i[0].text + " " + i[1].text + " " +i[2].text + " " + i[3].text + " " + i[4].text + '\n'
+            thu += i[0].text + " " + i[1].text + " " +i[2].text + " " + type + " " + i[4].text + '\n'
         elif i[5].text.lower() == "пятница":
-            fri += i[0].text + " " + i[1].text + " " + i[2].text + " " + i[3].text + " " + i[4].text + '\n'
+            fri += i[0].text + " " + i[1].text + " " + i[2].text + " " + type + " " + i[4].text + '\n'
         elif i[5].text.lower() == "суббота":
-            sat += i[0].text + " " + i[1].text + " " + i[2].text + " " + i[3].text + " " + i[4].text + '\n'
+            sat += i[0].text + " " + i[1].text + " " + i[2].text + " " + type + " " + i[4].text + '\n'
+
+    mon = mon.replace("  ", " ")
+    tue = tue.replace("  ", " ")
+    wed = wed.replace("  ", " ")
+    thu = thu.replace("  ", " ")
+    fri = fri.replace("  ", " ")
+    sat = sat.replace("  ", " ")
     msgs = [mon, tue, wed,thu,fri,sat,sun]
     return msgs
 
@@ -49,9 +61,7 @@ def parsing():
 days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun']
 call_days = {}
 
-sended = 0
 parsing()
-
 reply_markup = types.InlineKeyboardMarkup()
 buttonPrev = types.InlineKeyboardButton(text="◀", callback_data='prev')
 buttonOK = types.InlineKeyboardButton(text="OK", callback_data="ok")
@@ -94,7 +104,6 @@ exampleFile.close()
 @bot.message_handler(commands=['расписание', 'schedule'])
 def table(message):
     parsing()
-    sended = 0
     schedule = types.InlineKeyboardMarkup()
     show = types.InlineKeyboardButton(text="Просмотреть", callback_data='show')
     schedule.add(show)
@@ -137,38 +146,31 @@ def mainteancemode(message):
 
 @bot.message_handler(content_types=['text'])
 def start_command(message):
-    print(message.chat.id)
     global mtcounter
     mtcounter = 0
-    sended = 0
     try:
         input = message.text
     finally:
         pass
     print(message.from_user.first_name + " writes: " + input)
-    inputS = input.split()
-    if inputS[0] == "/asbot":
-        bot.send_message(-1001519670451, message.text[message.text.find(" "):])
+    inputS = list(set(input.lower().split()))
     for i in inputS:
         word = str(i)
         word1 = ""
         for x in word:
             if x.isalpha() or x.isnumeric() is True:
                 word1 = word1 + str(x)
-        word = word1.lower()
-        if sended < 2:
-            for example in examples:
-                if word == example:
-                    bot.send_message(message.chat.id, (example.capitalize() + "!"))
-                    sended += 1
+        word = word1
+        for example in examples:
+            if word == example:
+                bot.send_message(message.chat.id, (example.capitalize() + "!"))
             # непозитивные ответы
-            for example in badwords.keys():
-                if word == example:
-                    try:
-                        bot.reply_to(message=message,text=badwords.get(word))
-                        sended += 1
-                    except:
-                        pass
+        for example in badwords.keys():
+            if word == example:
+                try:
+                    bot.reply_to(message=message,text=badwords.get(word))
+                except:
+                    pass
 
 
 @bot.message_handler(content_types=['text'])
@@ -241,7 +243,7 @@ def callback(call):
                 day = time.ctime(call.message.date)[:3].lower()
             else:
                 day = days[days.index(day)-1]
-            
+
             for i in zip(days, msgs):
                  if day == i[0]:
                      msg = i[1]
