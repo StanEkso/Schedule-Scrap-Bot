@@ -3,6 +3,7 @@ from telebot import types
 import sys
 import time
 import requests
+import string
 from bs4 import BeautifulSoup
 global msgs
 sended = 0
@@ -15,7 +16,6 @@ def parsing():
     fri = "Расписание 02 группы на Пятницу\n"
     sat = "Расписание 02 группы на Субботу\n"
     sun = 'Какие пары в Воскресенье? Поспи хоть, дружище...'
-
 
 
     url = "https://mmf.bsu.by/ru/raspisanie-zanyatij/dnevnoe-otdelenie/1-kurs/2-gruppa/"
@@ -115,8 +115,6 @@ def table(message):
         pass
 
 
-
-
 @bot.message_handler(commands=['delit'])
 def delete_msg(message):
     if message.from_user.id == 376185154:
@@ -128,74 +126,26 @@ def delete_msg(message):
                 pass
 
 
-
-@bot.message_handler(commands=['mainteancemode'])
-def mainteancemode(message):
-    if message.chat.type == "private":
-        global mt_owner
-        bot.send_message(message.from_user.id, 'MAINTEANCE MODE ENABLED!')
-        mt_owner = {
-            "user_id": message.from_user.id,
-            "first_name": message.from_user.first_name,
-            "last_name": message.from_user.last_name,
-            "username": message.from_user.username,
-            "timeofstart": time.ctime(message.date)
-        }
-        bot.register_next_step_handler(message, mainteance)
-
-
 @bot.message_handler(content_types=['text'])
 def start_command(message):
-    global mtcounter
-    mtcounter = 0
     try:
         input = message.text
     finally:
         pass
     print(message.from_user.first_name + " writes: " + input)
-    inputS = list(set(input.lower().split()))
-    for i in inputS:
-        word = str(i)
-        word1 = ""
-        for x in word:
-            if x.isalpha() or x.isnumeric() is True:
-                word1 = word1 + str(x)
-        word = word1
+    words = list(set(input.translate(str.maketrans('','', string.punctuation)).lower().split()))
+    for i in words:
         for example in examples:
-            if word == example:
+            if str(i) == example:
                 bot.send_message(message.chat.id, (example.capitalize() + "!"))
             # непозитивные ответы
         for example in badwords.keys():
-            if word == example:
+            if str(i) == example:
                 try:
-                    bot.reply_to(message=message,text=badwords.get(word))
+                    bot.reply_to(message=message,text=badwords.get(str(i)))
                 except:
                     pass
 
-
-@bot.message_handler(content_types=['text'])
-def mainteance(message):
-    global mtcounter
-    if message.text == '/mainteancemode':
-        bot.register_next_step_handler(message, start_command)
-        bot.send_message(message.from_user.id, "MAINTEANCE MODE DISABLED")
-    elif message.from_user.id == mt_owner.get("user_id") and message.text == "/stats":
-        bot.send_message(message.from_user.id, ("Счетчик сообщений до предупреждения: " + str(mtcounter)))
-        bot.register_next_step_handler(message, mainteance)
-    elif message.text == "/mainteanceinfo":
-        time = mt_owner.get("timeofstart").split()
-        mt_time = time[3]
-        bot.send_message(message.chat.id, ("MAINTEANCE INFO:\nSTARTED BY: " +
-                                           str(mt_owner.get("first_name")) + " " + str(mt_owner.get("last_name")) +
-                                           "\nSTART TIME: " + str(mt_time)))
-        bot.register_next_step_handler(message, mainteance)
-    else:
-        mtcounter += 1
-        if mtcounter == 10:
-            bot.send_message(message.chat.id,
-                             "BOT IS IN MAINTEANCE MODE NOW.\nType /mainteanceinfo for more information")
-            mtcounter = 0
-        bot.register_next_step_handler(message, mainteance)
 
 
 @bot.callback_query_handler(func=lambda call: True)
