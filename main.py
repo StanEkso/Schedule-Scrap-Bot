@@ -6,13 +6,11 @@ import time
 import string
 from parsing import parsing
 from stack import Stack
-
+from config import API_TOKEN, LOG_CHANNEL_ID, LOGGING_CHAT_ID
 message_stack = Stack(10)
 
 global msgs
 sended = 0
-LOG_CHANNEL_ID = -764823666
-LOGGING_CHAT_ID =   -1001580924097 # 376185154 #
 days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun']
 call_days = {}
 msgs = parsing()
@@ -29,7 +27,7 @@ buttonSat = types.InlineKeyboardButton(text="СБ", callback_data="sat")
 reply_markup.add(buttonPrev, buttonOK, buttonNext)
 reply_markup.row().add(buttonMon, buttonTue, buttonWed) \
     .row().add(buttonThu, buttonFri, buttonSat)
-bot = telebot.TeleBot('1955658538:AAGDDsLSNqDuClkSvPtE3AiDEAm0jdxOxMo')
+bot = telebot.TeleBot(API_TOKEN)
 
 badwords = {
     "недоброе": "Ну, что же, бывает всякое. Даже такое.",
