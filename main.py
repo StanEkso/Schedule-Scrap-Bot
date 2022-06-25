@@ -12,7 +12,7 @@ message_stack = Stack(10)
 global msgs
 sended = 0
 LOG_CHANNEL_ID = -764823666
-LOGGING_CHAT_ID = -1001580924097 # 376185154
+LOGGING_CHAT_ID =   -1001580924097 # 376185154 #
 days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun']
 call_days = {}
 msgs = parsing()
@@ -67,7 +67,7 @@ def editHandler(message):
     date = date.strftime('%H:%M:%S')
     log = message.from_user.first_name + " (@" + message.from_user.username +") изменил сообщение\n"
     log+= "Оригинал был в " + date + ", изменено в " + datetime.utcfromtimestamp(message.edit_date+10800).strftime('%H:%M:%S') + "\n"
-
+    message_stack.add(datetime.utcfromtimestamp(message.edit_date+10800).strftime('%H:%M:%S') + " " +message.from_user.first_name + " (@" + message.from_user.username +") (изм.): " + message.text)
     bot.send_message(LOG_CHANNEL_ID, log)
 
 @bot.message_handler(commands=['расписание', 'schedule'])
