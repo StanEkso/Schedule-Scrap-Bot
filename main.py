@@ -127,7 +127,9 @@ def start_command(message):
                     pass
 
     
-
+@bot.channel_post_handler(True)
+def post_handler(post):
+    print(post)
 
 
 @bot.callback_query_handler(func=lambda call: True)
