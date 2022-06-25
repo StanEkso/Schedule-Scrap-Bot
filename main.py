@@ -1,67 +1,21 @@
+from datetime import datetime
 import telebot
 from telebot import types
 import sys
 import time
-import requests
 import string
-from bs4 import BeautifulSoup
+from parsing import parsing
+from stack import Stack
+
+message_stack = Stack(10)
+
 global msgs
 sended = 0
-def parsing():
-    global msgs
-    mon = "Расписание 02 группы на Понедельник: \n"
-    tue = "Расписание 02 группы на Вторник\n"
-    wed = "Расписание 02 группы на Среду\n"
-    thu = "Расписание 02 группы на Четверг\n"
-    fri = "Расписание 02 группы на Пятницу\n"
-    sat = "Расписание 02 группы на Субботу\n"
-    sun = 'Какие пары в Воскресенье? Поспи хоть, дружище...'
-
-
-    url = "https://mmf.bsu.by/ru/raspisanie-zanyatij/dnevnoe-otdelenie/1-kurs/2-gruppa/"
-    r = requests.get(url)
-    soup = BeautifulSoup(r.text, features="html.parser")
-    for a in soup.findAll('br'):
-        a.replaceWith(" %s " %a.text)
-
-    time = soup.find_all('td', {'class': 'time'})
-    remarks = soup.find_all('td', {"class": "remarks"})
-    subjectteachers = soup.find_all('td', {"class": "subject-teachers"})
-    lecturepractice = soup.find_all('td', {'class': 'lecture-practice'})
-    room = soup.find_all('td', {'class':'room'})
-    weekday = soup.find_all('td', {'class':'weekday'})
-    for i in zip(time,remarks,subjectteachers,lecturepractice,room, weekday):
-        type = i[3].text
-        if type == "л": type = "Лекция"
-        elif type == "п":   type = "Практика"
-        else:   type =""
-        if i[5].text.lower() == "понедельник":
-            mon += i[0].text + " " + i[1].text + " " +i[2].text + " " + type + " " + i[4].text + '\n'
-        elif i[5].text.lower() == "вторник":
-            tue += i[0].text + " " + i[1].text + " " +i[2].text + " " + type + " " + i[4].text + '\n'
-        elif i[5].text.lower() == "среда":
-            wed += i[0].text + " " + i[1].text + " " + i[2].text + " " + type + " " + i[4].text + '\n'
-        elif i[5].text.lower() == "четверг":
-            thu += i[0].text + " " + i[1].text + " " +i[2].text + " " + type + " " + i[4].text + '\n'
-        elif i[5].text.lower() == "пятница":
-            fri += i[0].text + " " + i[1].text + " " + i[2].text + " " + type + " " + i[4].text + '\n'
-        elif i[5].text.lower() == "суббота":
-            sat += i[0].text + " " + i[1].text + " " + i[2].text + " " + type + " " + i[4].text + '\n'
-
-    mon = mon.replace("  ", " ")
-    tue = tue.replace("  ", " ")
-    wed = wed.replace("  ", " ")
-    thu = thu.replace("  ", " ")
-    fri = fri.replace("  ", " ")
-    sat = sat.replace("  ", " ")
-    msgs = [mon, tue, wed,thu,fri,sat,sun]
-    return msgs
-
-
+LOG_CHANNEL_ID = -764823666
+LOGGING_CHAT_ID = -1001580924097 # 376185154
 days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun']
 call_days = {}
-
-parsing()
+msgs = parsing()
 reply_markup = types.InlineKeyboardMarkup()
 buttonPrev = types.InlineKeyboardButton(text="◀", callback_data='prev')
 buttonOK = types.InlineKeyboardButton(text="OK", callback_data="ok")
@@ -101,9 +55,25 @@ for line in exampleFile:
 exampleFile.close()
 
 
+def sendLogs(data):
+    bot.send_message(LOG_CHANNEL_ID, data)
+    pass
+
+@bot.edited_message_handler(func=lambda message: message.chat.id == LOGGING_CHAT_ID)
+def editHandler(message):
+    date = message.date
+    date+=10800
+    date = datetime.utcfromtimestamp(date)
+    date = date.strftime('%H:%M:%S')
+    log = message.from_user.first_name + " (@" + message.from_user.username +") изменил сообщение\n"
+    log+= "Оригинал был в " + date + ", изменено в " + datetime.utcfromtimestamp(message.edit_date+10800).strftime('%H:%M:%S') + "\n"
+
+    bot.send_message(LOG_CHANNEL_ID, log)
+
 @bot.message_handler(commands=['расписание', 'schedule'])
 def table(message):
-    parsing()
+    global msgs
+    msgs = parsing()
     schedule = types.InlineKeyboardMarkup()
     show = types.InlineKeyboardButton(text="Просмотреть", callback_data='show')
     schedule.add(show)
@@ -126,13 +96,25 @@ def delete_msg(message):
                 pass
 
 
+
 @bot.message_handler(content_types=['text'])
 def start_command(message):
     try:
         input = message.text
     finally:
         pass
-    print(message.from_user.first_name + " writes: " + input)
+    
+    date = message.date
+    date+=10800
+    date = datetime.utcfromtimestamp(date)
+    date = date.strftime('%H:%M:%S')
+    log = date + " " + message.from_user.first_name + " (@" + message.from_user.username +"): " + input
+    print(log)
+    if message.chat.id == LOGGING_CHAT_ID:
+        result = message_stack.add(log)
+        if (result["state"]):
+            sendLogs(result["data"])
+
     words = list(set(input.translate(str.maketrans('','', string.punctuation)).lower().split()))
     for i in words:
         for example in examples:
@@ -146,10 +128,13 @@ def start_command(message):
                 except:
                     pass
 
+    
+
 
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
+    global msgs
     global sended
     global day
     day = call_days.get(call.message.id)
@@ -157,7 +142,7 @@ def callback(call):
     show = types.InlineKeyboardButton(text="Просмотреть", callback_data='show')
     schedule.add(show)
     if call.data == "show":
-        parsing()
+        # msgs = parsing()
         id = call.message.id
         if sended == 0:
             day = time.ctime(call.message.date)[:3].lower()
