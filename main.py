@@ -1,5 +1,4 @@
 from datetime import datetime
-from tkinter.tix import MAIN
 import telebot
 from telebot import types
 import sys
