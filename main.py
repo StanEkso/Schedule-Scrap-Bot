@@ -57,8 +57,14 @@ exampleFile.close()
 def sendLogs(data):
     bot.send_message(LOG_CHANNEL_ID, data)
     pass
-def sendToChannel(data):
-    bot.send_message(-1001429946135,data)
+
+def checkAdminInChannel(adminID):
+    admins = bot.get_chat_administrators(MAIN_CHANNEL)
+    for admin in admins:
+        if admin.user.id == adminID:
+            return True
+
+    return False
 
 @bot.channel_post_handler(func = lambda message: True)
 def post_handler(post):
@@ -66,12 +72,18 @@ def post_handler(post):
 
 @bot.message_handler(commands=['post'])
 def postInChannel(message):
+
+
+    if not checkAdminInChannel(message.from_user.id):
+        return bot.send_message(message.from_user.id, "Вы не являетесь администратором канала " + bot.get_chat(MAIN_CHANNEL).title)
+    
+    return bot.send_message(message.from_user.id,"Функция не реализована :(")
     arguments = message.text.split(' ')
     arguments.pop(0)
     isReadable = arguments.pop(0)
     kboard = types.InlineKeyboardMarkup()
     templateAction = 'action_view_'+isReadable
-    if bool(isReadable):
+    if isReadable != 'none':
         buttonView = types.InlineKeyboardButton(text="Прочитал", callback_data=templateAction)
         kboard.add(buttonView)
     else:
