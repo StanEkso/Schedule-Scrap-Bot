@@ -1,4 +1,5 @@
 from datetime import datetime
+from tkinter.tix import MAIN
 import telebot
 from telebot import types
 import sys
@@ -6,7 +7,7 @@ import time
 import string
 from parsing import parsing
 from stack import Stack
-from config import API_TOKEN, LOG_CHANNEL_ID, LOGGING_CHAT_ID
+from config import API_TOKEN, LOG_CHANNEL_ID, LOGGING_CHAT_ID, MAIN_CHANNEL
 message_stack = Stack(10)
 
 global msgs
@@ -56,6 +57,40 @@ exampleFile.close()
 def sendLogs(data):
     bot.send_message(LOG_CHANNEL_ID, data)
     pass
+
+def checkAdminInChannel(adminID):
+    admins = bot.get_chat_administrators(MAIN_CHANNEL)
+    for admin in admins:
+        if admin.user.id == adminID:
+            return True
+
+    return False
+
+@bot.channel_post_handler(func = lambda message: True)
+def post_handler(post):
+    pass
+
+@bot.message_handler(commands=['post'])
+def postInChannel(message):
+
+
+    if not checkAdminInChannel(message.from_user.id):
+        return bot.send_message(message.from_user.id, "Вы не являетесь администратором канала " + bot.get_chat(MAIN_CHANNEL).title)
+    
+    return bot.send_message(message.from_user.id,"Функция не реализована :(")
+    arguments = message.text.split(' ')
+    arguments.pop(0)
+    isReadable = arguments.pop(0)
+    kboard = types.InlineKeyboardMarkup()
+    templateAction = 'action_view_'+isReadable
+    if isReadable != 'none':
+        buttonView = types.InlineKeyboardButton(text="Прочитал", callback_data=templateAction)
+        kboard.add(buttonView)
+    else:
+        kboard = None
+
+    bot.send_message(chat_id=MAIN_CHANNEL,text=' '.join(arguments), reply_markup=kboard)
+
 
 @bot.edited_message_handler(func=lambda message: message.chat.id == LOGGING_CHAT_ID)
 def editHandler(message):
@@ -126,11 +161,19 @@ def start_command(message):
                 except:
                     pass
 
-    
-@bot.channel_post_handler(True)
-def post_handler(post):
-    print(post)
-
+@bot.callback_query_handler(func=lambda call: 'action_view_' in call.data)
+def callVote(call):
+    # print(call)
+    user_id = call.from_user.id
+    user_first_name = call.from_user.first_name
+    user_name = call.from_user.username
+    user_info = {
+        "id": user_id,
+        "name": user_first_name,
+        "username": user_name,
+        "action": call.data.split('action_view_')[1]
+    }
+    print(user_info)
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
