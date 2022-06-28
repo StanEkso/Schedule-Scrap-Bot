@@ -9,7 +9,7 @@ from parsing import parsing
 from stack import Stack
 from config import API_TOKEN, LOG_CHANNEL_ID, LOGGING_CHAT_ID, MAIN_CHANNEL
 message_stack = Stack(10)
-BASE_URL = ''
+BASE_URL = 'https://calendar-fullstack-api.herokuapp.com'
 global msgs
 sended = 0
 days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun']
@@ -88,7 +88,9 @@ def postInChannel(message):
         kboard.add(buttonView)
     else:
         kboard = None
-
+    response = requests.post(f'{BASE_URL}/views/add', json={
+        "name": isReadable
+    })
     bot.send_message(chat_id=MAIN_CHANNEL,text=' '.join(arguments), reply_markup=kboard)
 
 
@@ -174,7 +176,7 @@ def callVote(call):
         "action": call.data.split('action_view_')[1]
     }
     print(user_info)
-    response = requests.post('http://localhost:8080/views/append', json=user_info)
+    response = requests.post(f'{BASE_URL}/views/append', json=user_info)
     print(response.json())
 
 @bot.callback_query_handler(func=lambda call: True)
