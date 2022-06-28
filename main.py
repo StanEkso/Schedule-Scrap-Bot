@@ -9,7 +9,7 @@ from parsing import parsing
 from stack import Stack
 from config import API_TOKEN, LOG_CHANNEL_ID, LOGGING_CHAT_ID, MAIN_CHANNEL
 message_stack = Stack(10)
-
+BASE_URL = ''
 global msgs
 sended = 0
 days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun']
