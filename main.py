@@ -1,4 +1,5 @@
 from datetime import datetime
+import requests
 import telebot
 from telebot import types
 import sys
@@ -67,7 +68,7 @@ def checkAdminInChannel(adminID):
 
 @bot.channel_post_handler(func = lambda message: True)
 def post_handler(post):
-    pass
+    print(post)
 
 @bot.message_handler(commands=['post'])
 def postInChannel(message):
@@ -76,7 +77,7 @@ def postInChannel(message):
     if not checkAdminInChannel(message.from_user.id):
         return bot.send_message(message.from_user.id, "Вы не являетесь администратором канала " + bot.get_chat(MAIN_CHANNEL).title)
     
-    return bot.send_message(message.from_user.id,"Функция не реализована :(")
+    # return bot.send_message(message.from_user.id,"Функция не реализована :(")
     arguments = message.text.split(' ')
     arguments.pop(0)
     isReadable = arguments.pop(0)
@@ -173,6 +174,8 @@ def callVote(call):
         "action": call.data.split('action_view_')[1]
     }
     print(user_info)
+    response = requests.post('http://localhost:8080/views/append', json=user_info)
+    print(response.json())
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
