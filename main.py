@@ -72,8 +72,6 @@ def post_handler(post):
 
 @bot.message_handler(commands=['post'])
 def postInChannel(message):
-
-
     if not checkAdminInChannel(message.from_user.id):
         return bot.send_message(message.from_user.id, "Вы не являетесь администратором канала " + bot.get_chat(MAIN_CHANNEL).title)
     
@@ -177,7 +175,12 @@ def callVote(call):
     }
     print(user_info)
     response = requests.post(f'{BASE_URL}/views/append', json=user_info)
+    message = response.json().get("message")
     print(response.json())
+    if (message == "User already viewed"):
+        bot.answer_callback_query(call.id,text="Вы уже нажимали :)")
+    if (message == "Succesfully added"):
+        bot.answer_callback_query(call.id,text="Спасибо за отзывчивость! :)")
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
