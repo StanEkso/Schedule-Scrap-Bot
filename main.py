@@ -128,6 +128,17 @@ def delete_msg(message):
             except:
                 pass
 
+@bot.message_handler(commands=['verify'])
+def forward_message(message):
+    arguments = message.text.split(' ')
+    arguments.pop(0)
+    codeword = arguments.pop(0)
+    print(codeword)
+
+    response = requests.post('http://localhost:8080/users/verify',json={
+        "codeword": codeword
+    })
+    bot.send_message(message.from_user.id,response.json().get('message'))
 
 
 @bot.message_handler(content_types=['text'])
