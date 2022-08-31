@@ -153,12 +153,12 @@ def start_command(message):
     date+=10800
     date = datetime.utcfromtimestamp(date)
     date = date.strftime('%H:%M:%S')
-    log = date + " " + message.from_user.first_name + " (@" + message.from_user.username +"): " + input
-    print(log)
-    if message.chat.id == LOGGING_CHAT_ID:
-        result = message_stack.add(log)
-        if (result["state"]):
-            sendLogs(result["data"])
+    # log = date + " " + message.from_user.first_name + " (@" + message.from_user.username +"): " + input
+    # print(log)
+    # if message.chat.id == LOGGING_CHAT_ID:
+    #     result = message_stack.add(log)
+    #     if (result["state"]):
+    #         sendLogs(result["data"])
 
     words = list(set(input.translate(str.maketrans('','', string.punctuation)).lower().split()))
     for i in words:
