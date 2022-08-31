@@ -14,7 +14,7 @@ def parsing():
     sun = 'Какие пары в Воскресенье? Поспи хоть, дружище...'
 
 
-    url = "https://mmf.bsu.by/ru/raspisanie-zanyatij/dnevnoe-otdelenie/1-kurs/2-gruppa/"
+    url = "https://mmf.bsu.by/ru/raspisanie-zanyatij/dnevnoe-otdelenie/2-kurs/2-gruppa/"
     r = requests.get(url)
     soup = BeautifulSoup(r.text, features="html.parser")
     for a in soup.findAll('br'):

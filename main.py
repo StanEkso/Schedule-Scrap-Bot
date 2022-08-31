@@ -136,7 +136,8 @@ def forward_message(message):
     print(codeword)
 
     response = requests.post('http://localhost:8080/users/verify',json={
-        "codeword": codeword
+        "codeword": codeword,
+        "tg_id": str(message.from_user.id)
     })
     bot.send_message(message.from_user.id,response.json().get('message'))
 
