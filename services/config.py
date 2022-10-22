@@ -8,6 +8,7 @@ class ConfigService:
     def __init__(self) -> None:
         if (os.getenv("dev", "false") == "true"):
             load_dotenv(".dev.env")
+        print(os.environ)
         self.token = os.getenv("token", "")
         self.configs['token'] = os.getenv("token", "")
         self.configs['url'] = os.getenv("PARSE_URL", "")
