@@ -1,4 +1,5 @@
 {
     "DELETE_COMMANDS": true,
-    "UPDATE_ON_EVERY_SHOW": false
+    "UPDATE_ON_EVERY_SHOW": false,
+    "SCHEDULE_COMMANDS": ["schedule", "расписание"]
 }

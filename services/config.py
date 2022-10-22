@@ -14,7 +14,7 @@ class ConfigService:
     configs = DEFAULT_SETTINGS
 
     def __init__(self) -> None:
-        if (os.getenv("dev", "false") == "true"):
+        if (os.getenv("MODE", "development") != "production"):
             load_dotenv(".dev.env")
         self.configs['token'] = os.getenv("TOKEN", "")
         self.configs['url'] = os.getenv("PARSE_URL", "")

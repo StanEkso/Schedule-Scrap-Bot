@@ -1,13 +1,13 @@
 from aiogram import Bot, Dispatcher, executor, md, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from services.config import configService as configService
+from services.config import configService
 from controllers.schedule import scheduleController
 bot = Bot(token=configService.get("token"), parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
 
-@dp.message_handler(commands=['расписание', 'schedule'])
+@dp.message_handler(commands=configService.get("SCHEDULE_COMMANDS") or ["schedule"])
 async def handleSchedule(message: types.Message):
     return await scheduleController.showEnterMessage(message)
 
