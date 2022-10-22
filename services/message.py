@@ -23,4 +23,3 @@ class MessageService:
 
 
 messageService = MessageService()
-print(messageService.get("mon"))

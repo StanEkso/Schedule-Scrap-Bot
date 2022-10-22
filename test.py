@@ -1,8 +1,5 @@
-from stack import Stack
+import json
 
-message_stack = Stack()
 
-for i in range(1,100):
-    result = message_stack.add(i)
-    if (result["state"]):
-         print('ok')
+with open("./settings.json") as file:
+    print(json.load(file))

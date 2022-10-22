@@ -37,4 +37,4 @@ class IntegerHash:
             return False
 
     def get(self, key: str) -> int:
-        return self.table.get(key) or 0
+        return self.table.get(key)

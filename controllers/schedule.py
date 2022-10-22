@@ -5,7 +5,8 @@ from keyboards.day_keyboard import DAY_CHOOSING_KEYBOARD, DAYS_CALLBACKS
 from keyboards.close_keyboard import CLOSE_SCHEDULE_KEYBOARD
 from services.message import messageService
 from services.schedule import scheduleService
-from structures.hash import Hash, IntegerHash
+from services.config import configService
+from structures.hash import IntegerHash
 
 
 def messageToId(message: Message) -> str:
@@ -19,10 +20,14 @@ class ScheduleController:
 
     async def showEnterMessage(self, message: Message):
         await message.answer(text=messageService.get("show"), reply_markup=SHOW_SCHEDULE_KEYBOARD)
+        if (configService.get("DELETE_COMMANDS") == True):
+            try:
+                await message.delete()
+            except:
+                pass
 
     async def editSchedule(self, bot: Bot, message: Message, day: str):
         INDEX = DAYS_CALLBACKS.index(day)
-        print(INDEX)
         hash.set(key=messageToId(message), value=INDEX)
         await bot.edit_message_text(
             chat_id=message.chat.id,
@@ -32,12 +37,13 @@ class ScheduleController:
         )
 
     async def showSchedule(self, message: Message):
-        scheduleService.update()
+        if (configService.get("UPDATE_ON_EVERY_SHOW") == True or hash.get(key=messageToId(message)) is None):
+            scheduleService.update()
         hash.set(messageToId(message), 0)
         await message.answer(text=scheduleService.atDay(0), reply_markup=DAY_CHOOSING_KEYBOARD)
 
     async def sendNextDaySchedule(self, bot: Bot, message: Message):
-        INDEX = hash.get(key=messageToId(message))
+        INDEX = hash.get(key=messageToId(message)) or 0
         if (INDEX > 4):
             INDEX = 0
         else:
@@ -52,7 +58,7 @@ class ScheduleController:
         hash.set(key=messageToId(message), value=INDEX)
 
     async def sendPrevDaySchedule(self, bot: Bot, message: Message):
-        INDEX = hash.get(key=messageToId(message))
+        INDEX = hash.get(key=messageToId(message)) or 0
         if (INDEX < 1):
             INDEX = 5
         else:
