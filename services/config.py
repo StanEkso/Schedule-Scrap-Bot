@@ -17,4 +17,4 @@ class ConfigService:
         return self.configs.get(key, "")
 
 
-config = ConfigService()
+configService = ConfigService()

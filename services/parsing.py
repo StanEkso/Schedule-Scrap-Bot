@@ -2,8 +2,8 @@ import requests
 import string
 from bs4 import BeautifulSoup
 import requests
-from config import config as configService
-from message import messageService
+from services.config import configService
+from services.message import messageService
 
 
 def formStringFromArray(arr: list) -> str:

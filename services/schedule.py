@@ -1,5 +1,5 @@
-from parsing import parser
-from message import messageService
+from services.parsing import parser
+from services.message import messageService
 from bs4 import BeautifulSoup
 
 
@@ -19,6 +19,9 @@ class ScheduleService:
 
     def get(self) -> list[str]:
         return self.schedule
+
+    def atDay(self, index: int) -> str:
+        return self.schedule[index]
 
 
 scheduleService = ScheduleService()

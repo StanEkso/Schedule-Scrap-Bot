@@ -9,7 +9,7 @@ from parsing import parsing
 from stack import Stack
 from config import LOG_CHANNEL_ID, LOGGING_CHAT_ID, MAIN_CHANNEL
 
-from services.config import config as configService
+from services.config import configService as configService
 message_stack = Stack(10)
 BASE_URL = 'https://calendar-fullstack-api.herokuapp.com'
 global msgs

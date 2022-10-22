@@ -1,8 +1,9 @@
-from config import config as configService
+from services.config import configService
 
 messages: dict[dict[str]] = {
     "ru": {
-        "showSchedule": "Просмотреть расписание",
+        "show": "Просмотреть расписание",
+        "closed": "Расписание закрыто",
         'mon': "Расписание группы на Понедельник: \n",
         'tue': "Расписание группы на Вторник: \n",
         'wed': "Расписание группы на Среду: \n",
