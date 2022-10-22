@@ -4,3 +4,4 @@ beautifulsoup4==4.10.0
 bs4==0.0.1
 soupsieve==2.2.1
 aiogram==2.22.2
+python-dotenv==0.21.0
