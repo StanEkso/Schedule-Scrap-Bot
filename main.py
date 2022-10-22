@@ -7,12 +7,14 @@ import time
 import string
 from parsing import parsing
 from stack import Stack
-from config import API_TOKEN, LOG_CHANNEL_ID, LOGGING_CHAT_ID, MAIN_CHANNEL
+from config import LOG_CHANNEL_ID, LOGGING_CHAT_ID, MAIN_CHANNEL
+
+from services.config import config as configService
 message_stack = Stack(10)
 BASE_URL = 'https://calendar-fullstack-api.herokuapp.com'
 global msgs
 sended = 0
-days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun']
+days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 call_days = {}
 msgs = parsing()
 reply_markup = types.InlineKeyboardMarkup()
@@ -28,7 +30,7 @@ buttonSat = types.InlineKeyboardButton(text="СБ", callback_data="sat")
 reply_markup.add(buttonPrev, buttonOK, buttonNext)
 reply_markup.row().add(buttonMon, buttonTue, buttonWed) \
     .row().add(buttonThu, buttonFri, buttonSat)
-bot = telebot.TeleBot(API_TOKEN)
+bot = telebot.TeleBot(configService.get("token"))
 
 badwords = {
     "недоброе": "Ну, что же, бывает всякое. Даже такое.",
@@ -36,8 +38,8 @@ badwords = {
     "токсик": "Не надо так",
     "душнила": "Не стоит",
     "сосать": "Осуждаю...",
-    "бот":"Я высшая форма жизни",
-    "удачи":"Удачи! Да прибудет с тобой сила всемирного тяготения"
+    "бот": "Я высшая форма жизни",
+    "удачи": "Удачи! Да прибудет с тобой сила всемирного тяготения"
 }
 
 examples = set()
@@ -58,6 +60,7 @@ def sendLogs(data):
     bot.send_message(LOG_CHANNEL_ID, data)
     pass
 
+
 def checkAdminInChannel(adminID):
     admins = bot.get_chat_administrators(MAIN_CHANNEL)
     for admin in admins:
@@ -66,15 +69,17 @@ def checkAdminInChannel(adminID):
 
     return False
 
-@bot.channel_post_handler(func = lambda message: True)
+
+@bot.channel_post_handler(func=lambda message: True)
 def post_handler(post):
     print(post)
+
 
 @bot.message_handler(commands=['post'])
 def postInChannel(message):
     if not checkAdminInChannel(message.from_user.id):
         return bot.send_message(message.from_user.id, "Вы не являетесь администратором канала " + bot.get_chat(MAIN_CHANNEL).title)
-    
+
     # return bot.send_message(message.from_user.id,"Функция не реализована :(")
     arguments = message.text.split(' ')
     arguments.pop(0)
@@ -82,26 +87,33 @@ def postInChannel(message):
     kboard = types.InlineKeyboardMarkup()
     templateAction = 'action_view_'+isReadable
     if isReadable != 'none':
-        buttonView = types.InlineKeyboardButton(text="Прочитал", callback_data=templateAction)
+        buttonView = types.InlineKeyboardButton(
+            text="Прочитал", callback_data=templateAction)
         kboard.add(buttonView)
     else:
         kboard = None
     response = requests.post(f'{BASE_URL}/views/add', json={
         "name": isReadable
     })
-    bot.send_message(chat_id=MAIN_CHANNEL,text=' '.join(arguments), reply_markup=kboard)
+    bot.send_message(chat_id=MAIN_CHANNEL, text=' '.join(
+        arguments), reply_markup=kboard)
 
 
 @bot.edited_message_handler(func=lambda message: message.chat.id == LOGGING_CHAT_ID)
 def editHandler(message):
     date = message.date
-    date+=10800
+    date += 10800
     date = datetime.utcfromtimestamp(date)
     date = date.strftime('%H:%M:%S')
-    log = message.from_user.first_name + " (@" + message.from_user.username +") изменил сообщение\n"
-    log+= "Оригинал был в " + date + ", изменено в " + datetime.utcfromtimestamp(message.edit_date+10800).strftime('%H:%M:%S') + "\n"
-    message_stack.add(datetime.utcfromtimestamp(message.edit_date+10800).strftime('%H:%M:%S') + " " +message.from_user.first_name + " (@" + message.from_user.username +") (изм.): " + message.text)
+    log = message.from_user.first_name + \
+        " (@" + message.from_user.username + ") изменил сообщение\n"
+    log += "Оригинал был в " + date + ", изменено в " + \
+        datetime.utcfromtimestamp(
+            message.edit_date+10800).strftime('%H:%M:%S') + "\n"
+    message_stack.add(datetime.utcfromtimestamp(message.edit_date+10800).strftime('%H:%M:%S') + " " +
+                      message.from_user.first_name + " (@" + message.from_user.username + ") (изм.): " + message.text)
     bot.send_message(LOG_CHANNEL_ID, log)
+
 
 @bot.message_handler(commands=['расписание', 'schedule'])
 def table(message):
@@ -111,7 +123,8 @@ def table(message):
     show = types.InlineKeyboardButton(text="Просмотреть", callback_data='show')
     schedule.add(show)
     if message.chat.id == -1001580924097 or message.chat.type == 'private':
-        bot.send_message(message.chat.id, "Просмотреть расписание?", reply_markup=schedule)
+        bot.send_message(
+            message.chat.id, "Просмотреть расписание?", reply_markup=schedule)
     try:
         bot.delete_message(message.chat.id, message_id=message.id)
     except:
@@ -123,10 +136,12 @@ def delete_msg(message):
     if message.from_user.id == 376185154:
         if message.reply_to_message != None:
             try:
-                bot.delete_message(message.chat.id, message.reply_to_message.message_id)
+                bot.delete_message(
+                    message.chat.id, message.reply_to_message.message_id)
                 bot.delete_message(message.chat.id, message.id)
             except:
                 pass
+
 
 @bot.message_handler(commands=['verify'])
 def forward_message(message):
@@ -135,11 +150,11 @@ def forward_message(message):
     codeword = arguments.pop(0)
     print(codeword)
 
-    response = requests.post('http://localhost:8080/users/verify',json={
+    response = requests.post('http://localhost:8080/users/verify', json={
         "codeword": codeword,
         "tg_id": str(message.from_user.id)
     })
-    bot.send_message(message.from_user.id,response.json().get('message'))
+    bot.send_message(message.from_user.id, response.json().get('message'))
 
 
 @bot.message_handler(content_types=['text'])
@@ -148,9 +163,9 @@ def start_command(message):
         input = message.text
     finally:
         pass
-    
+
     date = message.date
-    date+=10800
+    date += 10800
     date = datetime.utcfromtimestamp(date)
     date = date.strftime('%H:%M:%S')
     # log = date + " " + message.from_user.first_name + " (@" + message.from_user.username +"): " + input
@@ -160,7 +175,8 @@ def start_command(message):
     #     if (result["state"]):
     #         sendLogs(result["data"])
 
-    words = list(set(input.translate(str.maketrans('','', string.punctuation)).lower().split()))
+    words = list(set(input.translate(str.maketrans(
+        '', '', string.punctuation)).lower().split()))
     for i in words:
         for example in examples:
             if str(i) == example:
@@ -169,9 +185,10 @@ def start_command(message):
         for example in badwords.keys():
             if str(i) == example:
                 try:
-                    bot.reply_to(message=message,text=badwords.get(str(i)))
+                    bot.reply_to(message=message, text=badwords.get(str(i)))
                 except:
                     pass
+
 
 @bot.callback_query_handler(func=lambda call: 'action_view_' in call.data)
 def callVote(call):
@@ -190,9 +207,10 @@ def callVote(call):
     message = response.json().get("message")
     print(response.json())
     if (message == "User already viewed"):
-        bot.answer_callback_query(call.id,text="Вы уже нажимали :)")
+        bot.answer_callback_query(call.id, text="Вы уже нажимали :)")
     if (message == "Succesfully added"):
-        bot.answer_callback_query(call.id,text="Спасибо за отзывчивость! :)")
+        bot.answer_callback_query(call.id, text="Спасибо за отзывчивость! :)")
+
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
@@ -242,14 +260,13 @@ def callback(call):
                 day = days[days.index(day)-1]
 
             for i in zip(days, msgs):
-                 if day == i[0]:
-                     msg = i[1]
+                if day == i[0]:
+                    msg = i[1]
             call_days[call.message.id] = day
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text=msg,
                                   reply_markup=reply_markup)
         except:
             pass
-
 
     elif call.data == "next":
         try:
