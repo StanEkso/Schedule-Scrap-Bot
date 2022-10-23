@@ -13,15 +13,15 @@ buttonNext = types.InlineKeyboardButton(
 buttonMon = types.InlineKeyboardButton(
     text="ПН", callback_data=CallbackData.DAY_PREFIX.value+"mon")
 buttonTue = types.InlineKeyboardButton(
-    text="ВТ", callback_data=CallbackData.DAY_PREFIX.value+"day_tue")
+    text="ВТ", callback_data=CallbackData.DAY_PREFIX.value+"tue")
 buttonWed = types.InlineKeyboardButton(
-    text="СР", callback_data=CallbackData.DAY_PREFIX.value+"day_wed")
+    text="СР", callback_data=CallbackData.DAY_PREFIX.value+"wed")
 buttonThu = types.InlineKeyboardButton(
-    text="ЧТ", callback_data=CallbackData.DAY_PREFIX.value+"day_thu")
+    text="ЧТ", callback_data=CallbackData.DAY_PREFIX.value+"thu")
 buttonFri = types.InlineKeyboardButton(
-    text="ПТ", callback_data=CallbackData.DAY_PREFIX.value+"day_fri")
+    text="ПТ", callback_data=CallbackData.DAY_PREFIX.value+"fri")
 buttonSat = types.InlineKeyboardButton(
-    text="СБ", callback_data=CallbackData.DAY_PREFIX.value+"day_sat")
+    text="СБ", callback_data=CallbackData.DAY_PREFIX.value+"sat")
 DAY_CHOOSING_KEYBOARD.add(buttonPrev, buttonOK, buttonNext)
 DAY_CHOOSING_KEYBOARD.row().add(buttonMon, buttonTue, buttonWed) \
     .row().add(buttonThu, buttonFri, buttonSat)
