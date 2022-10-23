@@ -1,8 +1,11 @@
 from aiogram import types
+
+from customtypes.callback import CallbackData
 DAYS_CALLBACKS = ["day_mon", "day_tue",
                   "day_wed", "day_thu", "day_fri", "day_sat"]
 DAY_CHOOSING_KEYBOARD = types.InlineKeyboardMarkup()
-buttonPrev = types.InlineKeyboardButton(text="◀", callback_data='prev')
+buttonPrev = types.InlineKeyboardButton(
+    text="◀", callback_data=CallbackData.PREV_DAY.value)
 buttonOK = types.InlineKeyboardButton(text="OK", callback_data="ok")
 buttonNext = types.InlineKeyboardButton(text="▶", callback_data='next')
 buttonMon = types.InlineKeyboardButton(text="ПН", callback_data="day_mon")

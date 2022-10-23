@@ -40,7 +40,10 @@ class ScheduleController:
         if (configService.get("UPDATE_ON_EVERY_SHOW") == True or hash.get(key=messageToId(message)) is None):
             scheduleService.update()
         hash.set(messageToId(message), 0)
-        await message.answer(text=scheduleService.atDay(0), reply_markup=DAY_CHOOSING_KEYBOARD)
+        if (hash.get(key=messageToId(message)) is None):
+            await message.answer(text=scheduleService.atDay(0), reply_markup=DAY_CHOOSING_KEYBOARD)
+        else:
+            await message.edit_text(text=scheduleService.atDay(0), reply_markup=DAY_CHOOSING_KEYBOARD)
 
     async def sendNextDaySchedule(self, bot: Bot, message: Message):
         INDEX = hash.get(key=messageToId(message)) or 0
