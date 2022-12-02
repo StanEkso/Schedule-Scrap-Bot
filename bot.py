@@ -60,13 +60,12 @@ WEBHOOK_ENDPOINT = os.getenv("WEBHOOK_ENDPOINT", "")
 WEBHOOK_HOST = f'https://{HEROKU_APP_NAME}.herokuapp.com'
 WEBHOOK_PATH = f'/webhook/{WEBHOOK_ENDPOINT}'
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
-print(WEBHOOK_URL)
-WEBAPP_HOST = '0.0.0.0'
+WEBAPP_HOST = 'localhost'
 WEBAPP_PORT = os.getenv("PORT", 8000)
 
 
 async def on_startup(dispatcher):
-    await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
+    await bot.set_webhook(WEBHOOK_URL)
 
 
 async def on_shutdown(dispatcher):
@@ -75,15 +74,16 @@ async def on_shutdown(dispatcher):
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(bootstrapBot())
-    # if (os.getenv("MODE", 'development') == 'production'):
-    #     executor.start_webhook(
-    #         dispatcher=dp,
-    #         webhook_path=WEBHOOK_PATH,
-    #         skip_updates=True,
-    #         on_startup=on_startup,
-    #         on_shutdown=on_shutdown,
-    #         host=WEBAPP_HOST,
-    #         port=WEBAPP_PORT
-    #     )
-    # else:
-    executor.start_polling(dp, skip_updates=True)
+    print(os.getenv("USE", 'POLLING'))
+    if (os.getenv("USE", 'POLLING') == 'WEBHOOK'):
+        executor.start_webhook(
+            dispatcher=dp,
+            webhook_path=WEBHOOK_PATH,
+            skip_updates=True,
+            on_startup=on_startup,
+            on_shutdown=on_shutdown,
+            host=WEBAPP_HOST,
+            port=WEBAPP_PORT
+        )
+    else:
+        executor.start_polling(dp, skip_updates=True)
