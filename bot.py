@@ -64,13 +64,13 @@ WEBHOOK_ENDPOINT = os.getenv("WEBHOOK_ENDPOINT", "")
 WEBHOOK_HOST = f'https://{HEROKU_APP_NAME}.herokuapp.com'
 WEBHOOK_PATH = f'/webhook/{WEBHOOK_ENDPOINT}'
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
-WEBAPP_HOST = 'localhost'
+WEBAPP_HOST = '0.0.0.0'
 WEBAPP_PORT = os.getenv("PORT", 8000)
 print(WEBAPP_PORT)
 
 
 async def on_startup(dispatcher):
-    await bot.set_webhook(WEBHOOK_URL)
+    await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 
 async def on_shutdown(dispatcher):
