@@ -66,6 +66,7 @@ WEBHOOK_PATH = f'/webhook/{WEBHOOK_ENDPOINT}'
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 WEBAPP_HOST = 'localhost'
 WEBAPP_PORT = os.getenv("PORT", 8000)
+print(WEBAPP_PORT)
 
 
 async def on_startup(dispatcher):
@@ -80,6 +81,7 @@ if __name__ == '__main__':
     loop.run_until_complete(bootstrapBot())
     print(os.getenv("USE", 'POLLING'))
     if (os.getenv("USE", 'POLLING') == 'WEBHOOK'):
+
         executor.start_webhook(
             dispatcher=dp,
             webhook_path=WEBHOOK_PATH,
