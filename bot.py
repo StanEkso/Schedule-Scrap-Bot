@@ -2,12 +2,16 @@ import os
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from services.config import configService
-from controllers.schedule import scheduleController
+from controllers.schedule import scheduleController as pollingController
+from modules.webhook import scheduleController as webhookController
 from customtypes.callback import CallbackData
 import asyncio
 bot = Bot(token=configService.get("token"), parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
+
+scheduleController = pollingController if os.getenv(
+    "USE", "POLLING") == "WEBHOOK" else webhookController
 
 
 async def bootstrapBot():
