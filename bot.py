@@ -74,7 +74,8 @@ async def on_startup(dispatcher):
 
 
 async def on_shutdown(dispatcher):
-    await bot.delete_webhook()
+    # await bot.delete_webhook()
+    pass
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
