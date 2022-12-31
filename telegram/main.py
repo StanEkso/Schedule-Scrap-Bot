@@ -11,8 +11,7 @@ bot = Bot(token=configService.get("token"), parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
-scheduleController = webhookController if os.getenv(
-    "USE", "POLLING") == "WEBHOOK" else pollingController
+scheduleController = pollingController
 
 
 async def bootstrapBot():
