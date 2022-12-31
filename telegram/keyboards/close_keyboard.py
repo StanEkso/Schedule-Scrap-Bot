@@ -1,5 +1,5 @@
 from aiogram import types
-from customtypes.callback import CallbackData
+from telegram.customtypes.callback import CallbackData
 
 CLOSE_SCHEDULE_KEYBOARD = types.InlineKeyboardMarkup()
 show = types.InlineKeyboardButton(

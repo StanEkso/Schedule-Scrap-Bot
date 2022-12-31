@@ -1,12 +1,14 @@
 from aiogram.types import Message
 from aiogram import Bot
-from keyboards.show_keyboard import SHOW_SCHEDULE_KEYBOARD
-from keyboards.day_keyboard import DAY_CHOOSING_KEYBOARD, DAYS_CALLBACKS
-from keyboards.close_keyboard import CLOSE_SCHEDULE_KEYBOARD
-from services.message import messageService
-from services.schedule import scheduleService
-from services.config import configService
-from structures.hash import IntegerHash
+from telegram.keyboards.show_keyboard import SHOW_SCHEDULE_KEYBOARD
+from telegram.keyboards.day_keyboard import DAY_CHOOSING_KEYBOARD, DAYS_CALLBACKS
+from telegram.keyboards.close_keyboard import CLOSE_SCHEDULE_KEYBOARD
+from telegram.services.message import messageService
+from telegram.services.schedule import scheduleService
+from telegram.services.config import configService
+from telegram.structures.hash import IntegerHash
+
+from aiogram.dispatcher.webhook import SendMessage, DeleteMessage, EditMessageText
 
 
 def messageToId(message: Message) -> str:
@@ -16,20 +18,23 @@ def messageToId(message: Message) -> str:
 hash = IntegerHash()
 
 
-class ScheduleController:
+class ScheduleWebhookController:
+    def __init__(self, ) -> None:
+        pass
 
     async def showEnterMessage(self, message: Message):
         await message.answer(text=messageService.get("show"), reply_markup=SHOW_SCHEDULE_KEYBOARD)
         if (configService.get("DELETE_COMMANDS") == True):
             try:
-                await message.delete()
+                # await message.delete()
+                return DeleteMessage(chat_id=message.chat.id, message_id=message.message_id)
             except:
                 pass
 
     async def editSchedule(self, bot: Bot, message: Message, day: str):
         INDEX = DAYS_CALLBACKS.index(day)
         hash.set(key=messageToId(message), value=INDEX)
-        await bot.edit_message_text(
+        await EditMessageText(
             chat_id=message.chat.id,
             message_id=message.message_id,
             text=scheduleService.atDay(INDEX),
@@ -41,9 +46,9 @@ class ScheduleController:
             scheduleService.update()
         hash.set(messageToId(message), 0)
         if (hash.get(key=messageToId(message)) is None):
-            await message.answer(text=scheduleService.atDay(0), reply_markup=DAY_CHOOSING_KEYBOARD)
+            await SendMessage(chat_id=message.chat.id, text=scheduleService.atDay(0), reply_markup=DAY_CHOOSING_KEYBOARD)
         else:
-            await message.edit_text(text=scheduleService.atDay(0), reply_markup=DAY_CHOOSING_KEYBOARD)
+            await EditMessageText(chat_id=message.chat.id, text=scheduleService.atDay(0), reply_markup=DAY_CHOOSING_KEYBOARD)
 
     async def sendNextDaySchedule(self, bot: Bot, message: Message):
         INDEX = hash.get(key=messageToId(message)) or 0
@@ -52,7 +57,7 @@ class ScheduleController:
         else:
             INDEX += 1
 
-        await bot.edit_message_text(
+        await EditMessageText(
             chat_id=message.chat.id,
             message_id=message.message_id,
             text=scheduleService.atDay(INDEX),
@@ -67,7 +72,7 @@ class ScheduleController:
         else:
             INDEX -= 1
 
-        await bot.edit_message_text(
+        await EditMessageText(
             chat_id=message.chat.id,
             message_id=message.message_id,
             text=scheduleService.atDay(INDEX),
@@ -76,7 +81,7 @@ class ScheduleController:
         hash.set(key=messageToId(message), value=INDEX)
 
     async def hideSchedule(self, bot: Bot, message: Message):
-        await bot.edit_message_text(
+        await EditMessageText(
             chat_id=message.chat.id,
             message_id=message.message_id,
             text=messageService.get("closed"),
@@ -84,8 +89,8 @@ class ScheduleController:
         )
 
     async def deleteScheduleMessage(self, bot: Bot, message: Message):
-        await bot.delete_message(chat_id=message.chat.id,
-                                 message_id=message.message_id)
+        await DeleteMessage(chat_id=message.chat.id,
+                            message_id=message.message_id)
 
 
-scheduleController = ScheduleController()
+scheduleController = ScheduleWebhookController()

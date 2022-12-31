@@ -2,8 +2,8 @@ import requests
 import string
 from bs4 import BeautifulSoup
 import requests
-from services.config import configService
-from services.message import messageService
+from telegram.services.config import configService
+from telegram.services.message import messageService
 
 
 def formStringFromArray(arr: list) -> str:

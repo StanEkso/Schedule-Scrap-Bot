@@ -1,6 +1,6 @@
 from aiogram import types
 
-from customtypes.callback import CallbackData
+from telegram.customtypes.callback import CallbackData
 DAYS_CALLBACKS = ["day_mon", "day_tue",
                   "day_wed", "day_thu", "day_fri", "day_sat"]
 DAY_CHOOSING_KEYBOARD = types.InlineKeyboardMarkup()

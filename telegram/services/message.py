@@ -1,4 +1,4 @@
-from services.config import configService
+from telegram.services.config import configService
 
 messages: dict[dict[str]] = {
     "ru": {

@@ -1,5 +1,5 @@
-from services.parsing import parser
-from services.message import messageService
+from telegram.services.parsing import parser
+from telegram.services.message import messageService
 from bs4 import BeautifulSoup
 
 
