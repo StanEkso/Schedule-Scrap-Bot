@@ -1,5 +1,4 @@
 from flask import Flask
-import os
 from flask_restful import Api, Resource, reqparse
 from api.resources.schedule import Schedule
 from shared.services.config import configService
@@ -11,5 +10,5 @@ api.add_resource(Schedule, "/schedule")
 def bootstrap_api():
     print("Starting api...")
     print(configService.get("WEBAPP_PORT"))
-    app.run(host=os.getenv("WEBAPP_HOST", ""),
-            port=os.getenv("WEBAPP_PORT", ""))
+    app.run(host=configService.get("WEBAPP_HOST"),
+            port=configService.get("WEBAPP_PORT"))
