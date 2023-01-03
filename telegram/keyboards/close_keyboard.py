@@ -1,6 +1,6 @@
 from aiogram import types
 from telegram.customtypes.callback import CallbackData
-
+# Keyboard for closing schedule message
 CLOSE_SCHEDULE_KEYBOARD = types.InlineKeyboardMarkup()
 show = types.InlineKeyboardButton(
     text="Просмотреть", callback_data=CallbackData.SHOW_SCHEDULE.value)

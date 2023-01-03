@@ -1,5 +1,7 @@
 from enum import Enum
 
+# Enum for callback data
+
 
 class CallbackData(Enum):
     SHOW_SCHEDULE = "show"

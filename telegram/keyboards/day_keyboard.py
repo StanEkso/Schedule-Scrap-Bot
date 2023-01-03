@@ -1,9 +1,13 @@
 from aiogram import types
 
 from telegram.customtypes.callback import CallbackData
+
+# List of days for choosing
 DAYS_CALLBACKS = ["day_mon", "day_tue",
                   "day_wed", "day_thu", "day_fri", "day_sat"]
 DAY_CHOOSING_KEYBOARD = types.InlineKeyboardMarkup()
+
+# Buttons for choosing day, with callback data for each day "day_{day}"
 buttonPrev = types.InlineKeyboardButton(
     text="◀", callback_data=CallbackData.PREV_DAY.value)
 buttonOK = types.InlineKeyboardButton(
@@ -22,6 +26,10 @@ buttonFri = types.InlineKeyboardButton(
     text="ПТ", callback_data=CallbackData.DAY_PREFIX.value+"fri")
 buttonSat = types.InlineKeyboardButton(
     text="СБ", callback_data=CallbackData.DAY_PREFIX.value+"sat")
+
+# Constructing keyboard
 DAY_CHOOSING_KEYBOARD.add(buttonPrev, buttonOK, buttonNext)
-DAY_CHOOSING_KEYBOARD.row().add(buttonMon, buttonTue, buttonWed) \
-    .row().add(buttonThu, buttonFri, buttonSat)
+DAY_CHOOSING_KEYBOARD.row()
+DAY_CHOOSING_KEYBOARD.add(buttonMon, buttonTue, buttonWed)
+DAY_CHOOSING_KEYBOARD.row()
+DAY_CHOOSING_KEYBOARD.add(buttonThu, buttonFri, buttonSat)
