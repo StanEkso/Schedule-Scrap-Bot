@@ -2,7 +2,7 @@ import requests
 import string
 from bs4 import BeautifulSoup
 import requests
-from telegram.services.config import configService
+from shared.services.config import configService
 from telegram.services.message import messageService
 
 

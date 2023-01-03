@@ -5,7 +5,7 @@ from telegram.keyboards.day_keyboard import DAY_CHOOSING_KEYBOARD, DAYS_CALLBACK
 from telegram.keyboards.close_keyboard import CLOSE_SCHEDULE_KEYBOARD
 from telegram.services.message import messageService
 from telegram.services.schedule import scheduleService
-from telegram.services.config import configService
+from shared.services.config import configService
 from telegram.structures.hash import IntegerHash
 
 

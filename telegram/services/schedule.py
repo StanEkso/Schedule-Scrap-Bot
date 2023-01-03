@@ -1,6 +1,4 @@
 from telegram.services.parsing import parser
-from telegram.services.message import messageService
-from bs4 import BeautifulSoup
 
 
 def formStringFromArray(arr: list) -> str:

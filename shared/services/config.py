@@ -4,12 +4,13 @@ import json
 HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME", "")
 WEBHOOK_ENDPOINT = os.getenv("WEBHOOK_ENDPOINT", "")
 
+WEBHOOK_HOST = f'https://{HEROKU_APP_NAME}.herokuapp.com'
+WEBHOOK_PATH = f'/webhook/{WEBHOOK_ENDPOINT}'
 
-DEFAULT_SETTINGS = {
-    "WEBAPP_HOST": '0.0.0.0',
-    "WEBAPP_PORT": os.getenv("PORT", 8000)
-}
+
+DEFAULT_SETTINGS = {}
 try:
+    # Try to load settings from file
     with open("./settings.json") as file:
         DEFAULT_SETTINGS = json.load(file)
 except:
@@ -21,7 +22,12 @@ class ConfigService:
 
     def __init__(self) -> None:
         if (os.getenv("MODE", "development") != "production"):
-            load_dotenv(".dev.env")
+            try:
+                # Try to load settings from file in non-production mode
+                load_dotenv(".dev.env")
+            except:
+                pass
+
         self.configs['token'] = os.getenv("TOKEN", "")
         self.configs['url'] = os.getenv("PARSE_URL", "")
 
