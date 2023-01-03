@@ -17,7 +17,7 @@ hash = IntegerHash()
 
 
 class ScheduleController:
-
+    # Method to show enter message
     async def showEnterMessage(self, message: Message):
         await message.answer(text=messageService.get("show"), reply_markup=SHOW_SCHEDULE_KEYBOARD)
         if (configService.get("DELETE_COMMANDS") == True):
@@ -26,8 +26,12 @@ class ScheduleController:
             except:
                 pass
 
+    # Method to edit existing schedule with new day
     async def editSchedule(self, bot: Bot, message: Message, day: str):
+        # Get index of day using callback data
         INDEX = DAYS_CALLBACKS.index(day)
+
+        # Set index to hash
         hash.set(key=messageToId(message), value=INDEX)
         await bot.edit_message_text(
             chat_id=message.chat.id,
@@ -37,15 +41,21 @@ class ScheduleController:
         )
 
     async def showSchedule(self, message: Message):
+        # Check if schedule should be updated on every show
         if (configService.get("UPDATE_ON_EVERY_SHOW") == True or hash.get(key=messageToId(message)) is None):
             scheduleService.update()
+
+        # Set default index to hash
         hash.set(messageToId(message), 0)
         if (hash.get(key=messageToId(message)) is None):
+            # If message isn't exist, send new message
             await message.answer(text=scheduleService.atDay(0), reply_markup=DAY_CHOOSING_KEYBOARD)
         else:
+            # If message is exist, edit it
             await message.edit_text(text=scheduleService.atDay(0), reply_markup=DAY_CHOOSING_KEYBOARD)
 
     async def sendNextDaySchedule(self, bot: Bot, message: Message):
+        # Get index of day using hash
         INDEX = hash.get(key=messageToId(message)) or 0
         if (INDEX > 4):
             INDEX = 0
@@ -76,6 +86,7 @@ class ScheduleController:
         hash.set(key=messageToId(message), value=INDEX)
 
     async def hideSchedule(self, bot: Bot, message: Message):
+        # Hide schedule message
         await bot.edit_message_text(
             chat_id=message.chat.id,
             message_id=message.message_id,
@@ -84,6 +95,7 @@ class ScheduleController:
         )
 
     async def deleteScheduleMessage(self, bot: Bot, message: Message):
+        # Delete message from chat
         await bot.delete_message(chat_id=message.chat.id,
                                  message_id=message.message_id)
 
