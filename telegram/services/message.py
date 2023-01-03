@@ -13,13 +13,22 @@ messages: dict[dict[str]] = {
     }
 }
 
+# Service for basic message on languages.
+# Currently only Russian is supported.
+
 
 class MessageService:
+
+    # Initialization of service with configs.
     def __init__(self) -> None:
         self.lang = configService.get("lang") or "ru"
 
+    # Method for getting message by key or default value.
     def get(self, key: str, default: str = "") -> str:
-        return messages.get(self.lang).get(key, default)
+        try:
+            return messages[self.lang][key]
+        except:
+            return default
 
 
 messageService = MessageService()
