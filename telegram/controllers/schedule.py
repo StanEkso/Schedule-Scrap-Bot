@@ -57,33 +57,30 @@ class ScheduleController:
     async def sendNextDaySchedule(self, bot: Bot, message: Message):
         # Get index of day using hash
         INDEX = hash.get(key=messageToId(message)) or 0
-        if (INDEX > 4):
-            INDEX = 0
-        else:
-            INDEX += 1
+        # Get new index by direction
+        NEW_INDEX = self.getNewIndex(INDEX, 1)
 
         await bot.edit_message_text(
             chat_id=message.chat.id,
             message_id=message.message_id,
-            text=scheduleService.atDay(INDEX),
+            text=scheduleService.atDay(NEW_INDEX),
             reply_markup=DAY_CHOOSING_KEYBOARD
         )
-        hash.set(key=messageToId(message), value=INDEX)
+        hash.set(key=messageToId(message), value=NEW_INDEX)
 
     async def sendPrevDaySchedule(self, bot: Bot, message: Message):
+        # Get index of day using hash
         INDEX = hash.get(key=messageToId(message)) or 0
-        if (INDEX < 1):
-            INDEX = 5
-        else:
-            INDEX -= 1
+        # Get new index by direction
+        NEW_INDEX = self.getNewIndex(INDEX, -1)
 
         await bot.edit_message_text(
             chat_id=message.chat.id,
             message_id=message.message_id,
-            text=scheduleService.atDay(INDEX),
+            text=scheduleService.atDay(NEW_INDEX),
             reply_markup=DAY_CHOOSING_KEYBOARD
         )
-        hash.set(key=messageToId(message), value=INDEX)
+        hash.set(key=messageToId(message), value=NEW_INDEX)
 
     async def hideSchedule(self, bot: Bot, message: Message):
         # Hide schedule message
@@ -98,6 +95,18 @@ class ScheduleController:
         # Delete message from chat
         await bot.delete_message(chat_id=message.chat.id,
                                  message_id=message.message_id)
+
+    def getNewIndex(self, index: int, direction: int = 1) -> int:
+        # Get new index by direction
+        # Index + direction can't be less than 0 or more than 5
+        if (index + direction > 5):
+            # If index + direction is more than 5, return 0, cause 5 is saturday
+            return 0
+        elif (index + direction < 0):
+            # If index + direction is less than 0, return 5, cause 0 is monday
+            return 5
+        # Return index + direction in other cases
+        return index + direction
 
 
 scheduleController = ScheduleController()
