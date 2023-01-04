@@ -1,5 +1,4 @@
 from aiogram import types
-
 from telegram.customtypes.callback import CallbackData
 from shared.localization.service import localization
 
