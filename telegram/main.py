@@ -88,6 +88,8 @@ WEBAPP_PORT = os.getenv("PORT", 8000)
 
 
 async def on_startup(dispatcher):
+    BOT_INFO = await bot.get_me()
+    print(f"Starting bot {BOT_INFO.username}...")
     await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 # Shutdown webhook on shutdown (delete webhook), but don't await this task

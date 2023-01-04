@@ -11,9 +11,12 @@ WEBHOOK_PATH = f'/webhook/{WEBHOOK_ENDPOINT}'
 DEFAULT_SETTINGS = {}
 try:
     # Try to load settings from file
+
     with open("./settings.json") as file:
         DEFAULT_SETTINGS = json.load(file)
 except:
+    print("Can't load settings from file")
+    print("To load settings from file, create settings.json file in root directory")
     pass
 
 

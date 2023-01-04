@@ -32,4 +32,6 @@ class LocalizationService:
             return keyboard_buttons["ru"]
 
 
+CURRENT_LANGUAGE = configService.get("CURRENT_LANGUAGE")
+print("Current language: " + CURRENT_LANGUAGE)
 localization = LocalizationService(configService.get("CURRENT_LANGUAGE"))

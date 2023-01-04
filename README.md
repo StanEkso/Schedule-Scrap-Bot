@@ -9,6 +9,13 @@ This project is made for convenient way to check schedule of group in telegram i
 - You can config it with deleting trash messages (commands)
 - You can customize command to call bot function
 
+## Stack
+
+- Python
+- Aiogram (Telegram Bot API Wrapper)
+- BeautifulSoup (HTML Parser)
+- Requests (HTTP Client)
+
 ## Guide of Deployment
 
 ### Pre-Requirements

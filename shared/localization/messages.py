@@ -1,5 +1,4 @@
 from typing import TypedDict
-from shared.services.config import configService
 
 # Create a typing for messages localization inherits from TypedDict
 MessageLocalization = TypedDict('MessageLocalization', {
