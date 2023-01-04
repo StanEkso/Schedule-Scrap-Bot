@@ -3,9 +3,9 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from shared.services.config import configService
 from telegram.controllers.schedule import scheduleController as pollingController
-from telegram.customtypes.callback import CallbackData
 from telegram.decorators.failquery import OnQueryFail
 from shared.localization.service import localization
+from telegram.filters.callback import isCloseCallback, isDayCallback, isHideCallback, isNextDayCallback, isPrevDayCallback, isShowScheduleCallback
 
 bot = Bot(token=configService.get("token"), parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
@@ -27,14 +27,14 @@ async def handleSchedule(message: types.Message):
 
 
 # Bot handle callback query "show_schedule"
-@dp.callback_query_handler(lambda call: call.data == CallbackData.SHOW_SCHEDULE.value)
+@dp.callback_query_handler(isShowScheduleCallback)
 async def handleShowSchedule(call: types.CallbackQuery):
     return await scheduleController.showSchedule(call.message)
 
 # Bot handle callback query "day_{wd}"
 
 
-@dp.callback_query_handler(lambda call: call.data.find(CallbackData.DAY_PREFIX.value) != -1)
+@dp.callback_query_handler(isDayCallback)
 @OnQueryFail(localization.getMessage("day_is_chosen"))
 async def handleShowSchedule(call: types.CallbackQuery):
     return await scheduleController.editSchedule(bot, call.message, call.data)
@@ -42,28 +42,28 @@ async def handleShowSchedule(call: types.CallbackQuery):
 # Bot handle callback query "next_day"
 
 
-@dp.callback_query_handler(lambda call: call.data == CallbackData.NEXT_DAY.value)
+@dp.callback_query_handler(isNextDayCallback)
 async def handleNextDaySchedule(call: types.CallbackQuery):
     return await scheduleController.sendNextDaySchedule(bot, call.message)
 
 # Bot handle callback query "prev_day"
 
 
-@dp.callback_query_handler(lambda call: call.data == CallbackData.PREV_DAY.value)
+@dp.callback_query_handler(isPrevDayCallback)
 async def handlePrevDaySchedule(call: types.CallbackQuery):
     return await scheduleController.sendPrevDaySchedule(bot, call.message)
 
 # Bot handle callback query "hide_details"
 
 
-@dp.callback_query_handler(lambda call: call.data == CallbackData.HIDE_DETAILS.value)
+@dp.callback_query_handler(isHideCallback)
 async def handlePrevDaySchedule(call: types.CallbackQuery):
     return await scheduleController.hideSchedule(bot, call.message)
 
 # Bot handle callback query "close_schedule"
 
 
-@dp.callback_query_handler(lambda call: call.data == CallbackData.CLOSE_SCHEDULE.value)
+@dp.callback_query_handler(isCloseCallback)
 async def handlePrevDaySchedule(call: types.CallbackQuery):
     return await scheduleController.deleteScheduleMessage(bot, call.message)
 
