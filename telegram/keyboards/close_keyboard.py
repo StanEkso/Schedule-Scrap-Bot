@@ -1,14 +1,12 @@
-from aiogram import types
 from telegram.customtypes.callback import CallbackData
 from shared.localization.service import localization
-
+from telegram.keyboards.factory import KeyboardFactory
 KEYBOARD_LOCALE = localization.getRawKeyboard()
-# Keyboard for closing schedule message
-CLOSE_SCHEDULE_KEYBOARD = types.InlineKeyboardMarkup()
-show = types.InlineKeyboardButton(
-    text=KEYBOARD_LOCALE["show"], callback_data=CallbackData.SHOW_SCHEDULE.value)
-close = types.InlineKeyboardButton(
-    text=KEYBOARD_LOCALE["close"], callback_data=CallbackData.CLOSE_SCHEDULE.value)
-CLOSE_SCHEDULE_KEYBOARD.add(show)
-CLOSE_SCHEDULE_KEYBOARD.row()
-CLOSE_SCHEDULE_KEYBOARD.add(close)
+
+KEYBOARDS_TEXTS = [KEYBOARD_LOCALE["show"], KEYBOARD_LOCALE["close"]]
+KEYBOARDS_CALLBACKS = [CallbackData.SHOW_SCHEDULE.value,
+                       CallbackData.CLOSE_SCHEDULE.value]
+
+buttons = [KeyboardFactory.createInlineKeyboardButton(i[0], i[1]) for i in zip(
+    KEYBOARDS_TEXTS, KEYBOARDS_CALLBACKS)]
+CLOSE_SCHEDULE_KEYBOARD = KeyboardFactory.createReplyMarkup(buttons, 1)
