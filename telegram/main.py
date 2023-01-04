@@ -4,6 +4,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from shared.services.config import configService
 from telegram.controllers.schedule import scheduleController as pollingController
 from telegram.customtypes.callback import CallbackData
+from telegram.decorators.failquery import OnQueryFail
 
 bot = Bot(token=configService.get("token"), parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
@@ -29,10 +30,11 @@ async def handleSchedule(message: types.Message):
 async def handleShowSchedule(call: types.CallbackQuery):
     return await scheduleController.showSchedule(call.message)
 
-# Bot handle callback query "day_{index}"
+# Bot handle callback query "day_{wd}"
 
 
 @dp.callback_query_handler(lambda call: call.data.find(CallbackData.DAY_PREFIX.value) != -1)
+@OnQueryFail("Этот день и так отображается")
 async def handleShowSchedule(call: types.CallbackQuery):
     return await scheduleController.editSchedule(bot, call.message, call.data)
 
