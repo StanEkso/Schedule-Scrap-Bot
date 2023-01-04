@@ -10,18 +10,29 @@ messages: dict[dict[str]] = {
         'thu': "Расписание группы на Четверг: \n",
         'fri': "Расписание группы на Пятницу: \n",
         'sat': "Расписание группы на Субботу: \n",
+        'day_is_chosen': 'Этот день уже выбран',
+    },
+    "en": {
+        "show": "Show schedule",
+        "closed": "Schedule is closed",
+        'mon': "Group schedule on Monday: \n",
+        'tue': "Group schedule on Tuesday: \n",
+        'wed': "Group schedule on Wednesday: \n",
+        'thu': "Group schedule on Thursday: \n",
+        'fri': "Group schedule on Friday: \n",
+        'sat': "Group schedule on Saturday: \n",
+        'day_is_chosen': 'This day is already chosen',
     }
 }
 
 # Service for basic message on languages.
-# Currently only Russian is supported.
 
 
 class MessageService:
 
     # Initialization of service with configs.
     def __init__(self) -> None:
-        self.lang = configService.get("lang") or "ru"
+        self.lang = configService.get("CURRENT_LANGUAGE") or "ru"
 
     # Method for getting message by key or default value.
     def get(self, key: str, default: str = "") -> str:

@@ -3,7 +3,7 @@ import string
 from bs4 import BeautifulSoup
 import requests
 from shared.services.config import configService
-from telegram.services.message import messageService
+from shared.localization.messages import messageService
 
 # Service for parsing schedule from site.
 
