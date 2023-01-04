@@ -7,6 +7,11 @@ from shared.services.config import configService
 class LocalizationService:
     def __init__(self, language: str):
         self.language = language
+        try:
+            messages[self.language]
+        except:
+            self.language = "ru"
+            print("Language not found, using default: " + self.language)
 
     def getMessage(self, key: str) -> str:
         try:
