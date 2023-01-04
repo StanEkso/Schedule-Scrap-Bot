@@ -3,7 +3,7 @@ from aiogram import Bot
 from telegram.keyboards.show_keyboard import SHOW_SCHEDULE_KEYBOARD
 from telegram.keyboards.day_keyboard import DAY_CHOOSING_KEYBOARD, DAYS_CALLBACKS
 from telegram.keyboards.close_keyboard import CLOSE_SCHEDULE_KEYBOARD
-from shared.localization.messages import messageService
+from shared.localization.service import localization
 from telegram.services.schedule import scheduleService
 from shared.services.config import configService
 from telegram.structures.hash import IntegerHash
@@ -19,7 +19,7 @@ hash = IntegerHash()
 class ScheduleController:
     # Method to show enter message
     async def showEnterMessage(self, message: Message):
-        await message.answer(text=messageService.get("show"), reply_markup=SHOW_SCHEDULE_KEYBOARD)
+        await message.answer(text=localization.getMessage("show"), reply_markup=SHOW_SCHEDULE_KEYBOARD)
         if (configService.get("DELETE_COMMANDS") == True):
             try:
                 await message.delete()
@@ -86,7 +86,7 @@ class ScheduleController:
         await bot.edit_message_text(
             chat_id=message.chat.id,
             message_id=message.message_id,
-            text=messageService.get("closed"),
+            text=localization.getMessage("schedule_closed"),
             reply_markup=CLOSE_SCHEDULE_KEYBOARD
         )
 

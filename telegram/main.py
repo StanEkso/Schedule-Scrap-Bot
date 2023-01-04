@@ -5,7 +5,7 @@ from shared.services.config import configService
 from telegram.controllers.schedule import scheduleController as pollingController
 from telegram.customtypes.callback import CallbackData
 from telegram.decorators.failquery import OnQueryFail
-from shared.localization.messages import messageService
+from shared.localization.service import localization
 
 bot = Bot(token=configService.get("token"), parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
@@ -35,7 +35,7 @@ async def handleShowSchedule(call: types.CallbackQuery):
 
 
 @dp.callback_query_handler(lambda call: call.data.find(CallbackData.DAY_PREFIX.value) != -1)
-@OnQueryFail(messageService.get("day_is_chosen"))
+@OnQueryFail(localization.getMessage("day_is_chosen"))
 async def handleShowSchedule(call: types.CallbackQuery):
     return await scheduleController.editSchedule(bot, call.message, call.data)
 

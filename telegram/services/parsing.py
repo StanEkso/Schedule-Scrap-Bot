@@ -3,7 +3,7 @@ import string
 from bs4 import BeautifulSoup
 import requests
 from shared.services.config import configService
-from shared.localization.messages import messageService
+from shared.localization.service import localization
 
 # Service for parsing schedule from site.
 
@@ -42,12 +42,12 @@ class ParserService:
 
         # Creating dictionary for days with default messages.
         days = {
-            "понедельник": messageService.get("mon"),
-            "вторник": messageService.get("tue"),
-            "среда": messageService.get("wed"),
-            "четверг": messageService.get("thu"),
-            "пятница": messageService.get("fri"),
-            "суббота": messageService.get("sat"),
+            "понедельник": localization.getMessage("mon"),
+            "вторник": localization.getMessage("tue"),
+            "среда": localization.getMessage("wed"),
+            "четверг": localization.getMessage("thu"),
+            "пятница": localization.getMessage("fri"),
+            "суббота": localization.getMessage("sat"),
         }
 
         # Zip all lists and iterate over them.

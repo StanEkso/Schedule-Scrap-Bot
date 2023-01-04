@@ -1,9 +1,24 @@
+from typing import TypedDict
 from shared.services.config import configService
 
-messages: dict[dict[str]] = {
+# Create a typing for messages localization inherits from TypedDict
+MessageLocalization = TypedDict('MessageLocalization', {
+    'show': str,
+    'schedule_closed': str,
+    'mon': str,
+    'tue': str,
+    'wed': str,
+    'thu': str,
+    'fri': str,
+    'sat': str,
+    'day_is_chosen': str,
+})
+
+
+messages: dict[str, MessageLocalization] = {
     "ru": {
         "show": "Просмотреть расписание",
-        "closed": "Расписание закрыто",
+        "schedule_closed": "Расписание закрыто",
         'mon': "Расписание группы на Понедельник: \n",
         'tue': "Расписание группы на Вторник: \n",
         'wed': "Расписание группы на Среду: \n",
@@ -14,7 +29,7 @@ messages: dict[dict[str]] = {
     },
     "en": {
         "show": "Show schedule",
-        "closed": "Schedule is closed",
+        "schedule_closed": "Schedule is closed",
         'mon': "Group schedule on Monday: \n",
         'tue': "Group schedule on Tuesday: \n",
         'wed': "Group schedule on Wednesday: \n",
@@ -24,22 +39,3 @@ messages: dict[dict[str]] = {
         'day_is_chosen': 'This day is already chosen',
     }
 }
-
-# Service for basic message on languages.
-
-
-class MessageService:
-
-    # Initialization of service with configs.
-    def __init__(self) -> None:
-        self.lang = configService.get("CURRENT_LANGUAGE") or "ru"
-
-    # Method for getting message by key or default value.
-    def get(self, key: str, default: str = "") -> str:
-        try:
-            return messages[self.lang][key]
-        except:
-            return default
-
-
-messageService = MessageService()
