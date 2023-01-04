@@ -1,6 +1,6 @@
 {
-    "DELETE_COMMANDS": true, // Delete commands after execution
-    "UPDATE_ON_EVERY_SHOW": false, // Update schedule on every show
-    "SCHEDULE_COMMANDS": ["schedule", "расписание"], // Commands to show schedule
-    "CURRENT_LANGUAGE": "ru" // Current language
+    "DELETE_COMMANDS": true, 
+    "UPDATE_ON_EVERY_SHOW": false,
+    "SCHEDULE_COMMANDS": ["schedule", "расписание"], 
+    "CURRENT_LANGUAGE": "ru"
 }
