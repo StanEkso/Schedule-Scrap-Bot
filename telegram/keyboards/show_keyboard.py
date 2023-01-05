@@ -1,5 +1,5 @@
 from aiogram import types
-from telegram.customtypes.callback import CallbackData
+from shared.types.callback import CallbackData
 from shared.localization.service import localization
 from telegram.keyboards.factory import KeyboardFactory
 KEYBOARD_LOCALE = localization.getRawKeyboard()
@@ -11,4 +11,3 @@ buttons = [types.InlineKeyboardButton(i[0], callback_data=i[1]) for i in zip(
     KEYBOARD_TEXTS, KEYBOARD_CALLBACKS)]
 
 SHOW_SCHEDULE_KEYBOARD = KeyboardFactory.createReplyMarkup(buttons, 1)
-

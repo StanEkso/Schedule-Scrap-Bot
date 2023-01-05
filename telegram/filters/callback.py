@@ -1,6 +1,6 @@
 # Assign lambda function to variable
 
-from telegram.customtypes.callback import CallbackData
+from shared.types.callback import CallbackData
 from aiogram.types import CallbackQuery
 
 
