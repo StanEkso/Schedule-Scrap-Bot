@@ -1,5 +1,6 @@
 from .callback_queries import init as callbackQueriesInit
 from .messages import init as messagesInit
+from .errors import init as errorsInit
 from aiogram import executor
 
 from .__init__ import bot, dp
@@ -9,12 +10,7 @@ from .__run__ import WEBHOOK_PATH, WEBHOOK_URL, WEBAPP_HOST, WEBAPP_PORT, MODE
 # Bot handling messages
 messagesInit()
 callbackQueriesInit()
-
-
-@dp.errors_handler()
-async def message_not_modified_handler(update, error):
-    print(error)
-    return error
+errorsInit()
 
 
 async def on_startup(dispatcher):
