@@ -1,7 +1,7 @@
 from aiogram.types import Message, ContentType
 from .decorators.logger import LogMessage
 from shared.services.config import configService
-from .controllers.schedule import scheduleController
+from .modules.schedule.controller import scheduleController
 from .__init__ import dp
 
 

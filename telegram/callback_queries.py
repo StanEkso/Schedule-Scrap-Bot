@@ -3,7 +3,7 @@ from .decorators.logger import LogCall
 from shared.localization.service import localization
 from .filters.callback import isCloseCallback, isDayCallback, isHideCallback, isNextDayCallback, isPrevDayCallback, isShowScheduleCallback
 from .decorators.failquery import OnQueryFail
-from .controllers.schedule import scheduleController
+from .modules.schedule.controller import scheduleController
 from .__init__ import dp
 
 

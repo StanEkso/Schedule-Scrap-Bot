@@ -1,10 +1,8 @@
-from telegram.services.parsing import parser
-
-# Service for schedule.
+from shared.services.parsing import parser
+from .adapter import ScheduleAdapter
 
 
 class ScheduleService:
-    # Current schedule.
     schedule: list[str]
 
     # Generation of schedule via update method.
@@ -14,7 +12,7 @@ class ScheduleService:
 
     # Method for updating schedule.
     def update(self) -> list[str]:
-        self.schedule = parser.parseFromPage()
+        self.schedule = ScheduleAdapter.convertLessons(parser.parseFromPage())
 
     # Method for getting schedule.
     def get(self) -> list[str]:

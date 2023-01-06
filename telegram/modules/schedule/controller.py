@@ -3,7 +3,7 @@ from telegram.keyboards.show_keyboard import SHOW_SCHEDULE_KEYBOARD
 from telegram.keyboards.day_keyboard import DAY_CHOOSING_KEYBOARD, DAYS_CALLBACKS
 from telegram.keyboards.close_keyboard import CLOSE_SCHEDULE_KEYBOARD
 from shared.localization.service import localization
-from telegram.services.schedule import scheduleService
+from .service import scheduleService
 from shared.services.config import configService
 from telegram.structures.hash import IntegerHash
 
