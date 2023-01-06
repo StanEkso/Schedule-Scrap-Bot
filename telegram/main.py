@@ -6,6 +6,7 @@ from telegram.controllers.schedule import scheduleController
 from telegram.decorators.failquery import OnQueryFail
 from shared.localization.service import localization
 from telegram.filters.callback import isCloseCallback, isDayCallback, isHideCallback, isNextDayCallback, isPrevDayCallback, isShowScheduleCallback
+from telegram.decorators.logger import LogMessage, LogCall
 
 bot = Bot(token=configService.get("token"), parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
@@ -20,14 +21,25 @@ async def bootstrapBot():
 
 
 # Bot handle commands "/schedule"
+
+
 @dp.message_handler(commands=configService.get("SCHEDULE_COMMANDS") or ["schedule"])
-async def handleSchedule(message: types.Message):
+@LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+async def handleSchedule(message: types.Message, *args, **kwargs):
     return await scheduleController.showEnterMessage(message)
 
 
+@dp.message_handler(content_types=types.ContentType.TEXT)
+@LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+async def handleText(message: types.Message, *args, **kwargs):
+    return await message.answer(message.text)
+
 # Bot handle callback query "show_schedule"
+
+
 @dp.callback_query_handler(isShowScheduleCallback)
-async def handleShowSchedule(call: types.CallbackQuery):
+@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+async def handleShowSchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.showSchedule(call.message)
 
 # Bot handle callback query "day_{wd}"
@@ -35,35 +47,40 @@ async def handleShowSchedule(call: types.CallbackQuery):
 
 @dp.callback_query_handler(isDayCallback)
 @OnQueryFail(localization.getMessage("day_is_chosen"))
-async def handleShowSchedule(call: types.CallbackQuery):
+@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+async def handleShowSchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.editSchedule(call.message, call.data)
 
 # Bot handle callback query "next_day"
 
 
 @dp.callback_query_handler(isNextDayCallback)
-async def handleNextDaySchedule(call: types.CallbackQuery):
+@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+async def handleNextDaySchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.sendNextDaySchedule(call.message)
 
 # Bot handle callback query "prev_day"
 
 
 @dp.callback_query_handler(isPrevDayCallback)
-async def handlePrevDaySchedule(call: types.CallbackQuery):
+@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+async def handlePrevDaySchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.sendPrevDaySchedule(call.message)
 
 # Bot handle callback query "hide_details"
 
 
 @dp.callback_query_handler(isHideCallback)
-async def handlePrevDaySchedule(call: types.CallbackQuery):
+@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+async def handlePrevDaySchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.hideSchedule(call.message)
 
 # Bot handle callback query "close_schedule"
 
 
 @dp.callback_query_handler(isCloseCallback)
-async def handlePrevDaySchedule(call: types.CallbackQuery):
+@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+async def handlePrevDaySchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.deleteScheduleMessage(call.message)
 
 # Bot handle errors
