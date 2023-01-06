@@ -1,6 +1,6 @@
 from shared.types.callback import CallbackData
 from shared.localization.service import localization
-from telegram.keyboards.factory import KeyboardFactory
+from .factory import KeyboardFactory
 KEYBOARD_LOCALE = localization.getRawKeyboard()
 
 KEYBOARDS_TEXTS = [KEYBOARD_LOCALE["show"], KEYBOARD_LOCALE["close"]]

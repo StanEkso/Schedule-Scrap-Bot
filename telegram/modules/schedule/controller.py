@@ -1,7 +1,7 @@
 from aiogram.types import Message
-from telegram.keyboards.show_keyboard import SHOW_SCHEDULE_KEYBOARD
-from telegram.keyboards.day_keyboard import DAY_CHOOSING_KEYBOARD, DAYS_CALLBACKS
-from telegram.keyboards.close_keyboard import CLOSE_SCHEDULE_KEYBOARD
+from ..keyboard.show_keyboard import SHOW_SCHEDULE_KEYBOARD
+from ..keyboard.day_keyboard import DAY_CHOOSING_KEYBOARD, DAYS_CALLBACKS
+from ..keyboard.close_keyboard import CLOSE_SCHEDULE_KEYBOARD
 from shared.localization.service import localization
 from .service import scheduleService
 from shared.services.config import configService

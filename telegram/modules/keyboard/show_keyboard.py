@@ -1,7 +1,7 @@
 from aiogram import types
 from shared.types.callback import CallbackData
 from shared.localization.service import localization
-from telegram.keyboards.factory import KeyboardFactory
+from .factory import KeyboardFactory
 KEYBOARD_LOCALE = localization.getRawKeyboard()
 # Keyboard showed when command /schedule is called
 
