@@ -1,6 +1,6 @@
 import os
 
-MODE = os.getenv("MODE", 'POLLING')
+USE_MODE = os.getenv("USE", 'POLLING').upper()
 
 HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME", "")
 WEBHOOK_ENDPOINT = os.getenv("WEBHOOK_ENDPOINT", "")

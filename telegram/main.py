@@ -4,7 +4,7 @@ from .errors import init as errorsInit
 from aiogram import executor
 
 from .__init__ import bot, dp
-from .__run__ import WEBHOOK_PATH, WEBHOOK_URL, WEBAPP_HOST, WEBAPP_PORT, MODE
+from .__run__ import WEBHOOK_PATH, WEBHOOK_URL, WEBAPP_HOST, WEBAPP_PORT, USE_MODE
 
 
 # Bot handling messages
@@ -25,7 +25,7 @@ async def on_shutdown(dispatcher):
 
 def bootstrap_bot():
     print("Starting bot...")
-    if (MODE == 'WEBHOOK'):
+    if (USE_MODE == 'WEBHOOK'):
         executor.start_webhook(
             dispatcher=dp,
             webhook_path=WEBHOOK_PATH,
