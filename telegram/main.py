@@ -38,7 +38,7 @@ async def handleText(message: types.Message, *args, **kwargs):
 
 
 @dp.callback_query_handler(isShowScheduleCallback)
-@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+@LogCall(SHOW_CHAT_TYPE=True)
 async def handleShowSchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.showSchedule(call.message)
 
@@ -47,7 +47,7 @@ async def handleShowSchedule(call: types.CallbackQuery, *args, **kwargs):
 
 @dp.callback_query_handler(isDayCallback)
 @OnQueryFail(localization.getMessage("day_is_chosen"))
-@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+@LogCall(SHOW_CHAT_TYPE=True)
 async def handleShowSchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.editSchedule(call.message, call.data)
 
@@ -55,7 +55,7 @@ async def handleShowSchedule(call: types.CallbackQuery, *args, **kwargs):
 
 
 @dp.callback_query_handler(isNextDayCallback)
-@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+@LogCall(SHOW_CHAT_TYPE=True)
 async def handleNextDaySchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.sendNextDaySchedule(call.message)
 
@@ -63,7 +63,7 @@ async def handleNextDaySchedule(call: types.CallbackQuery, *args, **kwargs):
 
 
 @dp.callback_query_handler(isPrevDayCallback)
-@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+@LogCall(SHOW_CHAT_TYPE=True)
 async def handlePrevDaySchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.sendPrevDaySchedule(call.message)
 
@@ -71,7 +71,7 @@ async def handlePrevDaySchedule(call: types.CallbackQuery, *args, **kwargs):
 
 
 @dp.callback_query_handler(isHideCallback)
-@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+@LogCall(SHOW_CHAT_TYPE=True)
 async def handlePrevDaySchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.hideSchedule(call.message)
 
@@ -79,7 +79,7 @@ async def handlePrevDaySchedule(call: types.CallbackQuery, *args, **kwargs):
 
 
 @dp.callback_query_handler(isCloseCallback)
-@LogCall(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+@LogCall(SHOW_CHAT_TYPE=True)
 async def handlePrevDaySchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.deleteScheduleMessage(call.message)
 

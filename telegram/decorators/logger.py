@@ -1,8 +1,13 @@
 from aiogram.types import Message, CallbackQuery
+from shared.services.config import configService
+WRITE_LOGS = not not configService.get("WRITE_LOGS") or False
 
 
 def LogMessage(SHOW_TIME: bool = False, SHOW_CHAT_TYPE: bool = False):
     def decorator(func):
+        if (not WRITE_LOGS):
+            return func
+
         async def wrapper(message: Message = None, *args, **kwargs):
             LOG_MESSAGE = messageToString(message)
 
@@ -18,16 +23,16 @@ def LogMessage(SHOW_TIME: bool = False, SHOW_CHAT_TYPE: bool = False):
     return decorator
 
 
-def LogCall(SHOW_TIME: bool = False, SHOW_CHAT_TYPE: bool = False):
+def LogCall(SHOW_CHAT_TYPE: bool = False):
     def decorator(func):
+        if (not WRITE_LOGS):
+            return func
+
         async def wrapper(call: CallbackQuery = None, *args, **kwargs):
             LOG_MESSAGE = callToString(call)
 
             if SHOW_CHAT_TYPE:
                 LOG_MESSAGE = callToChatType(call) + " " + LOG_MESSAGE
-
-            if SHOW_TIME:
-                LOG_MESSAGE = callToSentTime(call) + " " + LOG_MESSAGE
 
             print(LOG_MESSAGE)
             return await func(call=call, *args, **kwargs)
@@ -53,10 +58,6 @@ def callToString(call: CallbackQuery) -> str:
     USERNAME = call.from_user.username or ""
     DATA = call.data or ""
     return f"{FIRST_NAME} {LAST_NAME} (@{USERNAME}) sent a callback: {DATA}"
-
-
-def callToSentTime(call: CallbackQuery) -> str:
-    return f"[{call.message.date.strftime('%H:%M:%S')}]"
 
 
 def callToChatType(call: CallbackQuery) -> str:
