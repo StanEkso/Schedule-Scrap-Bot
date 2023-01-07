@@ -27,7 +27,7 @@ def bootstrap_bot():
     LOOP.run_until_complete(log_bot_info())
 
     if (USE_MODE == 'WEBHOOK'):
-        print("[INFO] Webhook mode is enabled.")
+        print("[INIT] Webhook mode is enabled.")
         executor.start_webhook(
             dispatcher=dp,
             webhook_path=WEBHOOK_PATH,
@@ -38,7 +38,7 @@ def bootstrap_bot():
             port=WEBAPP_PORT
         )
     else:
-        print("[INFO] Long polling mode is enabled.")
+        print("[INIT] Long polling mode is enabled.")
         executor.start_polling(dp, skip_updates=True)
 
 
@@ -48,4 +48,4 @@ async def log_bot_info():
     LAST_NAME = me.last_name or ''
     USERNAME = me.username or ''
 
-    print(f"[INFO] Current session: {FIRST_NAME} {LAST_NAME} @{USERNAME}")
+    print(f"[INIT] Current session: {FIRST_NAME} {LAST_NAME} (@{USERNAME})")

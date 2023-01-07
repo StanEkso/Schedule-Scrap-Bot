@@ -1,4 +1,3 @@
-# Create a localization service that will return the correct localization for the current language using messages.py and keyboards.py
 from .messages import messages
 from .keyboards import keyboard_buttons, KeyboardLocalization
 from .exceptions import exceptions, ExceptionsLocalization
@@ -8,11 +7,13 @@ from shared.services.config import configService
 class LocalizationService:
     def __init__(self, language: str):
         self.language = language
-        try:
-            messages[self.language]
-        except:
+        if not self.isLanguageExists(self.language):
+            OLD_LANGUAGE = self.language
             self.language = "ru"
-            print("Language not found, using default: " + self.language)
+            print(
+                f"[ERROR] Language {OLD_LANGUAGE} not found.")
+
+        print(f"[INIT] Using language: {self.language}.")
 
     def getMessage(self, key: str) -> str:
         try:
@@ -37,6 +38,9 @@ class LocalizationService:
             return exceptions[self.language]
         except:
             return exceptions["ru"]
+
+    def isLanguageExists(self, language: str) -> bool:
+        return language in messages.keys() and language in keyboard_buttons.keys() and language in exceptions.keys()
 
 
 localization = LocalizationService(configService.get("CURRENT_LANGUAGE"))

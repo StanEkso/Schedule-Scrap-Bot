@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import requests
-from shared.services.config import configService
-from shared.types.lesson import Lesson
+from ..services.config import configService
+from ..types.lesson import Lesson
+from ..decorators.invoke import InvokeLog, InvokePerformance
 
 # Parser service for parsing schedule from site and return it as array of lessons
 # Lesson is a dict with keys: time, meta, subject, type, room, weekday
@@ -22,20 +23,19 @@ class ParserService:
 
     def __init__(self) -> None:
         self.url = configService.get("url")
+        print(f"[INIT] Parser url: {self.url}")
         pass
 
     def getPageText(self) -> str:
         return requests.get(self.url).text
 
+    @InvokePerformance
     def parseFromPage(self) -> list[Lesson]:
-        # Parsing content via BeautifulSoup.
         soup = BeautifulSoup(self.getPageText(), features="html.parser")
 
-        # Replacing <br> tags with spaces.
         for a in soup.findAll('br'):
             a.replaceWith(" %s " % a.text)
 
-        # Getting all needed tags.
         time = soup.find_all('td', {'class': 'time'})
         remarks = soup.find_all('td', {"class": "remarks"})
         subjectAndTeacher = soup.find_all('td', {"class": "subject-teachers"})
@@ -45,10 +45,8 @@ class ParserService:
 
         lessons: list[Lesson] = []
 
-        # Zip all lists and iterate over them.
         for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday):
 
-            # Getting data from table
             currentTime = i[0].text
             currentRemarks = i[1].text
             currentSubjectAndTeacher = i[2].text
@@ -60,17 +58,11 @@ class ParserService:
             currentWeekDay = i[5].text.lower()
 
             # Replacing short names of lesson types with full names.
-            if currentLessonType == "л":
-                currentLessonType = "Лекция"
-            elif currentLessonType == "п":
-                currentLessonType = "Практика"
-            else:
-                currentLessonType = ""
             lesson: Lesson = {
                 "time": currentTime,
                 "meta": currentRemarks,
                 "subject": currentSubjectAndTeacher,
-                "type": currentLessonType,
+                "type": self.convertLessonType(currentLessonType),
                 "room": currentRoom,
                 "weekday": currentWeekDay
             }
@@ -78,6 +70,20 @@ class ParserService:
 
         return lessons
 
+    @staticmethod
+    def convertLessonType(lessonType: str) -> str:
+        if lessonType == "л":
+            return "Лекция"
+        elif lessonType == "п":
+            return "Практика"
+        else:
+            return ""
 
-# Create a parser service instance.
+    def __str__(self) -> str:
+        return f"ParserService(url={self.url})"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+
 parser: ParserService = ParserService()
