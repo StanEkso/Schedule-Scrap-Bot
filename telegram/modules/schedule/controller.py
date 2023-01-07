@@ -42,12 +42,13 @@ class ScheduleController:
 
         INDEX = hash.get(key=messageToId(message)) or 0
 
-        hash.set(messageToId(message), INDEX)
         if (self.isNewMessage(message)):
             scheduleService.update()
             await message.answer(text=scheduleService.atDay(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
         else:
             await message.edit_text(text=scheduleService.atDay(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
+
+        hash.set(messageToId(message), INDEX)
 
     async def sendNextDaySchedule(self, message: Message):
         INDEX = hash.get(key=messageToId(message)) or 0
