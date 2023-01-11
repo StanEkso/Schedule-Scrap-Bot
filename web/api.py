@@ -12,8 +12,13 @@ async def endpoint(request: web.Request):
 @routes.get("/schedule")
 async def schedule(request: web.Request):
     scheduleObj = parser.parseFromPage()
+    query = request.rel_url.query
+    responseList = scheduleObj
+    if "day" in query:
+        day = query["day"]
+        responseList = [x for x in scheduleObj if x["weekday"] == day]
 
-    js = json.dumps(scheduleObj)
+    js = json.dumps(responseList)
     return web.Response(body=js, content_type="application/json")
 
 
