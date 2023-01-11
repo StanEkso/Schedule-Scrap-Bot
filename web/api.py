@@ -12,4 +12,12 @@ async def endpoint(request: web.Request):
 @routes.get("/schedule")
 async def schedule(request: web.Request):
     scheduleObj = parser.parseFromPage()
-    return web.Response(body=json.dump(scheduleObj), content_type="application/json")
+
+    js = json.dumps(scheduleObj)
+    return web.Response(body=js, content_type="application/json")
+
+
+@routes.post("/gmail")
+async def gmail(request: web.Request):
+    print(request)
+    return web.Response(text="OK", status=200)
