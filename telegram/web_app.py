@@ -6,5 +6,5 @@ routes = web.RouteTableDef()
 
 
 @routes.get("/endpoint")
-async def endpoint(request):
+async def endpoint(request: web.Request):
     return web.Response(text="Hello, world")
