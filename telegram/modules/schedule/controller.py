@@ -44,9 +44,7 @@ class ScheduleController:
 
         if (self.isNewMessage(message)):
             scheduleService.update()
-            await message.answer(text=scheduleService.atDay(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
-        else:
-            await message.edit_text(text=scheduleService.atDay(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
+        await message.edit_text(text=scheduleService.atDay(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
 
         hash.set(messageToId(message), INDEX)
 
