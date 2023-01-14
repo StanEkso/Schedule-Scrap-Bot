@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from shared.constants.settings import DEFAULT_SETTINGS as BASIC_SETTINGS
 import os
 import json
 HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME", "")
@@ -9,14 +10,16 @@ WEBHOOK_PATH = f'/webhook/{WEBHOOK_ENDPOINT}'
 
 
 DEFAULT_SETTINGS = {}
-try:
-    # Try to load settings from file
-
+if os.path.exists("./settings.json"):
     with open("./settings.json") as file:
         DEFAULT_SETTINGS = json.load(file)
-except:
-    print("Can't load settings from file")
-    print("To load settings from file, create settings.json file in root directory")
+else:
+    print("[ERROR] Can't load settings from file")
+    with open("./settings.json", "w") as file:
+        print("[INFO] Creating default settings file")
+        json.dump(BASIC_SETTINGS, file, indent=4)
+
+    DEFAULT_SETTINGS = BASIC_SETTINGS
     pass
 
 
