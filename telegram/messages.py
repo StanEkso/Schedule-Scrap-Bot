@@ -5,15 +5,20 @@ from .modules.schedule.controller import scheduleController
 from .__init__ import dp
 
 
-def init():
-    @dp.message_handler(commands=configService.get("SCHEDULE_COMMANDS") or ["schedule"])
-    @LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
-    async def handleSchedule(message: Message, *args, **kwargs):
-        return await scheduleController.showEnterMessage(message)
+@LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+async def handleSchedule(message: Message, *args, **kwargs):
+    return await scheduleController.showEnterMessage(message)
 
-    @dp.message_handler(content_types=ContentType.TEXT)
-    @LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
-    async def handleText(message: Message, *args, **kwargs):
-        pass
 
+@LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+async def handleText(message: Message, *args, **kwargs):
     pass
+
+
+def init():
+    dp.register_message_handler(handleSchedule, commands=configService.get(
+        "SCHEDULE_COMMANDS") or ["schedule"])
+
+    dp.register_message_handler(handleText, content_types=ContentType.TEXT)
+
+    print("[INIT] Messages module initialized")
