@@ -21,4 +21,3 @@ def init():
 
     dp.register_message_handler(handleText, content_types=ContentType.TEXT)
 
-    print("[INIT] Messages module initialized")

@@ -2,16 +2,21 @@ import asyncio
 from .callback_queries import init as callbackQueriesInit
 from .messages import init as messagesInit
 from .errors import init as errorsInit
-from aiogram import executor, Dispatcher
+from aiogram import Dispatcher
 
 
 from .__init__ import bot, dp
 from .__run__ import WEBHOOK_URL
 
 
-messagesInit()
-callbackQueriesInit()
-errorsInit()
+def bootstrap():
+    messagesInit()
+    callbackQueriesInit()
+    errorsInit()
+
+    print("[INIT] Telegram bot module is inited.")
+
+    return bot, dp
 
 
 async def on_startup(dispatcher: Dispatcher):

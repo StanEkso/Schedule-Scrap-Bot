@@ -56,5 +56,3 @@ def init():
 
     dp.register_callback_query_handler(
         handleDeleteScheduleMessage, isCloseCallback)
-
-    print("[INIT] Callback queries module initialized")

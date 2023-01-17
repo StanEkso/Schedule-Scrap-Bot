@@ -4,9 +4,10 @@ import json
 routes = web.RouteTableDef()
 
 
-@routes.get("/endpoint")
-async def endpoint(request: web.Request):
-    return web.Response(text="Hello, world")
+def bootstrap():
+    app = web.Application()
+    app.add_routes(routes)
+    return app
 
 
 @routes.get("/schedule")
@@ -20,9 +21,3 @@ async def schedule(request: web.Request):
 
     js = json.dumps(responseList)
     return web.Response(body=js, content_type="application/json")
-
-
-@routes.post("/gmail")
-async def gmail(request: web.Request):
-    print(request)
-    return web.Response(text="OK", status=200)

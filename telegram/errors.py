@@ -9,5 +9,3 @@ async def unhandledErrorHandler(update: Update, error):
 
 def init():
     dp.register_errors_handler(unhandledErrorHandler)
-
-    print("[INIT] Errors module initialized")
