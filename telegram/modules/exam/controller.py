@@ -9,5 +9,8 @@ class ExamController:
         await message.answer(text=examsService.get(), reply_markup=CLOSE_EXAM_SCHEDULE)
         await messageController.deleteMessageIfRequired(message)
 
+    async def closeExamMessage(self, message: Message):
+        await message.delete()
+
 
 examController = ExamController()
