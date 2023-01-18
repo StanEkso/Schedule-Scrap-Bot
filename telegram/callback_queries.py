@@ -1,7 +1,7 @@
 from aiogram import types
 from .decorators.logger import LogCall
 from shared.localization.service import localization
-from .filters.callback import isCloseCallback, isDayCallback, isHideCallback, isNextDayCallback, isPrevDayCallback, isShowScheduleCallback
+from .filters.callback import FILTERS
 from .decorators.failquery import OnQueryFail
 from .modules.schedule.controller import scheduleController
 from .modules.exam.controller import examController
@@ -46,22 +46,22 @@ async def handleDeleteExamMessage(call: types.CallbackQuery, *args, **kwargs):
 
 def init():
     dp.register_callback_query_handler(
-        handleShowSchedule, isShowScheduleCallback)
+        handleShowSchedule, FILTERS["show_schedule"])
 
     dp.register_callback_query_handler(
-        handleEditSchedule, isDayCallback)
+        handleEditSchedule, FILTERS["day"])
 
     dp.register_callback_query_handler(
-        handleNextDaySchedule, isNextDayCallback)
+        handleNextDaySchedule, FILTERS["next_day"])
 
     dp.register_callback_query_handler(
-        handlePrevDaySchedule, isPrevDayCallback)
+        handlePrevDaySchedule, FILTERS["prev_day"])
 
     dp.register_callback_query_handler(
-        handleHideSchedule, isHideCallback)
+        handleHideSchedule, FILTERS["hide_details"])
 
     dp.register_callback_query_handler(
-        handleDeleteScheduleMessage, isCloseCallback)
+        handleDeleteScheduleMessage, FILTERS["close_schedule"])
 
     dp.register_callback_query_handler(
-        handleDeleteExamMessage, lambda call: call.data == "close_exam")
+        handleDeleteExamMessage, FILTERS["close_exam"])
