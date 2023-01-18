@@ -12,6 +12,8 @@ class CallbackData(Enum):
     HIDE_DETAILS = "hide_details"
     CLOSE_SCHEDULE = "close_schedule"
 
+    CLOSE_EXAM = "close_exam"
+
     @staticmethod
     def fromString(value: str) -> Optional["CallbackData"]:
         for item in CallbackData:

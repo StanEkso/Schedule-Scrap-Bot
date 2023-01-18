@@ -4,6 +4,7 @@ from shared.localization.service import localization
 from .filters.callback import isCloseCallback, isDayCallback, isHideCallback, isNextDayCallback, isPrevDayCallback, isShowScheduleCallback
 from .decorators.failquery import OnQueryFail
 from .modules.schedule.controller import scheduleController
+from .modules.exam.controller import examController
 from .__init__ import dp
 
 
@@ -38,6 +39,11 @@ async def handleDeleteScheduleMessage(call: types.CallbackQuery, *args, **kwargs
     return await scheduleController.deleteScheduleMessage(call.message)
 
 
+@LogCall(SHOW_CHAT_TYPE=True)
+async def handleDeleteExamMessage(call: types.CallbackQuery, *args, **kwargs):
+    return await examController.closeExamMessage(call.message)
+
+
 def init():
     dp.register_callback_query_handler(
         handleShowSchedule, isShowScheduleCallback)
@@ -56,3 +62,6 @@ def init():
 
     dp.register_callback_query_handler(
         handleDeleteScheduleMessage, isCloseCallback)
+
+    dp.register_callback_query_handler(
+        handleDeleteExamMessage, lambda call: call.data == "close_exam")

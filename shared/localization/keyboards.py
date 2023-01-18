@@ -11,7 +11,8 @@ KeyboardLocalization = TypedDict('KeyboardLocalization', {
     'thursday': str,
     'friday': str,
     'saturday': str,
-    "ok": str
+    "ok": str,
+    "close_exam": str
 })
 
 keyboard_buttons: dict[str, KeyboardLocalization] = {
@@ -24,7 +25,8 @@ keyboard_buttons: dict[str, KeyboardLocalization] = {
         'thursday': 'ЧТ',
         'friday': 'ПТ',
         'saturday': 'СБ',
-        "ok": "OK"
+        "ok": "OK",
+        "close_exam": "Закрыть экзамены"
     },
     # Create another language localization English
     "en": {
@@ -36,6 +38,7 @@ keyboard_buttons: dict[str, KeyboardLocalization] = {
         'thursday': 'TH',
         'friday': 'FR',
         'saturday': 'SA',
-        "ok": "OK"
+        "ok": "OK",
+        "close_exam": "Close exams"
     }
 }
