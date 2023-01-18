@@ -17,4 +17,4 @@ class Lesson(TypedDict):
 
 
 def lessonToString(lesson: Lesson) -> str:
-    return f"{lesson['time']} {lesson['meta']} {lesson['subject']} {lesson['type']} {lesson['room']}"
+    return f"{lesson['time']} <strong>{lesson['meta']}</strong> {lesson['subject']} {lesson['type']} {lesson['room']}"

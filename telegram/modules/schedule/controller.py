@@ -74,7 +74,8 @@ class ScheduleController:
             return 5
         return index + direction
 
-    def isNewMessage(self, message: Message) -> bool:
+    @staticmethod
+    def isNewMessage(message: Message) -> bool:
         if (hash.get(key=messageToId(message)) is None):
             return True
         return False
