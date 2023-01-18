@@ -7,6 +7,8 @@ from .service import scheduleService
 from shared.services.config import configService
 from telegram.structures.hash import IntegerHash
 
+from ..message.controller import messageController
+
 
 def messageToId(message: Message) -> str:
     return str(message.chat.id) + "_" + str(message.message_id)
@@ -19,11 +21,7 @@ class ScheduleController:
     # Method to show enter message
     async def showEnterMessage(self, message: Message):
         await message.answer(text=localization.getMessage("show"), reply_markup=SHOW_SCHEDULE_KEYBOARD)
-        if (configService.get("DELETE_COMMANDS") == True):
-            try:
-                await message.delete()
-            except:
-                pass
+        await messageController.deleteMessageIfRequired(message)
 
     # Method to edit existing schedule with new day
     async def editSchedule(self, message: Message, day: str):
