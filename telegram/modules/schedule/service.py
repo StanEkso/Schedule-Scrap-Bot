@@ -5,6 +5,8 @@ from shared.services.parsing import parser
 from .adapter import ScheduleAdapter
 
 DATE = time.strptime("01.09.2022", "%d.%m.%Y")
+print("First week of 2022-2023 school year: " +
+      str(int(time.mktime(DATE) / 604800)))
 
 
 def getCurrentWeekNum() -> int:
@@ -43,7 +45,9 @@ class ScheduleService:
     @staticmethod
     def metaToBool(meta: str) -> bool:
         if ("н" in meta):
-            if (str(getCurrentWeekNum()) in meta):
+            CURRENT_WEEK = getCurrentWeekNum()
+            print("Current week: " + str(CURRENT_WEEK))
+            if (str(CURRENT_WEEK) in meta):
                 return True
             return False
 
