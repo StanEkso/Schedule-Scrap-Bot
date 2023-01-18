@@ -49,7 +49,7 @@ def init():
         handleShowSchedule, FILTERS["show_schedule"])
 
     dp.register_callback_query_handler(
-        handleEditSchedule, FILTERS["day"])
+        handleEditSchedule, FILTERS["day_"])
 
     dp.register_callback_query_handler(
         handleNextDaySchedule, FILTERS["next_day"])
