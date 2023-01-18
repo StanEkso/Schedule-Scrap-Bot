@@ -36,6 +36,7 @@ class ConfigService:
 
         self.configs['token'] = os.getenv("TOKEN", "")
         self.configs['url'] = os.getenv("PARSE_URL", "")
+        self.configs["GROUP"] = os.getenv("GROUP", "2")
 
     # Get config by key
     def get(self, key: str, default: any = "") -> str:
