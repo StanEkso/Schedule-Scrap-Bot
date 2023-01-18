@@ -1,6 +1,7 @@
 import os
 
 USE_MODE = os.getenv("USE", 'POLLING').upper()
+FIRST_DAY = os.getenv("FIRST_DAY", "29.08.2022")
 
 HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME", "")
 WEBHOOK_ENDPOINT = os.getenv("WEBHOOK_ENDPOINT", "")

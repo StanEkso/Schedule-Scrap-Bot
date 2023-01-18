@@ -2,11 +2,10 @@ import time
 from shared.services.config import configService
 from shared.localization.service import localization
 from shared.services.parsing import parser
+from ...__run__ import FIRST_DAY
 from .adapter import ScheduleAdapter
 
-DATE = time.strptime("29.08.2022", "%d.%m.%Y")
-print("First week of 2022-2023 school year: " +
-      str(int(time.mktime(DATE) / 604800)))
+DATE = time.strptime(FIRST_DAY, "%d.%m.%Y")
 
 
 def getCurrentWeekNum() -> int:
@@ -46,7 +45,6 @@ class ScheduleService:
     def metaToBool(meta: str) -> bool:
         if ("н" in meta):
             CURRENT_WEEK = getCurrentWeekNum()
-            print("Current week: " + str(CURRENT_WEEK))
             if (str(CURRENT_WEEK) in meta):
                 return True
             return False
