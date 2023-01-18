@@ -38,8 +38,8 @@ class ConfigService:
         self.configs['url'] = os.getenv("PARSE_URL", "")
 
     # Get config by key
-    def get(self, key: str) -> str:
-        return self.configs.get(key, "")
+    def get(self, key: str, default: any = "") -> str:
+        return self.configs.get(key, default)
 
 
 configService = ConfigService()
