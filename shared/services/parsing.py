@@ -59,7 +59,6 @@ class ParserService:
             # Used for getting day from dictionary.
             currentWeekDay = i[5].text.lower()
 
-            # Replacing short names of lesson types with full names.
             lesson: Lesson = {
                 "time": currentTime,
                 "meta": currentRemarks,

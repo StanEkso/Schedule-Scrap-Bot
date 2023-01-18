@@ -1,7 +1,5 @@
 from typing import TypedDict
 
-
-# Create a typing for keyboard localization inherits from TypedDict
 KeyboardLocalization = TypedDict('KeyboardLocalization', {
     'show': str,
     'close': str,
@@ -28,7 +26,6 @@ keyboard_buttons: dict[str, KeyboardLocalization] = {
         "ok": "OK",
         "close_exam": "Закрыть экзамены"
     },
-    # Create another language localization English
     "en": {
         'show': 'Show schedule',
         'close': 'Close schedule',

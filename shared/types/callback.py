@@ -1,5 +1,3 @@
-# Write enum for callback data:
-
 from enum import Enum
 from typing import Optional
 

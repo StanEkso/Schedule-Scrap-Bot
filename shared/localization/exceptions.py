@@ -1,5 +1,3 @@
-# Create a typing for exceptions localization inherits from TypedDict
-
 from typing import TypedDict
 
 ExceptionsLocalization = TypedDict('ExceptionsLocalization', {

@@ -1,5 +1,3 @@
-# Create an exam typing inherits from TypedDict includes all fields from the exam table
-
 from typing import TypedDict
 
 

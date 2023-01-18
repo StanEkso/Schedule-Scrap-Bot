@@ -1,5 +1,3 @@
-# Create a decorator with arguments that will be used for catching errors in the functions.
-
 from aiogram import types
 
 

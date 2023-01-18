@@ -39,10 +39,6 @@ def LogCall(SHOW_CHAT_TYPE: bool = False):
         return wrapper
     return decorator
 
-# Write a function taking message and returning a string in format:
-# "Firstname Lastname (@username) sent a message: message_text"
-#
-
 
 def messageToString(message: Message) -> str:
     FIRST_NAME = message.from_user.first_name or ""

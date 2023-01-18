@@ -6,8 +6,6 @@ from aiohttp import web
 from telegram.main import on_shutdown, on_startup, bootstrap as tgBootstrap
 
 
-# Start the bot
-
 def bootstrap():
     if (USE_MODE == 'WEBHOOK'):
         print("[INIT] Webhook mode is enabled.")

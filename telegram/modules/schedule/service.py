@@ -18,20 +18,16 @@ def getCurrentWeekNum() -> int:
 class ScheduleService:
     schedule: list[str]
 
-    # Generation of schedule via update method.
     def __init__(self) -> None:
         self.update()
         pass
 
-    # Method for updating schedule.
     def update(self) -> list[str]:
         self.schedule = (parser.parseFromPage())
 
-    # Method for getting schedule.
     def get(self) -> list[str]:
         return self.schedule
 
-    # Method for getting schedule by day.
     def atDay(self, index: int) -> str:
         FLAG = configService.get("SHOW_CURRENT_WEEK_ONLY", False)
         if not FLAG:

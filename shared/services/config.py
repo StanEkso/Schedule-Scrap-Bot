@@ -29,7 +29,6 @@ class ConfigService:
     def __init__(self) -> None:
         if (os.getenv("MODE", "development") != "production"):
             try:
-                # Try to load settings from file in non-production mode
                 load_dotenv(".dev.env")
             except:
                 pass

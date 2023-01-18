@@ -18,23 +18,18 @@ hash = IntegerHash()
 
 
 class ScheduleController:
-    # Method to show enter message
     async def showEnterMessage(self, message: Message):
         await message.answer(text=localization.getMessage("show"), reply_markup=SHOW_SCHEDULE_KEYBOARD)
         await messageController.deleteMessageIfRequired(message)
 
-    # Method to edit existing schedule with new day
     async def editSchedule(self, message: Message, day: str):
-        # Get index of day using callback data
         INDEX = DAYS_CALLBACKS.index(day)
 
-        # Set index to hash
         hash.set(key=messageToId(message), value=INDEX)
 
         await message.edit_text(text=scheduleService.atDay(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
 
     async def showSchedule(self, message: Message):
-        # Check if schedule should be updated on every show
         if (configService.get("UPDATE_ON_EVERY_SHOW") == True):
             scheduleService.update()
 

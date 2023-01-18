@@ -1,5 +1,3 @@
-# Assign lambda function to variable
-
 from shared.types.callback import CallbackData
 from aiogram.types import CallbackQuery
 
@@ -40,5 +38,4 @@ FILTERS = {
     CallbackData.HIDE_DETAILS.value: isHideCallback,
     CallbackData.CLOSE_SCHEDULE.value: isCloseCallback,
     CallbackData.CLOSE_EXAM.value: isCloseExam
-
 }

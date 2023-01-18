@@ -1,6 +1,5 @@
 from typing import TypedDict
 
-# Create a typing for messages localization inherits from TypedDict
 MessageLocalization = TypedDict('MessageLocalization', {
     'show': str,
     'schedule_closed': str,
