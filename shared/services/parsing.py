@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import requests
+
+from ..types.exam import Exam
 from ..services.config import configService
 from ..types.lesson import Lesson
 from ..decorators.invoke import InvokeLog, InvokePerformance
@@ -84,6 +86,32 @@ class ParserService:
 
     def __repr__(self) -> str:
         return self.__str__()
+
+    def parseExams(self, url: str) -> list[Exam]:
+        soup = BeautifulSoup(requests.get(url).text, features="html.parser")
+
+        TABLE = soup.find("table")
+        ROWS = TABLE.find_all("tr")
+        exams: list[Exam] = []
+        CURRENT_GROUP = ""
+        for ROW in ROWS:
+            CELLS = ROW.find_all("td")
+            if (len(CELLS) == 1):
+                CURRENT_GROUP = CELLS[0].text.replace("\n", "")
+                continue
+            else:
+                exams.append({
+                    "group": CURRENT_GROUP,
+                    "subject": CELLS[0].text.replace("\n", ""),
+                    "teacher": CELLS[1].text.replace("\n", ""),
+                    "examDate": CELLS[2].text.replace("\n", ""),
+                    "examTime": CELLS[3].text.replace("\n", ""),
+                    "examRoom": CELLS[4].text.replace("\n", ""),
+                    "consultationDate": CELLS[5].text.replace("\n", ""),
+                    "consultationTime": CELLS[6].text.replace("\n", ""),
+                    "consultationRoom": CELLS[7].text.replace("\n", ""),
+                })
+        return exams
 
 
 parser: ParserService = ParserService()
