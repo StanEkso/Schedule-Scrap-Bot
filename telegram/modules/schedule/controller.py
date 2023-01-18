@@ -49,16 +49,23 @@ class ScheduleController:
     async def sendNextDaySchedule(self, message: Message):
         INDEX = hash.get(key=messageToId(message)) or 0
         NEW_INDEX = self.getNewIndex(INDEX, 1)
-
-        await message.edit_text(text=scheduleService.atDay(NEW_INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
-        hash.set(key=messageToId(message), value=NEW_INDEX)
+        try:
+            await message.edit_text(text=scheduleService.atDay(NEW_INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
+        except Exception as e:
+            raise e
+        finally:
+            hash.set(key=messageToId(message), value=NEW_INDEX)
 
     async def sendPrevDaySchedule(self, message: Message):
         INDEX = hash.get(key=messageToId(message)) or 0
         NEW_INDEX = self.getNewIndex(INDEX, -1)
 
-        await message.edit_text(text=scheduleService.atDay(NEW_INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
-        hash.set(key=messageToId(message), value=NEW_INDEX)
+        try:
+            await message.edit_text(text=scheduleService.atDay(NEW_INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
+        except Exception as e:
+            raise e
+        finally:
+            hash.set(key=messageToId(message), value=NEW_INDEX)
 
     async def hideSchedule(self, message: Message):
         await message.edit_text(text=localization.getMessage("schedule_closed"), reply_markup=CLOSE_SCHEDULE_KEYBOARD)
