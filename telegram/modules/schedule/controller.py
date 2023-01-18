@@ -73,7 +73,8 @@ class ScheduleController:
     async def deleteScheduleMessage(self, message: Message):
         await message.delete()
 
-    def getNewIndex(self, index: int, direction: int = 1) -> int:
+    @staticmethod
+    def getNewIndex(index: int, direction: int = 1) -> int:
         # 0 - monday, 1 - tuesday, 2 - wednesday, 3 - thursday, 4 - friday, 5 - saturday
         if (index + direction > 5):
             return 0
