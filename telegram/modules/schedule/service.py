@@ -4,7 +4,7 @@ from shared.localization.service import localization
 from shared.services.parsing import parser
 from .adapter import ScheduleAdapter
 
-DATE = time.strptime("01.09.2022", "%d.%m.%Y")
+DATE = time.strptime("29.08.2022", "%d.%m.%Y")
 print("First week of 2022-2023 school year: " +
       str(int(time.mktime(DATE) / 604800)))
 
