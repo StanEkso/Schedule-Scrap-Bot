@@ -6,14 +6,16 @@ from .adapter import ExamAdapter
 
 class ExamsService:
     exams: list[Exam]
+    url: str
 
     def __init__(self):
+        self.url = configService.get("examsUrl")
+        print("[EXAMS] URL: " + self.url)
         self.update()
         pass
 
     def update(self):
-        self.exams = parser.parseExams(
-            "https://mmf.bsu.by/ru/raspisanie-ekzamenov/dnevnoe-otdelenie/2-kurs/")
+        self.exams = parser.parseExams(self.url)
         pass
 
     def get(self):

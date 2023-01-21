@@ -21,19 +21,13 @@ from ..decorators.invoke import InvokeLog, InvokePerformance
 
 
 class ParserService:
-    url: str
 
     def __init__(self) -> None:
-        self.url = configService.get("url")
-        print(f"[INIT] Parser url: {self.url}")
         pass
 
-    def getPageText(self) -> str:
-        return requests.get(self.url).text
-
     @InvokePerformance
-    def parseFromPage(self) -> list[Lesson]:
-        soup = BeautifulSoup(self.getPageText(), features="html.parser")
+    def parseFromPage(self, url: str) -> list[Lesson]:
+        soup = BeautifulSoup(requests.get(url).text, features="html.parser")
 
         for a in soup.findAll('br'):
             a.replaceWith(" %s " % a.text)

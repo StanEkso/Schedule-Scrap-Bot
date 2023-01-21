@@ -17,13 +17,16 @@ def getCurrentWeekNum() -> int:
 
 class ScheduleService:
     schedule: list[str]
+    url: str
 
     def __init__(self) -> None:
+        self.url = configService.get("scheduleUrl")
+        print("[SCHEDULE] URL: " + self.url)
         self.update()
         pass
 
     def update(self) -> list[str]:
-        self.schedule = (parser.parseFromPage())
+        self.schedule = (parser.parseFromPage(self.url))
 
     def get(self) -> list[str]:
         return self.schedule
