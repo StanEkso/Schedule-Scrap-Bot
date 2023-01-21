@@ -3,21 +3,8 @@ from bs4 import BeautifulSoup
 import requests
 
 from ..types.exam import Exam
-from ..services.config import configService
 from ..types.lesson import Lesson
-from ..decorators.invoke import InvokeLog, InvokePerformance
-
-# Parser service for parsing schedule from site and return it as array of lessons
-# Lesson is a dict with keys: time, meta, subject, type, room, weekday
-# Example:
-# {
-#  "time": "8:30-10:00",
-#  "meta": "1-18",
-#  "subject": "Математика",
-#  "type": "Лекция",
-#  "room": "Ауд. 1",
-#  "weekday": "понедельник"
-# }
+from ..decorators.invoke import InvokePerformance
 
 
 class ParserService:
@@ -91,21 +78,26 @@ class ParserService:
         for ROW in ROWS:
             CELLS = ROW.find_all("td")
             if (len(CELLS) == 1):
-                CURRENT_GROUP = CELLS[0].text.replace("\n", "")
+                CURRENT_GROUP = self.tagToText(CELLS[0])
                 continue
             else:
+                TEXTS = [self.tagToText(CELL) for CELL in CELLS]
                 exams.append({
                     "group": CURRENT_GROUP,
-                    "subject": CELLS[0].text.replace("\n", ""),
-                    "teacher": CELLS[1].text.replace("\n", ""),
-                    "examDate": CELLS[2].text.replace("\n", ""),
-                    "examTime": CELLS[3].text.replace("\n", ""),
-                    "examRoom": CELLS[4].text.replace("\n", ""),
-                    "consultationDate": CELLS[5].text.replace("\n", ""),
-                    "consultationTime": CELLS[6].text.replace("\n", ""),
-                    "consultationRoom": CELLS[7].text.replace("\n", ""),
+                    "subject": TEXTS[0],
+                    "teacher": TEXTS[1],
+                    "examDate": TEXTS[2],
+                    "examTime": TEXTS[3],
+                    "examRoom": TEXTS[4],
+                    "consultationDate": TEXTS[5],
+                    "consultationTime": TEXTS[6],
+                    "consultationRoom": TEXTS[7],
                 })
         return exams
+
+    @staticmethod
+    def tagToText(tag) -> str:
+        return tag.text.replace("\n", "")
 
 
 parser: ParserService = ParserService()

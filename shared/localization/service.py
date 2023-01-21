@@ -1,3 +1,4 @@
+from ..logger.logger import logger
 from .messages import messages
 from .keyboards import keyboard_buttons, KeyboardLocalization
 from .exceptions import exceptions, ExceptionsLocalization
@@ -10,10 +11,9 @@ class LocalizationService:
         if not self.isLanguageExists(self.language):
             OLD_LANGUAGE = self.language
             self.language = "ru"
-            print(
-                f"[ERROR] Language {OLD_LANGUAGE} not found.")
+            logger.error(f"Language {OLD_LANGUAGE} not found. ")
 
-        print(f"[INIT] Using language: {self.language}.")
+        logger.init(f"Using language: {self.language}.")
 
     def getMessage(self, key: str) -> str:
         try:
@@ -43,4 +43,5 @@ class LocalizationService:
         return language in messages.keys() and language in keyboard_buttons.keys() and language in exceptions.keys()
 
 
-localization = LocalizationService(configService.get("CURRENT_LANGUAGE"))
+CURRENT_LANGUAGE = configService.get("CURRENT_LANGUAGE")
+localization = LocalizationService(CURRENT_LANGUAGE)
