@@ -1,5 +1,6 @@
 from aiogram.types import Message
 from shared.services.config import configService
+from shared.logger.logger import logger
 
 
 class MessageController:
@@ -10,8 +11,7 @@ class MessageController:
             try:
                 await message.delete()
             except:
-                print("[ERROR] Message cannot be deleted")
-    pass
+                logger.error("Message cannot be deleted")
 
 
 messageController = MessageController()

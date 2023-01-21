@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from shared.constants.settings import DEFAULT_SETTINGS as BASIC_SETTINGS
+from shared.logger.logger import logger
 import os
 import json
 HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME", "")
@@ -14,9 +15,9 @@ if os.path.exists("./settings.json"):
     with open("./settings.json") as file:
         DEFAULT_SETTINGS = json.load(file)
 else:
-    print("[ERROR] Can't load settings from file")
+    logger.error("Can't load settings from file")
     with open("./settings.json", "w") as file:
-        print("[INFO] Creating default settings file")
+        logger.info("Creating default settings file")
         json.dump(BASIC_SETTINGS, file, indent=4)
 
     DEFAULT_SETTINGS = BASIC_SETTINGS

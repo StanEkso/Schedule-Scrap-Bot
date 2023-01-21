@@ -4,11 +4,12 @@ from aiogram.utils.executor import set_webhook
 from aiogram import executor
 from aiohttp import web
 from telegram.main import on_shutdown, on_startup, bootstrap as tgBootstrap
+from shared.logger.logger import logger
 
 
 def bootstrap():
     if (USE_MODE == 'WEBHOOK'):
-        print("[INIT] Webhook mode is enabled.")
+        logger.init("Webhook mode is enabled")
         bot, dp = tgBootstrap()
         app = apiBootstrap()
         app["bot"] = bot
@@ -22,11 +23,11 @@ def bootstrap():
 
         web.run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT)
     elif (USE_MODE == 'API'):
-        print("[INIT] API mode is enabled.")
+        logger.init("API mode is enabled")
         app = apiBootstrap()
         web.run_app(app, host=WEBAPP_HOST, port=WEBAPP_PORT)
     else:
-        print("[INIT] Long polling mode is enabled.")
+        logger.init("Long polling mode is enabled")
         bot, dp = tgBootstrap()
         executor.start_polling(dp, skip_updates=True)
 

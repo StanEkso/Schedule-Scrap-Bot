@@ -5,22 +5,26 @@ class Logger:
         self.prefix = prefix
 
     def info(self, msg: str) -> None:
-        print("[INFO] " + msg)
+        self.__output("[INFO] " + msg)
 
     def error(self, msg: str) -> None:
-        print("[ERROR] " + msg)
+        self.__output("[ERROR] " + msg)
 
     def debug(self, msg: str) -> None:
-        print("[DEBUG] " + msg)
+        self.__output("[DEBUG] " + msg)
 
     def init(self, msg: str) -> None:
-        print("[INIT] " + msg)
+        self.__output("[INIT] " + msg)
 
     def warning(self, msg: str) -> None:
-        print("[WARNING] " + msg)
+        self.__output("[WARNING] " + msg)
 
     def custom(self, msg: str, tag: str = "LOG") -> None:
-        print("["+tag+"] " + msg)
+        self.__output("["+tag+"] " + msg)
+
+
+    def __output(self, msg: str) -> None:
+        print(msg)    
 
 
 logger = Logger()

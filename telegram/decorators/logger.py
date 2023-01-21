@@ -1,5 +1,6 @@
 from aiogram.types import Message, CallbackQuery
 from shared.services.config import configService
+from shared.logger.logger import logger
 WRITE_LOGS = not not configService.get("WRITE_LOGS") or False
 
 
@@ -17,7 +18,8 @@ def LogMessage(SHOW_TIME: bool = False, SHOW_CHAT_TYPE: bool = False):
             if SHOW_TIME:
                 LOG_MESSAGE = messageToSentTime(message) + " " + LOG_MESSAGE
 
-            print(LOG_MESSAGE)
+            logger.custom(LOG_MESSAGE)
+
             return await func(message=message, *args, **kwargs)
         return wrapper
     return decorator
@@ -34,7 +36,8 @@ def LogCall(SHOW_CHAT_TYPE: bool = False):
             if SHOW_CHAT_TYPE:
                 LOG_MESSAGE = callToChatType(call) + " " + LOG_MESSAGE
 
-            print(LOG_MESSAGE)
+            logger.custom(LOG_MESSAGE)
+
             return await func(call=call, *args, **kwargs)
         return wrapper
     return decorator

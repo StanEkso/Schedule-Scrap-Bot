@@ -1,9 +1,10 @@
 from .__init__ import dp
 from aiogram.types import Update
+from shared.logger.logger import logger
 
 
 async def unhandledErrorHandler(update: Update, error):
-    print("[ERROR] " + str(error))
+    logger.error(str(error))
     return error
 
 

@@ -3,6 +3,7 @@ from .callback_queries import init as callbackQueriesInit
 from .messages import init as messagesInit
 from .errors import init as errorsInit
 from aiogram import Dispatcher
+from shared.logger.logger import logger
 
 
 from .__init__ import bot, dp
@@ -13,8 +14,7 @@ def bootstrap():
     messagesInit()
     callbackQueriesInit()
     errorsInit()
-
-    print("[INIT] Telegram bot module is inited.")
+    logger.init("Telegram bot is initialized")
 
     return bot, dp
 
@@ -39,4 +39,4 @@ async def log_bot_info():
     LAST_NAME = me.last_name or ''
     USERNAME = me.username or ''
 
-    print(f"[INIT] Current session: {FIRST_NAME} {LAST_NAME} (@{USERNAME})")
+    logger.init(f"Bot: {FIRST_NAME} {LAST_NAME} (@{USERNAME})")

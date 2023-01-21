@@ -2,6 +2,7 @@ import time
 from shared.services.config import configService
 from shared.localization.service import localization
 from shared.services.parsing import parser
+from shared.logger.logger import logger
 from ...__run__ import FIRST_DAY
 from .adapter import ScheduleAdapter
 
@@ -21,7 +22,7 @@ class ScheduleService:
 
     def __init__(self) -> None:
         self.url = configService.get("scheduleUrl")
-        print("[SCHEDULE] URL: " + self.url)
+        logger.init("ScheduleUrl: " + self.url)
         self.update()
         pass
 

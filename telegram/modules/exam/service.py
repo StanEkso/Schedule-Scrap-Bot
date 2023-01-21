@@ -2,6 +2,7 @@ from shared.services.config import configService
 from shared.types.exam import Exam
 from shared.services.parsing import parser
 from .adapter import ExamAdapter
+from shared.logger.logger import logger
 
 
 class ExamsService:
@@ -10,7 +11,7 @@ class ExamsService:
 
     def __init__(self):
         self.url = configService.get("examsUrl")
-        print("[EXAMS] URL: " + self.url)
+        logger.init("ExamsUrl: " + self.url)
         self.update()
         pass
 
