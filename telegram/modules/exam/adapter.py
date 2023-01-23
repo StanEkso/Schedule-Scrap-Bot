@@ -2,6 +2,9 @@ from shared.types.exam import Exam
 
 
 class ExamAdapter:
+    """
+    The class that converts exam data to a message.
+    """
 
     @staticmethod
     def convertExamsToMessage(exams: list[Exam]) -> str:

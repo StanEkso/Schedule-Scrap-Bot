@@ -1,4 +1,7 @@
 class IntegerHash:
+    """
+    Hash table for storing integer values by string keys
+    """
     table: dict[str, int] = dict()
 
     def __init__(self) -> None:

@@ -3,6 +3,10 @@ from typing import Optional
 
 
 class CallbackData(Enum):
+    """
+    The object representing a callback data.
+    """
+
     SHOW_SCHEDULE = "show_schedule"
     DAY_PREFIX = "day_"
     NEXT_DAY = "next_day"

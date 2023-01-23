@@ -2,6 +2,10 @@ from typing import TypedDict
 
 
 class Lesson(TypedDict):
+    """
+    The object representing a lesson.
+    """
+
     time: str
     meta: str
     subject: str
