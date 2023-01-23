@@ -1,7 +1,9 @@
 from aiogram import types
+from shared.localization.service import localization
+EXCEPTIONS = localization.getRawExceptions()
 
 
-def OnQueryFail(error_text: str = "Произошла ошибка, попробуйте позже"):
+def OnQueryFail(error_text: str = EXCEPTIONS['QUERY_ERROR']):
 
     def decorator(func):
 

@@ -1,9 +1,4 @@
 class Logger:
-    prefix: str
-
-    def __init__(self, prefix: str = "") -> None:
-        self.prefix = prefix
-
     def info(self, msg: str) -> None:
         self.__output("[INFO] " + msg)
 
@@ -20,11 +15,10 @@ class Logger:
         self.__output("[WARNING] " + msg)
 
     def custom(self, msg: str, tag: str = "LOG") -> None:
-        self.__output("["+tag+"] " + msg)
-
+        self.__output("[" + tag + "] " + msg)
 
     def __output(self, msg: str) -> None:
-        print(msg)    
+        print(msg.replace("  ", " "))
 
 
 logger = Logger()
