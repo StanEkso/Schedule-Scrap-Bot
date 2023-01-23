@@ -35,6 +35,6 @@ This project is made for convenient way to check schedule of group in telegram i
 
 - Fork this repository and clone it on your device
 - Check out `requirements.txt` with deps.
-- Change `.dev.env.example` to `.dev.env` and pass `TOKEN` and `PARSE_URL` vars.
+- Change `.dev.env.example` to `.dev.env` and pass `TOKEN`, `COURSE` and `GROUP` vars.
 - Now bot is ready for local development
 - Run `python bot.py` to run bot instance.
