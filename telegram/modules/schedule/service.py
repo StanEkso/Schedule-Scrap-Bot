@@ -11,9 +11,9 @@ DATE = time.strptime(FIRST_DAY, "%d.%m.%Y")
 
 def getCurrentWeekNum() -> int:
     currentTime = time.time()
-    currentWeekNum = int(currentTime / 604800)
-    firstWeekNum = int(time.mktime(DATE) / 604800)
-    return 1 + (currentWeekNum - firstWeekNum) % 2
+    daysBetweenDates = int((currentTime - time.mktime(DATE)) / 86400)
+    TOTAL_PASSED_WEEKS = int(daysBetweenDates / 7)
+    return 1 + (TOTAL_PASSED_WEEKS) % 2
 
 
 class ScheduleService:
