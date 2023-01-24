@@ -48,7 +48,7 @@ def messageToString(message: Message) -> str:
     LAST_NAME = message.from_user.last_name or ""
     USERNAME = message.from_user.username or ""
     TEXT = message.text or ""
-    return f"{FIRST_NAME} {LAST_NAME} (@{USERNAME}) sent a message: {TEXT}"
+    return f"{FIRST_NAME} {LAST_NAME} (@{USERNAME}) sent: {TEXT}"
 
 
 def callToString(call: CallbackQuery) -> str:
@@ -56,7 +56,7 @@ def callToString(call: CallbackQuery) -> str:
     LAST_NAME = call.from_user.last_name or ""
     USERNAME = call.from_user.username or ""
     DATA = call.data or ""
-    return f"{FIRST_NAME} {LAST_NAME} (@{USERNAME}) sent a callback: {DATA}"
+    return f"{FIRST_NAME} {LAST_NAME} (@{USERNAME}) sent: {DATA}"
 
 
 def callToChatType(call: CallbackQuery) -> str:
