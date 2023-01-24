@@ -5,7 +5,7 @@ from ..keyboard.close_keyboard import CLOSE_SCHEDULE_KEYBOARD
 from shared.localization.service import localization
 from .service import scheduleService
 from shared.services.config import configService
-from telegram.structures.hash import IntegerHash
+from shared.structures.hash import IntegerHash
 
 from ..message.controller import messageController
 
