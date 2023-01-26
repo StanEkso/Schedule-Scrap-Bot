@@ -1,9 +1,9 @@
 {
   "DELETE_COMMANDS": true,
   "UPDATE_ON_EVERY_SHOW": false,
+  "SHOW_CURRENT_WEEK_ONLY": true,
   "SCHEDULE_COMMANDS": ["schedule", "расписание"],
   "EXAMS_COMMANDS": ["exams", "экзамены"],
   "CURRENT_LANGUAGE": "ru",
-  "WRITE_LOGS": true,
-  "SHOW_CURRENT_WEEK_ONLY": true
+  "WRITE_LOGS": true
 }
