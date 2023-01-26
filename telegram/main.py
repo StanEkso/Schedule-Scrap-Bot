@@ -3,6 +3,8 @@ from .callback_queries import init as callbackQueriesInit
 from .messages import init as messagesInit
 from .errors import init as errorsInit
 from aiogram import Dispatcher
+from aiogram.utils.executor import set_webhook
+from aiohttp.web import Application
 from shared.logger.logger import logger
 
 
@@ -16,7 +18,17 @@ def bootstrap():
     errorsInit()
     logger.init("Telegram bot is initialized")
 
-    return bot, dp
+    def initWebhook(WEBHOOK_PATH: str, app: Application):
+        logger.init("Webhook is initialized")
+        set_webhook(dispatcher=dp,
+                    webhook_path=WEBHOOK_PATH,
+                    web_app=app,
+                    skip_updates=True,
+                    on_startup=on_startup,
+                    on_shutdown=on_shutdown,
+                    )
+
+    return bot, dp, initWebhook
 
 
 async def on_startup(dispatcher: Dispatcher):
