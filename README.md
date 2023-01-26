@@ -38,3 +38,25 @@ This project is made for convenient way to check schedule of group in telegram i
 - Change `.dev.env.example` to `.dev.env` and pass `TOKEN`, `COURSE` and `GROUP` vars.
 - Now bot is ready for local development
 - Run `python bot.py` to run bot instance.
+
+## Localization
+
+- Messages, exceptions and keyboard texts can be changed in `shared/localization` folder.
+
+For example, localization for exceptions
+
+```python
+ExceptionsLocalization = TypedDict('ExceptionsLocalization', {
+    'INCORRECT_CHAT_TYPE': str,
+    "ONLY_CURRENT_WEEK": str,
+    "QUERY_ERROR": str,
+})
+
+
+'en': {
+        'INCORRECT_CHAT_TYPE': 'This command cannot be used in this chat.',
+        "ONLY_CURRENT_WEEK": "⚠️ Only current week lessons are shown.\n",
+        "QUERY_ERROR": "Query error. Please, try again later."
+}
+
+```
