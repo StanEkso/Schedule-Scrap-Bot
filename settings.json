@@ -2,6 +2,7 @@
   "DELETE_COMMANDS": true,
   "UPDATE_ON_EVERY_SHOW": false,
   "SCHEDULE_COMMANDS": ["schedule", "расписание"],
+  "EXAMS_COMMANDS": ["exams", "экзамены"],
   "CURRENT_LANGUAGE": "ru",
   "WRITE_LOGS": true,
   "SHOW_CURRENT_WEEK_ONLY": true

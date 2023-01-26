@@ -23,9 +23,10 @@ async def handleExam(message: Message, *args, **kwargs):
 
 
 def init():
-    dp.register_message_handler(handleSchedule, commands=configService.get(
-        "SCHEDULE_COMMANDS") or ["schedule"])
+    SCHEDULE_COMMANDS = configService.get("SCHEDULE_COMMANDS") or ["schedule"]
+    dp.register_message_handler(handleSchedule, commands=SCHEDULE_COMMANDS)
 
-    dp.register_message_handler(handleExam, commands=["exams"])
+    EXAMS_COMMANDS = configService.get("EXAMS_COMMANDS") or ["exams"]
+    dp.register_message_handler(handleExam, commands=EXAMS_COMMANDS)
 
     dp.register_message_handler(handleText, content_types=ContentType.TEXT)
