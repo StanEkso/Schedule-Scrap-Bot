@@ -1,7 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import requests
-
 from ..types.exam import Exam
 from ..types.lesson import Lesson
 from ..decorators.invoke import InvokePerformance
