@@ -7,9 +7,6 @@ from ..decorators.invoke import InvokePerformance
 
 class ParserService:
 
-    def __init__(self) -> None:
-        pass
-
     @InvokePerformance
     def parseFromPage(self, url: str) -> list[Lesson]:
         soup = BeautifulSoup(requests.get(url).text, features="html.parser")
@@ -24,31 +21,7 @@ class ParserService:
         room = soup.find_all('td', {'class': 'room'})
         weekday = soup.find_all('td', {'class': 'weekday'})
 
-        lessons: list[Lesson] = []
-
-        for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday):
-
-            currentTime = i[0].text
-            currentRemarks = i[1].text
-            currentSubjectAndTeacher = i[2].text
-            currentLessonType = i[3].text
-            currentRoom = i[4].text
-
-            # Using lower() method for getting day in lower case.
-            # Used for getting day from dictionary.
-            currentWeekDay = i[5].text.lower()
-
-            lesson: Lesson = {
-                "time": currentTime,
-                "meta": currentRemarks,
-                "subject": currentSubjectAndTeacher,
-                "type": self.convertLessonType(currentLessonType),
-                "room": currentRoom,
-                "weekday": currentWeekDay
-            }
-            lessons.append(lesson)
-
-        return lessons
+        return [self.mapTupleToLesson(i) for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday)]
 
     @staticmethod
     def convertLessonType(lessonType: str) -> str:
@@ -96,6 +69,25 @@ class ParserService:
     @staticmethod
     def tagToText(tag) -> str:
         return tag.text.replace("\n", "")
+
+    @staticmethod
+    def mapTupleToLesson(lessonTuple: tuple) -> Lesson:
+        time, remarks, subjectAndTeacher, lessonType, room, weekday = [
+            ParserService.tagToText(item) for item in lessonTuple]
+
+        # Using lower() method for getting day in lower case.
+        # Used for getting day from dictionary.
+        weekday = weekday.lower()
+
+        lesson: Lesson = {
+            "time": time,
+            "meta": remarks,
+            "subject": subjectAndTeacher,
+            "type": ParserService.convertLessonType(lessonType),
+            "room": room,
+            "weekday": weekday
+        }
+        return lesson
 
 
 parser: ParserService = ParserService()
