@@ -1,3 +1,4 @@
+import aiohttp_cors
 from aiohttp import web
 from shared.services.parsing import parser
 import json
@@ -7,6 +8,15 @@ routes = web.RouteTableDef()
 def bootstrap():
     app = web.Application()
     app.add_routes(routes)
+    cors = aiohttp_cors.setup(app, defaults={
+        "*": aiohttp_cors.ResourceOptions(
+            allow_credentials=True,
+            expose_headers="*",
+            allow_headers="*"
+        )
+    })
+    for route in list(app.router.routes()):
+        cors.add(route)
     return app
 
 
