@@ -1,6 +1,7 @@
 import aiohttp_cors
 from aiohttp import web
 from shared.services.parsing import parser
+from shared.services.config import configService
 import json
 routes = web.RouteTableDef()
 
@@ -22,7 +23,8 @@ def bootstrap():
 
 @routes.get("/schedule")
 async def schedule(request: web.Request):
-    scheduleObj = parser.parseFromPage()
+    SCHEDULE_URL = configService.get("scheduleUrl")
+    scheduleObj = parser.parseFromPage(SCHEDULE_URL)
     query = request.rel_url.query
     responseList = scheduleObj
     if "day" in query:
@@ -31,3 +33,4 @@ async def schedule(request: web.Request):
 
     js = json.dumps(responseList)
     return web.Response(body=js, content_type="application/json")
+
