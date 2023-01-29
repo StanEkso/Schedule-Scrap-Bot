@@ -34,12 +34,6 @@ class ParserService:
         else:
             return ""
 
-    def __str__(self) -> str:
-        return f"ParserService(url={self.url})"
-
-    def __repr__(self) -> str:
-        return self.__str__()
-
     @InvokePerformance
     def parseExams(self, url: str) -> list[Exam]:
         soup = BeautifulSoup(requests.get(url).text, features="html.parser")
