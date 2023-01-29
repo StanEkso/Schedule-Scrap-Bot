@@ -3,11 +3,13 @@ from bs4 import BeautifulSoup
 from ..types.exam import Exam
 from ..types.lesson import Lesson
 from ..decorators.invoke import InvokePerformance
+from ..decorators.cache import Cache
 
 
 class ParserService:
 
     @InvokePerformance
+    @Cache(timeout=60000)
     def parseFromPage(self, url: str) -> list[Lesson]:
         soup = BeautifulSoup(requests.get(url).text, features="html.parser")
 
