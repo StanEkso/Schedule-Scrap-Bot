@@ -1,7 +1,7 @@
 {
   "DELETE_COMMANDS": true,
   "UPDATE_ON_EVERY_SHOW": false,
-  "SHOW_CURRENT_WEEK_ONLY": true,
+  "SHOW_CURRENT_WEEK_ONLY": false,
   "SCHEDULE_COMMANDS": ["schedule", "расписание"],
   "EXAMS_COMMANDS": ["exams", "экзамены"],
   "CURRENT_LANGUAGE": "ru",
