@@ -2,6 +2,7 @@ import aiohttp_cors
 from aiohttp import web
 from shared.services.parsing import parser
 from shared.services.config import configService
+from shared.services.search import searchService
 import json
 routes = web.RouteTableDef()
 
@@ -34,3 +35,10 @@ async def schedule(request: web.Request):
     js = json.dumps(responseList)
     return web.Response(body=js, content_type="application/json")
 
+
+@routes.get("/lessons")
+async def lessons(request: web.Request):
+    SCHEDULE_URL = configService.get("SCHEDULE_BASE_LINK")
+    scheduleObj = searchService.grabGroups(SCHEDULE_URL)
+    js = json.dumps(searchService.grabSchedule(scheduleObj), indent=4)
+    return web.Response(body=js, content_type="application/json")

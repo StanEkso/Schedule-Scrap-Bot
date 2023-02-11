@@ -4,6 +4,7 @@ from aiogram import executor
 from aiohttp import web
 from telegram.main import bootstrap as tgBootstrap
 from shared.logger.logger import logger
+from shared.services.search import searchService
 
 
 def bootstrap():
@@ -23,6 +24,7 @@ def bootstrap():
         logger.init("Long polling mode is enabled")
         bot, dp, initWebhook = tgBootstrap()
         executor.start_polling(dp, skip_updates=True)
+    pass
 
 
 if __name__ == '__main__':
