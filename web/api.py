@@ -46,10 +46,26 @@ async def schedule(request: web.Request):
 async def lessons(request: web.Request):
     SCHEDULE_URL = configService.get("SCHEDULE_BASE_LINK")
     scheduleObj = searchService.grabGroups(SCHEDULE_URL)
-    # Extract first 10 groups
-    scheduleObj = scheduleObj[:10]
     lessons = searchService.grabSchedule(scheduleObj)
     query = request.rel_url.query
+    responseList = appendQuery(lessons, query)
+    resultObject = {
+        "lessons": responseList,
+        "count": len(responseList)
+    }
+    js = json.dumps(resultObject)
+    return web.Response(body=js, content_type="application/json")
+
+
+def distinct(lessons: list[Lesson]) -> list[Lesson]:
+    result = []
+    for lesson in lessons:
+        if lesson not in result:
+            result.append(lesson)
+    return result
+
+
+def appendQuery(lessons: list[Lesson], query: dict) -> list[Lesson]:
     if "teacher" in query:
         def isOkay(x: Lesson):
             return query["teacher"] in x["teacher"]
@@ -69,16 +85,6 @@ async def lessons(request: web.Request):
             return TimeService.isBelongsToPeriod(time, x["time"])
         lessons = [x for x in lessons if isSelectedTime(x)]
 
-    if query.get("distinct") != "false":
+    if query.get("distinct", "") != "false":
         lessons = distinct(lessons)
-
-    js = json.dumps(lessons)
-    return web.Response(body=js, content_type="application/json")
-
-
-def distinct(lessons: list[Lesson]) -> list[Lesson]:
-    result = []
-    for lesson in lessons:
-        if lesson not in result:
-            result.append(lesson)
-    return result
+    return lessons
