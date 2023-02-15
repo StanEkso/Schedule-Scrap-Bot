@@ -6,6 +6,10 @@ from shared.services.config import configService
 from .modules.schedule.controller import scheduleController
 from .__init__ import dp
 
+from shared.services.parsing import parser
+from shared.types.lesson import lessonToString
+import json
+
 
 @LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
 async def handleSchedule(message: Message, *args, **kwargs):
@@ -28,5 +32,4 @@ def init():
 
     EXAMS_COMMANDS = configService.get("EXAMS_COMMANDS") or ["exams"]
     dp.register_message_handler(handleExam, commands=EXAMS_COMMANDS)
-
     dp.register_message_handler(handleText, content_types=ContentType.TEXT)

@@ -26,8 +26,8 @@ class ScheduleService:
         self.update()
         pass
 
-    def update(self) -> list[str]:
-        self.schedule = (parser.parseFromPage(self.url))
+    async def update(self):
+        self.schedule = await parser.parseAsync(self.url)
 
     def get(self) -> list[str]:
         return self.schedule

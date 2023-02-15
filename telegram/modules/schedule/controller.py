@@ -31,12 +31,13 @@ class ScheduleController:
 
     async def showSchedule(self, message: Message):
         if (configService.get("UPDATE_ON_EVERY_SHOW") == True):
-            scheduleService.update()
+            await scheduleService.update()
 
         INDEX = hash.get(key=messageToId(message)) or 0
 
         if (self.isNewMessage(message)):
-            scheduleService.update()
+            # TODO: remove deadlock here
+            await scheduleService.update()
         await message.edit_text(text=scheduleService.atDay(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
 
         hash.set(messageToId(message), INDEX)

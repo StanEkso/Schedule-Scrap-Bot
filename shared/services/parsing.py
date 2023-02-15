@@ -4,6 +4,8 @@ from ..types.exam import Exam
 from ..types.lesson import Lesson
 from ..decorators.invoke import InvokePerformance
 from ..decorators.cache import Cache
+import aiohttp
+import asyncio
 
 
 class ParserService:
@@ -24,6 +26,23 @@ class ParserService:
         weekday = soup.find_all('td', {'class': 'weekday'})
 
         return [self.mapTupleToLesson(i) for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday)]
+
+    async def parseAsync(self, url: str) -> list[Lesson]:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                await asyncio.sleep(5)
+                text = await response.text()
+                soup = BeautifulSoup(text, features="html.parser")
+
+                time = soup.find_all('td', {'class': 'time'})
+                remarks = soup.find_all('td', {"class": "remarks"})
+                subjectAndTeacher = soup.find_all(
+                    'td', {"class": "subject-teachers"})
+                lessonType = soup.find_all('td', {'class': 'lecture-practice'})
+                room = soup.find_all('td', {'class': 'room'})
+                weekday = soup.find_all('td', {'class': 'weekday'})
+
+                return [self.mapTupleToLesson(i) for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday)]
 
     @staticmethod
     def convertLessonType(lessonType: str) -> str:
