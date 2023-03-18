@@ -30,7 +30,6 @@ class ParserService:
     async def parseAsync(self, url: str) -> list[Lesson]:
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
-                await asyncio.sleep(5)
                 text = await response.text()
                 soup = BeautifulSoup(text, features="html.parser")
 
