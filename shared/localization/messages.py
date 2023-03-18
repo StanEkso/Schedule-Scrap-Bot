@@ -10,6 +10,7 @@ MessageLocalization = TypedDict('MessageLocalization', {
     'fri': str,
     'sat': str,
     'day_is_chosen': str,
+    "current_week_num": str
 })
 
 
@@ -23,6 +24,7 @@ messages: dict[str, MessageLocalization] = {
         'thu': "Расписание группы на Четверг: \n",
         'fri': "Расписание группы на Пятницу: \n",
         'sat': "Расписание группы на Субботу: \n",
+        "current_week_num": "Текущий номер недели: ",
         'day_is_chosen': 'Этот день уже выбран',
     },
     "en": {
@@ -34,6 +36,7 @@ messages: dict[str, MessageLocalization] = {
         'thu': "Group schedule on Thursday: \n",
         'fri': "Group schedule on Friday: \n",
         'sat': "Group schedule on Saturday: \n",
+        "current_week_num": "Current week number: ",
         'day_is_chosen': 'This day is already chosen',
     }
 }

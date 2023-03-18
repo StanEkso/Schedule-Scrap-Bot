@@ -5,8 +5,11 @@ from shared.services.parsing import parser
 from shared.logger.logger import logger
 from ...__run__ import FIRST_DAY
 from .adapter import ScheduleAdapter
-
+import asyncio
 DATE = time.strptime(FIRST_DAY, "%d.%m.%Y")
+
+EXCEPTIONS = localization.getRawExceptions()
+MESSAGES = localization.getRawMessages()
 
 
 def getCurrentWeekNum() -> int:
@@ -23,7 +26,8 @@ class ScheduleService:
     def __init__(self) -> None:
         self.url = configService.get("scheduleUrl")
         logger.init("ScheduleUrl: " + self.url)
-        self.update()
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.update())
         pass
 
     async def update(self):
@@ -35,11 +39,11 @@ class ScheduleService:
     def atDay(self, index: int) -> str:
         FLAG = configService.get("SHOW_CURRENT_WEEK_ONLY", False)
         if not FLAG:
-            return ScheduleAdapter.convertLessons(self.schedule)[index]
+            return MESSAGES["current_week_num"] + str(getCurrentWeekNum()) + "\n" + ScheduleAdapter.convertLessons(self.schedule)[index]
 
         mappedLessons = [
             lesson for lesson in self.schedule if self.metaToBool(lesson["meta"])]
-        return localization.getRawExceptions()["ONLY_CURRENT_WEEK"] + ScheduleAdapter.convertLessons(mappedLessons)[index]
+        return EXCEPTIONS["ONLY_CURRENT_WEEK"] + ScheduleAdapter.convertLessons(mappedLessons)[index]
 
     @staticmethod
     def metaToBool(meta: str) -> bool:

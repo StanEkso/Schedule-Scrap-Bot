@@ -1,5 +1,5 @@
 from ..logger.logger import logger
-from .messages import messages
+from .messages import messages, MessageLocalization
 from .keyboards import keyboard_buttons, KeyboardLocalization
 from .exceptions import exceptions, ExceptionsLocalization
 from shared.services.config import configService
@@ -38,6 +38,12 @@ class LocalizationService:
             return exceptions[self.language]
         except:
             return exceptions["ru"]
+        
+    def getRawMessages(self) -> MessageLocalization:
+        try:
+            return messages[self.language]
+        except:
+            return messages["ru"]    
 
     def isLanguageExists(self, language: str) -> bool:
         return language in messages.keys() and language in keyboard_buttons.keys() and language in exceptions.keys()
