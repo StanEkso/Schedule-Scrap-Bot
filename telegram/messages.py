@@ -23,7 +23,7 @@ async def handleText(message: Message, *args, **kwargs):
 
 @LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
 async def handleExam(message: Message, *args, **kwargs):
-    return await examController.handleExamMessage(message)
+    return await examController.handle_exam_message(message)
 
 
 def init():

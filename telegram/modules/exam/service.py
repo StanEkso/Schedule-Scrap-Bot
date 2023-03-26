@@ -21,7 +21,7 @@ class ExamsService:
 
     def get(self):
         GROUP = config_service.get("GROUP")
-        return ExamAdapter.convertExamsToMessage([exam for exam in self.exams if GROUP in exam["group"]])
+        return ExamAdapter.convert_exams_to_str([exam for exam in self.exams if GROUP in exam["group"]])
 
 
 examsService = ExamsService()

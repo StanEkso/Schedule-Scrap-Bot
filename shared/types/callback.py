@@ -13,11 +13,10 @@ class CallbackData(Enum):
     PREV_DAY = "prev_day"
     HIDE_DETAILS = "hide_details"
     CLOSE_SCHEDULE = "close_schedule"
-
     CLOSE_EXAM = "close_exam"
 
     @staticmethod
-    def fromString(value: str) -> Optional["CallbackData"]:
+    def from_string(value: str) -> Optional["CallbackData"]:
         for item in CallbackData:
             if item.value == value:
                 return item

@@ -41,7 +41,7 @@ async def handleDeleteScheduleMessage(call: types.CallbackQuery, *args, **kwargs
 
 @LogCall(SHOW_CHAT_TYPE=True)
 async def handleDeleteExamMessage(call: types.CallbackQuery, *args, **kwargs):
-    return await examController.closeExamMessage(call.message)
+    return await examController.close_exam_message(call.message)
 
 
 def init():

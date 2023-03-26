@@ -5,11 +5,11 @@ from ..message.controller import messageController
 
 
 class ExamController:
-    async def handleExamMessage(self, message: Message):
+    async def handle_exam_message(self, message: Message):
         await message.answer(text=examsService.get(), reply_markup=CLOSE_EXAM_SCHEDULE)
         await messageController.deleteMessageIfRequired(message)
 
-    async def closeExamMessage(self, message: Message):
+    async def close_exam_message(self, message: Message):
         await message.delete()
 
 

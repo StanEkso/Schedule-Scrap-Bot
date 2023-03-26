@@ -10,13 +10,13 @@ def LogMessage(SHOW_TIME: bool = False, SHOW_CHAT_TYPE: bool = False):
             return func
 
         async def wrapper(message: Message = None, *args, **kwargs):
-            LOG_MESSAGE = messageToString(message)
+            LOG_MESSAGE = convert_message(message)
 
             if SHOW_CHAT_TYPE:
-                LOG_MESSAGE = messageToChatType(message) + " " + LOG_MESSAGE
+                LOG_MESSAGE = convert_message_to_chat_type(message) + " " + LOG_MESSAGE
 
             if SHOW_TIME:
-                LOG_MESSAGE = messageToSentTime(message) + " " + LOG_MESSAGE
+                LOG_MESSAGE = convert_message_to_sent_time(message) + " " + LOG_MESSAGE
 
             logger.custom(LOG_MESSAGE, "MESSAGE")
 
@@ -31,10 +31,10 @@ def LogCall(SHOW_CHAT_TYPE: bool = False):
             return func
 
         async def wrapper(call: CallbackQuery = None, *args, **kwargs):
-            LOG_MESSAGE = callToString(call)
+            LOG_MESSAGE = convert_call(call)
 
             if SHOW_CHAT_TYPE:
-                LOG_MESSAGE = callToChatType(call) + " " + LOG_MESSAGE
+                LOG_MESSAGE = convert_call_to_chat_type(call) + " " + LOG_MESSAGE
 
             logger.custom(LOG_MESSAGE, "QUERY")
 
@@ -43,7 +43,7 @@ def LogCall(SHOW_CHAT_TYPE: bool = False):
     return decorator
 
 
-def messageToString(message: Message) -> str:
+def convert_message(message: Message) -> str:
     FIRST_NAME = message.from_user.first_name or ""
     LAST_NAME = message.from_user.last_name or ""
     USERNAME = message.from_user.username or ""
@@ -51,7 +51,7 @@ def messageToString(message: Message) -> str:
     return f"{FIRST_NAME} {LAST_NAME} (@{USERNAME}) sent: {TEXT}"
 
 
-def callToString(call: CallbackQuery) -> str:
+def convert_call(call: CallbackQuery) -> str:
     FIRST_NAME = call.from_user.first_name or ""
     LAST_NAME = call.from_user.last_name or ""
     USERNAME = call.from_user.username or ""
@@ -59,13 +59,13 @@ def callToString(call: CallbackQuery) -> str:
     return f"{FIRST_NAME} {LAST_NAME} (@{USERNAME}) sent: {DATA}"
 
 
-def callToChatType(call: CallbackQuery) -> str:
+def convert_call_to_chat_type(call: CallbackQuery) -> str:
     return f"[{call.message.chat.type.upper()}]"
 
 
-def messageToSentTime(message: Message) -> str:
+def convert_message_to_sent_time(message: Message) -> str:
     return f"[{message.date.strftime('%H:%M:%S')}]"
 
 
-def messageToChatType(message: Message) -> str:
+def convert_message_to_chat_type(message: Message) -> str:
     return f"[{message.chat.type.upper()}]"
