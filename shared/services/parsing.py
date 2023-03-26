@@ -2,8 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 from ..types.exam import Exam
 from ..types.lesson import Lesson
-from ..decorators.invoke import InvokePerformance
-from ..decorators.cache import Cache
+from ..decorators.invoke import InvokePerformance, InvokePerformanceAsync
+from ..decorators.cache import Cache, CoroutineCache
 import aiohttp
 import asyncio
 
@@ -27,6 +27,7 @@ class ParserService:
 
         return [self.mapTupleToLesson(i) for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday)]
 
+    @InvokePerformanceAsync
     async def parseAsync(self, url: str) -> list[Lesson]:
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:

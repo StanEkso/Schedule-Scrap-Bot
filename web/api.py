@@ -45,8 +45,8 @@ async def schedule(request: web.Request):
 @routes.get("/lessons")
 async def lessons(request: web.Request):
     SCHEDULE_URL = configService.get("SCHEDULE_BASE_LINK")
-    scheduleObj = searchService.grabGroups(SCHEDULE_URL)
-    lessons = searchService.grabSchedule(scheduleObj)
+    scheduleObj = await searchService.grabGroups(SCHEDULE_URL)
+    lessons = await searchService.grabSchedule(scheduleObj)
     query = request.rel_url.query
     responseList = appendQuery(lessons, query)
     resultObject = {
