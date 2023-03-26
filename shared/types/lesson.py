@@ -14,5 +14,5 @@ class Lesson(TypedDict):
     weekday: str
 
 
-def lessonToString(lesson: Lesson) -> str:
+def convert_lesson_to_str(lesson: Lesson) -> str:
     return f"{lesson['time']} <strong>{lesson['meta']}</strong> {lesson['subject']} {lesson['type']} {lesson['room']}"

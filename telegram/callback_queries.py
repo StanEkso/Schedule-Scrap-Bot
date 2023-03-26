@@ -4,7 +4,7 @@ from shared.localization.service import localization_service
 from .filters.callback import FILTERS as CALLBACK
 from .decorators.failquery import OnQueryFail
 from .modules.schedule.controller import scheduleController
-from .modules.exam.controller import examController
+from .modules.exam.controller import exam_controller
 from .__init__ import dp
 
 
@@ -41,7 +41,7 @@ async def handleDeleteScheduleMessage(call: types.CallbackQuery, *args, **kwargs
 
 @LogCall(SHOW_CHAT_TYPE=True)
 async def handleDeleteExamMessage(call: types.CallbackQuery, *args, **kwargs):
-    return await examController.close_exam_message(call.message)
+    return await exam_controller.close_exam_message(call.message)
 
 
 def init():

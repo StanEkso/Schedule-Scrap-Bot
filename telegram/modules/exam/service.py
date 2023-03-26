@@ -24,4 +24,4 @@ class ExamsService:
         return ExamAdapter.convert_exams_to_str([exam for exam in self.exams if GROUP in exam["group"]])
 
 
-examsService = ExamsService()
+exams_service = ExamsService()

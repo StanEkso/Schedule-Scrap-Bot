@@ -39,11 +39,11 @@ class ScheduleService:
     def atDay(self, index: int) -> str:
         FLAG = config_service.get("SHOW_CURRENT_WEEK_ONLY", False)
         if not FLAG:
-            return MESSAGES["current_week_num"] + str(getCurrentWeekNum()) + "\n" + ScheduleAdapter.convertLessons(self.schedule)[index]
+            return MESSAGES["current_week_num"] + str(getCurrentWeekNum()) + "\n" + ScheduleAdapter.convert_lessons(self.schedule)[index]
 
         mappedLessons = [
             lesson for lesson in self.schedule if self.metaToBool(lesson["meta"])]
-        return EXCEPTIONS["ONLY_CURRENT_WEEK"] + ScheduleAdapter.convertLessons(mappedLessons)[index]
+        return EXCEPTIONS["ONLY_CURRENT_WEEK"] + ScheduleAdapter.convert_lessons(mappedLessons)[index]
 
     @staticmethod
     def metaToBool(meta: str) -> bool:

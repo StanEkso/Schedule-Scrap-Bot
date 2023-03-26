@@ -1,13 +1,13 @@
 from aiogram.types import Message, ContentType
 
-from .modules.exam.controller import examController
+from .modules.exam.controller import exam_controller
 from .decorators.logger import LogMessage
 from shared.services.config import config_service
 from .modules.schedule.controller import scheduleController
 from .__init__ import dp
 
 from shared.services.parsing import parser_service
-from shared.types.lesson import lessonToString
+from shared.types.lesson import convert_lesson_to_str
 import json
 
 
@@ -23,7 +23,7 @@ async def handleText(message: Message, *args, **kwargs):
 
 @LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
 async def handleExam(message: Message, *args, **kwargs):
-    return await examController.handle_exam_message(message)
+    return await exam_controller.handle_exam_message(message)
 
 
 def init():

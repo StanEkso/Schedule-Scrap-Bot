@@ -11,7 +11,7 @@ class MessageController:
     """
     SHOULD_DELETE_MESSAGE = config_service.get("DELETE_COMMANDS")
 
-    async def deleteMessageIfRequired(self, message: Message):
+    async def delete_message_if_required(self, message: Message):
         if (self.SHOULD_DELETE_MESSAGE):
             try:
                 await message.delete()

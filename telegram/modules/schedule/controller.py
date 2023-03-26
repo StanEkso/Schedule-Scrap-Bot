@@ -20,7 +20,7 @@ hash = IntegerHash()
 class ScheduleController:
     async def showEnterMessage(self, message: Message):
         await message.answer(text=localization_service.get_message("show"), reply_markup=SHOW_SCHEDULE_KEYBOARD)
-        await messageController.deleteMessageIfRequired(message)
+        await messageController.delete_message_if_required(message)
 
     async def editSchedule(self, message: Message, day: str):
         INDEX = DAYS_CALLBACKS.index(day)

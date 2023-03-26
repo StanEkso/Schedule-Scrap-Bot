@@ -1,4 +1,4 @@
-from shared.types.lesson import Lesson, lessonToString
+from shared.types.lesson import Lesson, convert_lesson_to_str
 from shared.localization.service import localization_service
 
 
@@ -7,7 +7,7 @@ class ScheduleAdapter:
         pass
 
     @staticmethod
-    def convertLessons(lessons: list[Lesson]) -> list[str]:
+    def convert_lessons(lessons: list[Lesson]) -> list[str]:
         days = {
             "понедельник": localization_service.get_message("mon"),
             "вторник": localization_service.get_message("tue"),
@@ -17,5 +17,5 @@ class ScheduleAdapter:
             "суббота": localization_service.get_message("sat"),
         }
         for lesson in lessons:
-            days[lesson["weekday"]] += lessonToString(lesson) + "\n"
+            days[lesson["weekday"]] += convert_lesson_to_str(lesson) + "\n"
         return list(days.values())
