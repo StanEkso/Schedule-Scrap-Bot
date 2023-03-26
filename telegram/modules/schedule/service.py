@@ -1,15 +1,15 @@
 import time
-from shared.services.config import configService
-from shared.localization.service import localization
-from shared.services.parsing import parser
+from shared.services.config import config_service
+from shared.localization.service import localization_service
+from shared.services.parsing import parser_service
 from shared.logger.logger import logger
 from ...__run__ import FIRST_DAY
 from .adapter import ScheduleAdapter
 import asyncio
 DATE = time.strptime(FIRST_DAY, "%d.%m.%Y")
 
-EXCEPTIONS = localization.getRawExceptions()
-MESSAGES = localization.getRawMessages()
+EXCEPTIONS = localization_service.get_exceptions_dict()
+MESSAGES = localization_service.get_messages_dict()
 
 
 def getCurrentWeekNum() -> int:
@@ -24,20 +24,20 @@ class ScheduleService:
     url: str
 
     def __init__(self) -> None:
-        self.url = configService.get("scheduleUrl")
+        self.url = config_service.get("scheduleUrl")
         logger.init("ScheduleUrl: " + self.url)
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.update())
         pass
 
     async def update(self):
-        self.schedule = await parser.parseAsync(self.url)
+        self.schedule = await parser_service.parse_lessons(self.url)
 
     def get(self) -> list[str]:
         return self.schedule
 
     def atDay(self, index: int) -> str:
-        FLAG = configService.get("SHOW_CURRENT_WEEK_ONLY", False)
+        FLAG = config_service.get("SHOW_CURRENT_WEEK_ONLY", False)
         if not FLAG:
             return MESSAGES["current_week_num"] + str(getCurrentWeekNum()) + "\n" + ScheduleAdapter.convertLessons(self.schedule)[index]
 

@@ -37,21 +37,22 @@ class ConfigService:
         self.configs['token'] = os.getenv("TOKEN", "")
         self.configs["GROUP"] = os.getenv("GROUP", "2")
         self.configs["COURSE"] = os.getenv("COURSE", "2")
-        self.configs["scheduleUrl"] = self.constructScheduleUrl(
+        self.configs["scheduleUrl"] = self.construct_schedule_uri(
             self.configs["COURSE"], self.configs["GROUP"])
-        self.configs["examsUrl"] = self.constructUrl(self.configs["COURSE"])
+        self.configs["examsUrl"] = self.construct_exams_uri(
+            self.configs["COURSE"])
 
     # Get config by key
     def get(self, key: str, default: any = "") -> str:
         return self.configs.get(key, default)
 
     @staticmethod
-    def constructScheduleUrl(course: int | str, group: int | str) -> str:
+    def construct_schedule_uri(course: int | str, group: int | str) -> str:
         return f"https://mmf.bsu.by/ru/raspisanie-zanyatij/dnevnoe-otdelenie/{course}-kurs/{group}-gruppa/"
 
     @staticmethod
-    def constructUrl(course: int | str) -> str:
+    def construct_exams_uri(course: int | str) -> str:
         return f"https://mmf.bsu.by/ru/raspisanie-ekzamenov/dnevnoe-otdelenie/{course}-kurs/"
 
 
-configService = ConfigService()
+config_service = ConfigService()

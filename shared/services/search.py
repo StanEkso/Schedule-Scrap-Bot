@@ -2,13 +2,13 @@ import asyncio
 from bs4 import BeautifulSoup
 from ..decorators.cache import Cache, CoroutineCache
 from ..decorators.invoke import InvokePerformance, InvokePerformanceAsync
-from .parsing import parser
+from .parsing import parser_service
 import aiohttp
 
 
 class SearchService:
     @CoroutineCache(timeout=600000)
-    async def grabLinks(self, pageUrl: str) -> list[str]:
+    async def grab_links(self, pageUrl: str) -> list[str]:
         async with aiohttp.ClientSession() as session:
             async with session.get(pageUrl) as response:
                 text = await response.text()
@@ -18,26 +18,25 @@ class SearchService:
                 hrefs = [link.get("href") for link in links]
                 return [href for href in hrefs if href.startswith(pageUrl)]
 
-    @InvokePerformance
     @CoroutineCache(timeout=600000)
-    async def grabGroups(self, pageUrl: str) -> list[str]:
-        courses = await self.grabLinks(pageUrl)
+    async def grab_groups(self, pageUrl: str) -> list[str]:
+        courses = await self.grab_links(pageUrl)
         tasks = []
         for course in courses:
-            tasks.append(asyncio.ensure_future(self.grabLinks(course)))
+            tasks.append(asyncio.ensure_future(self.grab_links(course)))
         groups = await asyncio.gather(*tasks)
         print(groups)
         return [item for sublist in groups for item in sublist]
 
-    @InvokePerformanceAsync
     @CoroutineCache(timeout=600000)
-    async def grabSchedule(self, pageLinks: list[str]):
+    async def grab_schedule(self, pageLinks: list[str]):
         tasks = []
         for link in pageLinks:
-            tasks.append(asyncio.ensure_future(parser.parseAsync(link)))
+            tasks.append(asyncio.ensure_future(
+                parser_service.parse_lessons(link)))
         schedules = await asyncio.gather(*tasks)
         return [item for sublist in schedules for item in sublist]
     pass
 
 
-searchService = SearchService()
+search_service = SearchService()

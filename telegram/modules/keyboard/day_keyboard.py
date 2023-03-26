@@ -1,8 +1,8 @@
 from shared.types.callback import CallbackData
-from shared.localization.service import localization
+from shared.localization.service import localization_service
 from .factory import KeyboardFactory
 
-KEYBOARD_LOCALE = localization.getRawKeyboard()
+KEYBOARD_LOCALE = localization_service.get_keyboard_dict()
 # List of days for choosing
 DAYS_CALLBACKS = ["day_mon", "day_tue",
                   "day_wed", "day_thu", "day_fri", "day_sat"]

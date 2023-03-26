@@ -1,7 +1,7 @@
 from aiogram.types import Message, CallbackQuery
-from shared.services.config import configService
+from shared.services.config import config_service
 from shared.logger.logger import logger
-WRITE_LOGS = not not configService.get("WRITE_LOGS") or False
+WRITE_LOGS = not not config_service.get("WRITE_LOGS") or False
 
 
 def LogMessage(SHOW_TIME: bool = False, SHOW_CHAT_TYPE: bool = False):

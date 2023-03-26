@@ -1,8 +1,8 @@
 from aiogram import types
 from shared.types.callback import CallbackData
-from shared.localization.service import localization
+from shared.localization.service import localization_service
 from .factory import KeyboardFactory
-KEYBOARD_LOCALE = localization.getRawKeyboard()
+KEYBOARD_LOCALE = localization_service.get_keyboard_dict()
 # Keyboard showed when command /schedule is called
 
 KEYBOARD_TEXTS = [KEYBOARD_LOCALE['close_exam']]

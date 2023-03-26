@@ -1,5 +1,5 @@
 from aiogram.types import Message
-from shared.services.config import configService
+from shared.services.config import config_service
 from shared.logger.logger import logger
 
 
@@ -9,7 +9,7 @@ class MessageController:
 
     Parameter "DELETE_COMMANDS" in settings.json is determines.
     """
-    SHOULD_DELETE_MESSAGE = configService.get("DELETE_COMMANDS")
+    SHOULD_DELETE_MESSAGE = config_service.get("DELETE_COMMANDS")
 
     async def deleteMessageIfRequired(self, message: Message):
         if (self.SHOULD_DELETE_MESSAGE):

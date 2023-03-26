@@ -1,7 +1,7 @@
 from aiogram.types import ChatType, Message
-from shared.localization.service import localization
+from shared.localization.service import localization_service
 
-EXCEPTIONS = localization.getRawExceptions()
+EXCEPTIONS = localization_service.get_exceptions_dict()
 
 
 def ChatType(types: list[ChatType] = None, notifyUser: bool = False):

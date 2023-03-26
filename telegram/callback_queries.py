@@ -1,6 +1,6 @@
 from aiogram import types
 from .decorators.logger import LogCall
-from shared.localization.service import localization
+from shared.localization.service import localization_service
 from .filters.callback import FILTERS as CALLBACK
 from .decorators.failquery import OnQueryFail
 from .modules.schedule.controller import scheduleController
@@ -13,7 +13,7 @@ async def handleShowSchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.showSchedule(call.message)
 
 
-@OnQueryFail(localization.getMessage("day_is_chosen"))
+@OnQueryFail(localization_service.get_message("day_is_chosen"))
 @LogCall(SHOW_CHAT_TYPE=True)
 async def handleEditSchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.editSchedule(call.message, call.data)

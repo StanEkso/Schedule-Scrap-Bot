@@ -1,8 +1,8 @@
 import aiohttp_cors
 from aiohttp import web
-from shared.services.parsing import parser
-from shared.services.config import configService
-from shared.services.search import searchService
+from shared.services.parsing import parser_service
+from shared.services.config import config_service
+from shared.services.search import search_service
 import json
 from shared.services.time import TimeService
 
@@ -27,8 +27,8 @@ def bootstrap():
 
 @routes.get("/schedule")
 async def schedule(request: web.Request):
-    SCHEDULE_URL = configService.get("scheduleUrl")
-    scheduleObj = parser.parseFromPage(SCHEDULE_URL)
+    SCHEDULE_URL = config_service.get("scheduleUrl")
+    scheduleObj = await parser_service.parse_lessons(SCHEDULE_URL)
     query = request.rel_url.query
     responseList = scheduleObj
     if "day" in query:
@@ -44,9 +44,9 @@ async def schedule(request: web.Request):
 
 @routes.get("/lessons")
 async def lessons(request: web.Request):
-    SCHEDULE_URL = configService.get("SCHEDULE_BASE_LINK")
-    scheduleObj = await searchService.grabGroups(SCHEDULE_URL)
-    lessons = await searchService.grabSchedule(scheduleObj)
+    SCHEDULE_URL = config_service.get("SCHEDULE_BASE_LINK")
+    scheduleObj = await search_service.grab_groups(SCHEDULE_URL)
+    lessons = await search_service.grab_schedule(scheduleObj)
     query = request.rel_url.query
     responseList = appendQuery(lessons, query)
     resultObject = {

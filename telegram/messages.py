@@ -2,11 +2,11 @@ from aiogram.types import Message, ContentType
 
 from .modules.exam.controller import examController
 from .decorators.logger import LogMessage
-from shared.services.config import configService
+from shared.services.config import config_service
 from .modules.schedule.controller import scheduleController
 from .__init__ import dp
 
-from shared.services.parsing import parser
+from shared.services.parsing import parser_service
 from shared.types.lesson import lessonToString
 import json
 
@@ -27,9 +27,9 @@ async def handleExam(message: Message, *args, **kwargs):
 
 
 def init():
-    SCHEDULE_COMMANDS = configService.get("SCHEDULE_COMMANDS") or ["schedule"]
+    SCHEDULE_COMMANDS = config_service.get("SCHEDULE_COMMANDS") or ["schedule"]
     dp.register_message_handler(handleSchedule, commands=SCHEDULE_COMMANDS)
 
-    EXAMS_COMMANDS = configService.get("EXAMS_COMMANDS") or ["exams"]
+    EXAMS_COMMANDS = config_service.get("EXAMS_COMMANDS") or ["exams"]
     dp.register_message_handler(handleExam, commands=EXAMS_COMMANDS)
     dp.register_message_handler(handleText, content_types=ContentType.TEXT)

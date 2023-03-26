@@ -3,20 +3,18 @@ from bs4 import BeautifulSoup
 from ..types.exam import Exam
 from ..types.lesson import Lesson
 from ..decorators.invoke import InvokePerformance, InvokePerformanceAsync
-from ..decorators.cache import Cache, CoroutineCache
+from ..decorators.cache import Cache
 import aiohttp
-import asyncio
 
 
 class ParserService:
-
     @InvokePerformance
     @Cache(timeout=60000)
-    def parseFromPage(self, url: str) -> list[Lesson]:
+    def parse_lessons_sync(self, url: str) -> list[Lesson]:
+        """
+        Deprecated (Synchronous)
+        """
         soup = BeautifulSoup(requests.get(url).text, features="html.parser")
-
-        # for a in soup.findAll('br'):
-        #     a.replaceWith(" %s " % a.text)
 
         time = soup.find_all('td', {'class': 'time'})
         remarks = soup.find_all('td', {"class": "remarks"})
@@ -25,10 +23,10 @@ class ParserService:
         room = soup.find_all('td', {'class': 'room'})
         weekday = soup.find_all('td', {'class': 'weekday'})
 
-        return [self.mapTupleToLesson(i) for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday)]
+        return [self.map_tuple_to_lesson(i) for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday)]
 
     @InvokePerformanceAsync
-    async def parseAsync(self, url: str) -> list[Lesson]:
+    async def parse_lessons(self, url: str) -> list[Lesson]:
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 text = await response.text()
@@ -42,10 +40,10 @@ class ParserService:
                 room = soup.find_all('td', {'class': 'room'})
                 weekday = soup.find_all('td', {'class': 'weekday'})
 
-                return [self.mapTupleToLesson(i) for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday)]
+                return [self.map_tuple_to_lesson(i) for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday)]
 
     @staticmethod
-    def convertLessonType(lessonType: str) -> str:
+    def convert_lesson_type(lessonType: str) -> str:
         if lessonType == "л":
             return "Лекция"
         elif lessonType == "п":
@@ -54,7 +52,7 @@ class ParserService:
             return ""
 
     @InvokePerformance
-    def parseExams(self, url: str) -> list[Exam]:
+    def parse_exams(self, url: str) -> list[Exam]:
         soup = BeautifulSoup(requests.get(url).text, features="html.parser")
 
         TABLE = soup.find("table")
@@ -64,10 +62,10 @@ class ParserService:
         for ROW in ROWS:
             CELLS = ROW.find_all("td")
             if (len(CELLS) == 1):
-                CURRENT_GROUP = self.tagToText(CELLS[0])
+                CURRENT_GROUP = self.tag_to_text(CELLS[0])
                 continue
             else:
-                TEXTS = [self.tagToText(CELL) for CELL in CELLS]
+                TEXTS = [self.tag_to_text(CELL) for CELL in CELLS]
                 exams.append({
                     "group": CURRENT_GROUP,
                     "subject": TEXTS[0],
@@ -82,11 +80,11 @@ class ParserService:
         return exams
 
     @staticmethod
-    def tagToText(tag) -> str:
+    def tag_to_text(tag) -> str:
         return tag.text.replace("\n", "")
 
     @staticmethod
-    def mapTupleToLesson(lessonTuple: tuple) -> Lesson:
+    def map_tuple_to_lesson(lessonTuple: tuple) -> Lesson:
         time, remarks, subjectAndTeacher, lessonType, room, weekday = lessonTuple
         for br in subjectAndTeacher.find_all("br"):
             br.replace_with(" %s\n" % br.text)
@@ -94,7 +92,7 @@ class ParserService:
         lessonExtraTuple = subjectAndTeacher.text.split("\n")
 
         time, remarks, subjectAndTeacher, lessonType, room, weekday = [
-            ParserService.tagToText(item) for item in lessonTuple]
+            ParserService.tag_to_text(item) for item in lessonTuple]
 
         # Using lower() method for getting day in lower case.
         # Used for getting day from dictionary.
@@ -103,7 +101,7 @@ class ParserService:
             "time": time,
             "meta": remarks,
             "subject": subjectAndTeacher,
-            "type": ParserService.convertLessonType(lessonType),
+            "type": ParserService.convert_lesson_type(lessonType),
             "room": room,
             "weekday": weekday,
             "teacher": lessonExtraTuple[1] if len(lessonExtraTuple) > 1 else ""
@@ -111,4 +109,4 @@ class ParserService:
         return lesson
 
 
-parser: ParserService = ParserService()
+parser_service = ParserService()

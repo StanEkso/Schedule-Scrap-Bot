@@ -2,9 +2,9 @@ from aiogram.types import Message
 from ..keyboard.show_keyboard import SHOW_SCHEDULE_KEYBOARD
 from ..keyboard.day_keyboard import DAY_CHOOSING_KEYBOARD, DAYS_CALLBACKS
 from ..keyboard.close_keyboard import CLOSE_SCHEDULE_KEYBOARD
-from shared.localization.service import localization
+from shared.localization.service import localization_service
 from .service import scheduleService
-from shared.services.config import configService
+from shared.services.config import config_service
 from shared.structures.hash import IntegerHash
 
 from ..message.controller import messageController
@@ -19,7 +19,7 @@ hash = IntegerHash()
 
 class ScheduleController:
     async def showEnterMessage(self, message: Message):
-        await message.answer(text=localization.getMessage("show"), reply_markup=SHOW_SCHEDULE_KEYBOARD)
+        await message.answer(text=localization_service.get_message("show"), reply_markup=SHOW_SCHEDULE_KEYBOARD)
         await messageController.deleteMessageIfRequired(message)
 
     async def editSchedule(self, message: Message, day: str):
@@ -30,7 +30,7 @@ class ScheduleController:
         await message.edit_text(text=scheduleService.atDay(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
 
     async def showSchedule(self, message: Message):
-        if (configService.get("UPDATE_ON_EVERY_SHOW") == True):
+        if (config_service.get("UPDATE_ON_EVERY_SHOW") == True):
             await scheduleService.update()
 
         INDEX = hash.get(key=messageToId(message)) or 0
@@ -64,7 +64,7 @@ class ScheduleController:
             hash.set(key=messageToId(message), value=NEW_INDEX)
 
     async def hideSchedule(self, message: Message):
-        await message.edit_text(text=localization.getMessage("schedule_closed"), reply_markup=CLOSE_SCHEDULE_KEYBOARD)
+        await message.edit_text(text=localization_service.get_message("schedule_closed"), reply_markup=CLOSE_SCHEDULE_KEYBOARD)
 
     async def deleteScheduleMessage(self, message: Message):
         await message.delete()
