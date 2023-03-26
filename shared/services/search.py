@@ -1,7 +1,6 @@
 import asyncio
 from bs4 import BeautifulSoup
-from ..decorators.cache import Cache, CoroutineCache
-from ..decorators.invoke import InvokePerformance, InvokePerformanceAsync
+from ..decorators.cache import CoroutineCache
 from .parsing import parser_service
 import aiohttp
 
@@ -13,10 +12,10 @@ class SearchService:
             async with session.get(pageUrl) as response:
                 text = await response.text()
                 soup = BeautifulSoup(text, features="html.parser")
-                contentArea = soup.find("section", {"class": "content"})
-                links = contentArea.find_all("a")
-                hrefs = [link.get("href") for link in links]
-                return [href for href in hrefs if href.startswith(pageUrl)]
+                content_area = soup.find("section", {"class": "content"})
+                links = content_area.find_all("a")
+                href_list: list[str] = [link.get("href") for link in links]
+                return [href for href in href_list if href.startswith(pageUrl)]
 
     @CoroutineCache(timeout=600000)
     async def grab_groups(self, pageUrl: str) -> list[str]:
@@ -25,7 +24,6 @@ class SearchService:
         for course in courses:
             tasks.append(asyncio.ensure_future(self.grab_links(course)))
         groups = await asyncio.gather(*tasks)
-        print(groups)
         return [item for sublist in groups for item in sublist]
 
     @CoroutineCache(timeout=600000)

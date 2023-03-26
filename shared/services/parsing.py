@@ -58,16 +58,16 @@ class ParserService:
         TABLE = soup.find("table")
         ROWS = TABLE.find_all("tr")
         exams: list[Exam] = []
-        CURRENT_GROUP = ""
+        current_group = ""
         for ROW in ROWS:
             CELLS = ROW.find_all("td")
             if (len(CELLS) == 1):
-                CURRENT_GROUP = self.tag_to_text(CELLS[0])
+                current_group = self.tag_to_text(CELLS[0])
                 continue
             else:
                 TEXTS = [self.tag_to_text(CELL) for CELL in CELLS]
                 exams.append({
-                    "group": CURRENT_GROUP,
+                    "group": current_group,
                     "subject": TEXTS[0],
                     "teacher": TEXTS[1],
                     "examDate": TEXTS[2],
@@ -85,13 +85,13 @@ class ParserService:
 
     @staticmethod
     def map_tuple_to_lesson(lessonTuple: tuple) -> Lesson:
-        time, remarks, subjectAndTeacher, lessonType, room, weekday = lessonTuple
-        for br in subjectAndTeacher.find_all("br"):
+        time, remarks, subject_n_teacher, lesson_type, room, weekday = lessonTuple
+        for br in subject_n_teacher.find_all("br"):
             br.replace_with(" %s\n" % br.text)
 
-        lessonExtraTuple = subjectAndTeacher.text.split("\n")
+        lesson_extras = subject_n_teacher.text.split("\n")
 
-        time, remarks, subjectAndTeacher, lessonType, room, weekday = [
+        time, remarks, subject_n_teacher, lesson_type, room, weekday = [
             ParserService.tag_to_text(item) for item in lessonTuple]
 
         # Using lower() method for getting day in lower case.
@@ -100,11 +100,11 @@ class ParserService:
         lesson: Lesson = {
             "time": time,
             "meta": remarks,
-            "subject": subjectAndTeacher,
-            "type": ParserService.convert_lesson_type(lessonType),
+            "subject": subject_n_teacher,
+            "type": ParserService.convert_lesson_type(lesson_type),
             "room": room,
             "weekday": weekday,
-            "teacher": lessonExtraTuple[1] if len(lessonExtraTuple) > 1 else ""
+            "teacher": lesson_extras[1] if len(lesson_extras) > 1 else ""
         }
         return lesson
 

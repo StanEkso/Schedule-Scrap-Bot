@@ -5,11 +5,11 @@ class TimeService:
         # period is string in format "hh:mm-hh:mm"
         try:
             start, end = period.split("–")
-            startTime = TimeService.timeToMinutes(start)
-            endTime = TimeService.timeToMinutes(end)
-            currentTime = TimeService.timeToMinutes(time)
+            start_time = TimeService.timeToMinutes(start)
+            end_time = TimeService.timeToMinutes(end)
+            current_time = TimeService.timeToMinutes(time)
 
-            return startTime <= currentTime <= endTime
+            return start_time <= current_time <= end_time
         except Exception as e:
             return True
 
