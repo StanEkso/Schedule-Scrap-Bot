@@ -6,10 +6,6 @@ from shared.services.config import config_service
 from .modules.schedule.controller import scheduleController
 from .__init__ import dp
 
-from shared.services.parsing import parser_service
-from shared.types.lesson import convert_lesson_to_str
-import json
-
 
 @LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
 async def handleSchedule(message: Message, *args, **kwargs):

@@ -61,7 +61,9 @@ class ParserService:
         current_group = ""
         for ROW in ROWS:
             CELLS = ROW.find_all("td")
-            if (len(CELLS) == 1):
+            if len(CELLS) == 0:
+                continue
+            if (len(CELLS) <= 1):
                 current_group = self.tag_to_text(CELLS[0])
                 continue
             else:
