@@ -61,10 +61,11 @@ class ParserService:
         current_group = ""
         for ROW in ROWS:
             CELLS = ROW.find_all("td")
-            if len(CELLS) == 0:
+            HEADERS = ROW.find_all("th")
+            if (len(HEADERS) > 0):
+                current_group = self.tag_to_text(HEADERS[0])
                 continue
-            if (len(CELLS) <= 1):
-                current_group = self.tag_to_text(CELLS[0])
+            if len(CELLS) == 0:
                 continue
             else:
                 TEXTS = [self.tag_to_text(CELL) for CELL in CELLS]
