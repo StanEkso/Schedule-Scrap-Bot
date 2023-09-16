@@ -6,17 +6,19 @@ from shared.logger.logger import logger
 from ...__run__ import FIRST_DAY
 from .adapter import ScheduleAdapter
 import asyncio
-DATE = time.strptime(FIRST_DAY, "%d.%m.%Y")
+import datetime
+
+DATE_TIME = datetime.datetime.strptime(FIRST_DAY, "%d.%m.%Y")
 
 EXCEPTIONS = localization_service.get_exceptions_dict()
 MESSAGES = localization_service.get_messages_dict()
 
 
 def getCurrentWeekNum() -> int:
-    currentTime = time.time()
-    daysBetweenDates = int((currentTime - time.mktime(DATE)) / 86400)
-    TOTAL_PASSED_WEEKS = int(daysBetweenDates / 7)
-    return 1 + (TOTAL_PASSED_WEEKS) % 2
+    currentTime = datetime.datetime.now()
+    daysBetweenDates = currentTime.isocalendar().week - DATE_TIME.isocalendar().week
+    print(daysBetweenDates)
+    return (daysBetweenDates - 1) % 2
 
 
 class ScheduleService:
