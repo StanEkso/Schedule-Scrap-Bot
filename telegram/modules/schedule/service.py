@@ -17,7 +17,7 @@ MESSAGES = localization_service.get_messages_dict()
 def getCurrentWeekNum() -> int:
     currentTime = datetime.datetime.now()
     week_between_dates = currentTime.isocalendar().week - DATE_TIME.isocalendar().week
-    return (week_between_dates - 1) % 2 + 1
+    return week_between_dates % 2 + 1
 
 
 class ScheduleService:
