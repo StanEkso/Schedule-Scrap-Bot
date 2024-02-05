@@ -19,7 +19,6 @@ def getCurrentWeekNum() -> int:
     week_between_dates = currentTime.isocalendar().week - DATE_TIME.isocalendar().week
     return week_between_dates % 2 + 1
 
-
 class ScheduleService:
     schedule: list[str]
     url: str

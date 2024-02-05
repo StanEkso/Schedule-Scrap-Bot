@@ -44,11 +44,13 @@ class ParserService:
                 return [self.map_tuple_to_lesson(i, course, group) for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday)]
 
     @staticmethod
-    def convert_lesson_type(lessonType: str) -> str:
-        if lessonType == "л":
+    def convert_lesson_type(lesson_type: str) -> str:
+        if lesson_type == "л":
             return "Лекция"
-        elif lessonType == "п":
+        elif lesson_type == "п":
             return "Практика"
+        elif lesson_type == "лаб":
+            return "Практика (лаб.)"
         else:
             return ""
 

@@ -13,9 +13,7 @@ from ..message.controller import messageController
 def messageToId(message: Message) -> str:
     return str(message.chat.id) + "_" + str(message.message_id)
 
-
 hash = IntegerHash()
-
 
 class ScheduleController:
     async def showEnterMessage(self, message: Message):
