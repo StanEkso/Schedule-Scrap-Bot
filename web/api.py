@@ -1,7 +1,7 @@
 import aiohttp_cors
 from aiohttp import web
 from shared.services.parsing import parser_service
-from shared.services.config import config_service
+from shared.services.config import ConfigService, config_service
 from shared.services.search import search_service
 import json
 from shared.services.time import TimeService
@@ -27,18 +27,26 @@ def bootstrap():
 
 @routes.get("/schedule")
 async def schedule(request: web.Request):
-    SCHEDULE_URL = config_service.get("scheduleUrl")
-    scheduleObj = await parser_service.parse_lessons(SCHEDULE_URL)
     query = request.rel_url.query
-    responseList = scheduleObj
+
+    SCHEDULE_URL = ""
+
+    if 'group' in query and 'course' in query:
+        SCHEDULE_URL = ConfigService.construct_schedule_uri(query['course'], query['group'])
+    else:
+        SCHEDULE_URL = config_service.get("scheduleUrl")
+        
+    schedule_object = await parser_service.parse_lessons(SCHEDULE_URL)
+    response_list = schedule_object
     if "day" in query:
         day = query["day"]
 
-        def isSelectedDay(x: Lesson):
+        def is_selected_day(x: Lesson):
             return x["weekday"] == day
-        responseList = [x for x in responseList if isSelectedDay(x)]
+        
+        response_list = [x for x in response_list if is_selected_day(x)]
 
-    js = json.dumps(responseList)
+    js = json.dumps(response_list)
     return web.Response(body=js, content_type="application/json")
 
 
