@@ -29,10 +29,20 @@ class SearchService:
     @CoroutineCache(timeout=600000)
     async def grab_schedule(self, pageLinks: list[str]):
         tasks = []
+        schedules = []
+
+        packet_size = 5
+
         for link in pageLinks:
             tasks.append(asyncio.ensure_future(
                 parser_service.parse_lessons(link)))
-        schedules = await asyncio.gather(*tasks)
+            
+            if len(tasks) == packet_size:
+                print("Tasks achieved length", "schedules collected", len(schedules))
+                schedules = schedules + await asyncio.gather(*tasks)
+
+                tasks = []
+
         return [item for sublist in schedules for item in sublist]
     pass
 

@@ -54,6 +54,7 @@ async def schedule(request: web.Request):
 async def lessons(request: web.Request):
     SCHEDULE_URL = config_service.get("SCHEDULE_BASE_LINK")
     scheduleObj = await search_service.grab_groups(SCHEDULE_URL)
+    print(scheduleObj)
     lessons = await search_service.grab_schedule(scheduleObj)
     query = request.rel_url.query
     responseList = appendQuery(lessons, query)
