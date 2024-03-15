@@ -1,5 +1,7 @@
 import asyncio
 from bs4 import BeautifulSoup
+
+from shared.helpers.helpers import flatten, split_execution
 from ..decorators.cache import CoroutineCache
 from .parsing import parser_service
 import aiohttp
@@ -20,30 +22,17 @@ class SearchService:
     @CoroutineCache(timeout=600000)
     async def grab_groups(self, pageUrl: str) -> list[str]:
         courses = await self.grab_links(pageUrl)
-        tasks = []
-        for course in courses:
-            tasks.append(asyncio.ensure_future(self.grab_links(course)))
-        groups = await asyncio.gather(*tasks)
-        return [item for sublist in groups for item in sublist]
+        groups = await split_execution([lambda link=link: asyncio.ensure_future(
+                self.grab_links(link)) for link in courses])
+        
+        return flatten(groups)
 
     @CoroutineCache(timeout=600000)
     async def grab_schedule(self, pageLinks: list[str]):
-        tasks = []
-        schedules = []
+        schedules = await split_execution([lambda link=link: asyncio.ensure_future(
+                parser_service.parse_lessons(link)) for link in pageLinks], packet_size=10)
 
-        packet_size = 5
-
-        for link in pageLinks:
-            tasks.append(asyncio.ensure_future(
-                parser_service.parse_lessons(link)))
-            
-            if len(tasks) == packet_size:
-                print("Tasks achieved length", "schedules collected", len(schedules))
-                schedules = schedules + await asyncio.gather(*tasks)
-
-                tasks = []
-
-        return [item for sublist in schedules for item in sublist]
+        return flatten(schedules)
     pass
 
 

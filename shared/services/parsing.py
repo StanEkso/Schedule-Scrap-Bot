@@ -13,6 +13,7 @@ class ParserService:
     def parse_lessons_sync(self, url: str) -> list[Lesson]:
         """
         Deprecated (Synchronous)
+        @deprecated
         """
         soup = BeautifulSoup(requests.get(url).text, features="html.parser")
 
@@ -52,8 +53,9 @@ class ParserService:
             return "Практика"
         elif lesson_type == "лаб":
             return "Практика (лаб.)"
-        else:
-            return ""
+        elif lesson_type == "с":
+            return "Семинар"
+        return ""
 
     @InvokePerformance
     def parse_exams(self, url: str) -> list[Exam]:
@@ -91,15 +93,15 @@ class ParserService:
         return tag.text.replace("\n", "")
 
     @staticmethod
-    def map_tuple_to_lesson(lessonTuple: tuple, course: str = "", group: str = "") -> Lesson:
-        time, remarks, subject_n_teacher, lesson_type, room, weekday = lessonTuple
+    def map_tuple_to_lesson(lesson_tuple: tuple, course: str = "", group: str = "") -> Lesson:
+        time, remarks, subject_n_teacher, lesson_type, room, weekday = lesson_tuple
         for br in subject_n_teacher.find_all("br"):
             br.replace_with(" %s\n" % br.text)
 
         lesson_extras = subject_n_teacher.text.split("\n")
 
         time, remarks, subject_n_teacher, lesson_type, room, weekday = [
-            ParserService.tag_to_text(item) for item in lessonTuple]
+            ParserService.tag_to_text(item) for item in lesson_tuple]
 
         # Using lower() method for getting day in lower case.
         # Used for getting day from dictionary.
@@ -107,7 +109,7 @@ class ParserService:
         lesson: Lesson = {
             "time": time,
             "meta": remarks,
-            "subject": subject_n_teacher,
+            "subject": subject_n_teacher.replace(lesson_extras[1] if len(lesson_extras) > 1 else "", "").strip(),
             "type": ParserService.convert_lesson_type(lesson_type),
             "room": room,
             "weekday": weekday,
