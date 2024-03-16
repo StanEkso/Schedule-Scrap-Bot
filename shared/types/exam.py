@@ -1,6 +1,11 @@
 from typing import TypedDict
 
 
+class EventInfo(TypedDict):
+    date: str
+    time: str
+    room: str
+
 class Exam(TypedDict):
     """
     The object representing an exam.
@@ -9,9 +14,5 @@ class Exam(TypedDict):
     group: str
     subject: str
     teacher: str
-    examDate: str
-    examTime: str
-    examRoom: str
-    consultationDate: str
-    consultationTime: str
-    consultationRoom: str
+    exam: EventInfo
+    consultation: EventInfo

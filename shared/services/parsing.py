@@ -61,30 +61,34 @@ class ParserService:
     def parse_exams(self, url: str) -> list[Exam]:
         soup = BeautifulSoup(requests.get(url).text, features="html.parser")
 
-        TABLE = soup.find("table")
-        ROWS = TABLE.find_all("tr")
+        table = soup.find("table")
+        table_rows = table.find_all("tr")
         exams: list[Exam] = []
         current_group = ""
-        for ROW in ROWS:
-            CELLS = ROW.find_all("td")
-            HEADERS = ROW.find_all("th")
-            if (len(HEADERS) > 0):
-                current_group = self.tag_to_text(HEADERS[0])
+        for row in table_rows:
+            cells = row.find_all("td")
+            headers = row.find_all("th")
+            if (len(headers) > 0):
+                current_group = self.tag_to_text(headers[0])
                 continue
-            if len(CELLS) == 0:
+            if len(cells) == 0:
                 continue
             else:
-                TEXTS = [self.tag_to_text(CELL) for CELL in CELLS]
+                TEXTS = [self.tag_to_text(CELL) for CELL in cells]
                 exams.append({
                     "group": current_group,
                     "subject": TEXTS[0],
                     "teacher": TEXTS[1],
-                    "examDate": TEXTS[2],
-                    "examTime": TEXTS[3],
-                    "examRoom": TEXTS[4],
-                    "consultationDate": TEXTS[5],
-                    "consultationTime": TEXTS[6],
-                    "consultationRoom": TEXTS[7],
+                    "consultation": {
+                        "date": TEXTS[5],
+                        "time": TEXTS[6],
+                        "room": TEXTS[7],
+                    },
+                    "exam": {
+                        "date": TEXTS[2],
+                        "time": TEXTS[3],
+                        "room": TEXTS[4],
+                    }
                 })
         return exams
 
