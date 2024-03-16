@@ -3,39 +3,39 @@ from aiogram.types import CallbackQuery
 
 
 def is_show_schedule(call: CallbackQuery) -> bool:
-    return call.data == CallbackData.SHOW_SCHEDULE.value
+    return call.data == CallbackData.ShowSchedule.value
 
 
 def is_day(call: CallbackQuery) -> bool:
-    return call.data.find(CallbackData.DAY_PREFIX.value) != -1
+    return call.data.find(CallbackData.DayPrefix.value) != -1
 
 
 def is_next_day(call: CallbackQuery) -> bool:
-    return call.data == CallbackData.NEXT_DAY.value
+    return call.data == CallbackData.NextDay.value
 
 
 def is_prev_day(call: CallbackQuery) -> bool:
-    return call.data == CallbackData.PREV_DAY.value
+    return call.data == CallbackData.PrevDay.value
 
 
 def is_hide(call: CallbackQuery) -> bool:
-    return call.data == CallbackData.HIDE_DETAILS.value
+    return call.data == CallbackData.HideDetails.value
 
 
 def is_close(call: CallbackQuery) -> bool:
-    return call.data == CallbackData.CLOSE_SCHEDULE.value
+    return call.data == CallbackData.CloseSchedule.value
 
 
 def is_close_exams(call: CallbackQuery) -> bool:
-    return call.data == CallbackData.CLOSE_EXAM.value
+    return call.data == CallbackData.CloseExam.value
 
 
 FILTERS = {
-    CallbackData.SHOW_SCHEDULE.value: is_show_schedule,
-    CallbackData.DAY_PREFIX.value: is_day,
-    CallbackData.NEXT_DAY.value: is_next_day,
-    CallbackData.PREV_DAY.value: is_prev_day,
-    CallbackData.HIDE_DETAILS.value: is_hide,
-    CallbackData.CLOSE_SCHEDULE.value: is_close,
-    CallbackData.CLOSE_EXAM.value: is_close_exams
+    CallbackData.ShowSchedule.value: is_show_schedule,
+    CallbackData.DayPrefix.value: is_day,
+    CallbackData.NextDay.value: is_next_day,
+    CallbackData.PrevDay.value: is_prev_day,
+    CallbackData.HideDetails.value: is_hide,
+    CallbackData.CloseSchedule.value: is_close,
+    CallbackData.CloseExam.value: is_close_exams
 }

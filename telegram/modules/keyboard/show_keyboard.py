@@ -6,7 +6,7 @@ KEYBOARD_LOCALE = localization_service.get_keyboard_dict()
 # Keyboard showed when command /schedule is called
 
 KEYBOARD_TEXTS = [KEYBOARD_LOCALE["show"]]
-KEYBOARD_CALLBACKS = [CallbackData.SHOW_SCHEDULE.value]
+KEYBOARD_CALLBACKS = [CallbackData.ShowSchedule.value]
 buttons = [types.InlineKeyboardButton(i[0], callback_data=i[1]) for i in zip(
     KEYBOARD_TEXTS, KEYBOARD_CALLBACKS)]
 

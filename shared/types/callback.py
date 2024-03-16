@@ -7,13 +7,13 @@ class CallbackData(Enum):
     The object representing a callback data.
     """
 
-    SHOW_SCHEDULE = "show_schedule"
-    DAY_PREFIX = "day_"
-    NEXT_DAY = "next_day"
-    PREV_DAY = "prev_day"
-    HIDE_DETAILS = "hide_details"
-    CLOSE_SCHEDULE = "close_schedule"
-    CLOSE_EXAM = "close_exam"
+    ShowSchedule = "show_schedule"
+    DayPrefix = "day_"
+    NextDay = "next_day"
+    PrevDay = "prev_day"
+    HideDetails = "hide_details"
+    CloseSchedule = "close_schedule"
+    CloseExam = "close_exam"
 
     @staticmethod
     def from_string(value: str) -> Optional["CallbackData"]:
