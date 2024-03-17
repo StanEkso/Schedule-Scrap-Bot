@@ -1,5 +1,6 @@
 from aiogram import types
 from shared.localization.service import localization_service
+
 EXCEPTIONS = localization_service.get_exceptions_dict()
 
 

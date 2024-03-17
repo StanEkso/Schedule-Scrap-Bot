@@ -13,7 +13,9 @@ class ExamAdapter:
     @staticmethod
     def convert_exam_to_str(exam: Exam) -> str:
         header_parts = [exam['subject'], f"({exam['teacher']})"]
-        exam_parts = ["Экзамен", exam['exam']['date'], exam['exam']['time'], exam['exam']['room']]
-        consult_parts = ["Консультация", exam['consultation']['date'], exam['consultation']['time'], exam['consultation']['room']]
+        exam_parts = ["Экзамен", exam['exam']['date'],
+                      exam['exam']['time'], exam['exam']['room']]
+        consult_parts = ["Консультация", exam['consultation']['date'],
+                         exam['consultation']['time'], exam['consultation']['room']]
 
         return "\n".join([" ".join(element) for element in [header_parts, exam_parts, consult_parts]])

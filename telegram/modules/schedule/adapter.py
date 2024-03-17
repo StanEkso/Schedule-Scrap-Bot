@@ -18,4 +18,5 @@ class ScheduleAdapter:
         }
         for lesson in lessons:
             days[lesson["weekday"]] += convert_lesson_to_str(lesson) + "\n"
+
         return list(days.values())

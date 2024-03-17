@@ -7,17 +7,17 @@ from .modules.schedule.controller import scheduleController
 from .__init__ import dp
 
 
-@LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+@LogMessage(SHOW_TIME=True, show_chat_type=True)
 async def handleSchedule(message: Message, *args, **kwargs):
     return await scheduleController.showEnterMessage(message)
 
 
-@LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+@LogMessage(SHOW_TIME=True, show_chat_type=True)
 async def handleText(message: Message, *args, **kwargs):
     pass
 
 
-@LogMessage(SHOW_TIME=True, SHOW_CHAT_TYPE=True)
+@LogMessage(SHOW_TIME=True, show_chat_type=True)
 async def handleExam(message: Message, *args, **kwargs):
     return await exam_controller.handle_exam_message(message)
 

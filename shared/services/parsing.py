@@ -42,7 +42,8 @@ class ParserService:
                 room = soup.find_all('td', {'class': 'room'})
                 weekday = soup.find_all('td', {'class': 'weekday'})
 
-                result = [self.map_tuple_to_lesson(i, course, group) for i in zip(time, remarks, subjectAndTeacher, lessonType, room, weekday)]
+                result = [self.map_tuple_to_lesson(i, course, group) for i in zip(
+                    time, remarks, subjectAndTeacher, lessonType, room, weekday)]
                 return result
 
     @staticmethod

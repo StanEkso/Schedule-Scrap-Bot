@@ -13,7 +13,6 @@ MessageLocalization = TypedDict('MessageLocalization', {
     "current_week_num": str
 })
 
-
 messages: dict[str, MessageLocalization] = {
     "ru": {
         "show": "Просмотреть расписание",

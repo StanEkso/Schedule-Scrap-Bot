@@ -6,6 +6,7 @@ class EventInfo(TypedDict):
     time: str
     room: str
 
+
 class Exam(TypedDict):
     """
     The object representing an exam.

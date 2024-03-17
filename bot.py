@@ -4,7 +4,6 @@ from aiogram import executor
 from aiohttp import web
 from telegram.main import bootstrap as tgBootstrap
 from shared.logger.logger import logger
-from shared.services.search import search_service
 
 
 def bootstrap():

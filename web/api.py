@@ -32,10 +32,11 @@ async def schedule(request: web.Request):
     SCHEDULE_URL = ""
 
     if 'group' in query and 'course' in query:
-        SCHEDULE_URL = ConfigService.construct_schedule_uri(query['course'], query['group'])
+        SCHEDULE_URL = ConfigService.construct_schedule_uri(
+            query['course'], query['group'])
     else:
         SCHEDULE_URL = config_service.get("scheduleUrl")
-        
+
     schedule_object = await parser_service.parse_lessons(SCHEDULE_URL)
     response_list = schedule_object
     if "day" in query:
@@ -43,7 +44,7 @@ async def schedule(request: web.Request):
 
         def is_selected_day(x: Lesson):
             return x["weekday"] == day
-        
+
         response_list = [x for x in response_list if is_selected_day(x)]
 
     js = json.dumps(response_list)

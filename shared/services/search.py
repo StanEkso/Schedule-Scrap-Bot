@@ -23,14 +23,14 @@ class SearchService:
     async def grab_groups(self, page_url: str) -> list[str]:
         courses = await self.grab_links(page_url)
         groups = await split_execution([lambda link=link: asyncio.ensure_future(
-                self.grab_links(link)) for link in courses])
-        
+            self.grab_links(link)) for link in courses])
+
         return flatten(groups)
 
     @CoroutineCache(timeout=600000)
     async def grab_schedule(self, page_links: list[str]):
         schedules = await split_execution([lambda link=link: asyncio.ensure_future(
-                parser_service.parse_lessons(link)) for link in page_links], packet_size=10)
+            parser_service.parse_lessons(link)) for link in page_links], packet_size=10)
 
         return flatten(schedules)
     pass
