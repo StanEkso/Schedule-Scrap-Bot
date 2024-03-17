@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from ..types.exam import Exam
 from ..types.lesson import Lesson
 from ..decorators.invoke import InvokePerformance, InvokePerformanceAsync
@@ -75,26 +75,26 @@ class ParserService:
             if len(cells) == 0:
                 continue
             else:
-                TEXTS = [self.tag_to_text(CELL) for CELL in cells]
+                texts = [self.tag_to_text(cell) for cell in cells]
                 exams.append({
                     "group": current_group,
-                    "subject": TEXTS[0],
-                    "teacher": TEXTS[1],
+                    "subject": texts[0],
+                    "teacher": texts[1],
                     "consultation": {
-                        "date": TEXTS[5],
-                        "time": TEXTS[6],
-                        "room": TEXTS[7],
+                        "date": texts[5],
+                        "time": texts[6],
+                        "room": texts[7],
                     },
                     "exam": {
-                        "date": TEXTS[2],
-                        "time": TEXTS[3],
-                        "room": TEXTS[4],
+                        "date": texts[2],
+                        "time": texts[3],
+                        "room": texts[4],
                     }
                 })
         return exams
 
     @staticmethod
-    def tag_to_text(tag) -> str:
+    def tag_to_text(tag: Tag) -> str:
         return tag.text.replace("\n", "")
 
     @staticmethod

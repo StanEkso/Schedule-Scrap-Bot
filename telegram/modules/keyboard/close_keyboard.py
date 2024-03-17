@@ -7,6 +7,6 @@ KEYBOARDS_TEXTS = [KEYBOARD_LOCALE["show"], KEYBOARD_LOCALE["close"]]
 KEYBOARDS_CALLBACKS = [CallbackData.ShowSchedule.value,
                        CallbackData.CloseSchedule.value]
 
-buttons = [KeyboardFactory.createInlineKeyboardButton(i[0], i[1]) for i in zip(
+buttons = [KeyboardFactory.create_inline_keyboard_button(i[0], i[1]) for i in zip(
     KEYBOARDS_TEXTS, KEYBOARDS_CALLBACKS)]
-CLOSE_SCHEDULE_KEYBOARD = KeyboardFactory.createReplyMarkup(buttons, 1)
+CLOSE_SCHEDULE_KEYBOARD = KeyboardFactory.create_reply_markup(buttons, 1)

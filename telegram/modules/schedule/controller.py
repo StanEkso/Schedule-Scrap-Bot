@@ -27,7 +27,7 @@ class ScheduleController:
 
         self.message_hash_map.set(key=messageToId(message), value=INDEX)
 
-        await message.edit_text(text=scheduleService.atDay(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
+        await message.edit_text(text=scheduleService.at_day(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
 
     async def showSchedule(self, message: Message):
         if (config_service.get("UPDATE_ON_EVERY_SHOW") == True):
@@ -38,7 +38,7 @@ class ScheduleController:
         if (self.isNewMessage(message)):
             # TODO: remove deadlock here
             await scheduleService.update()
-        await message.edit_text(text=scheduleService.atDay(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
+        await message.edit_text(text=scheduleService.at_day(INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
 
         self.message_hash_map.set(messageToId(message), INDEX)
 
@@ -46,7 +46,7 @@ class ScheduleController:
         INDEX = self.message_hash_map.get(key=messageToId(message)) or 0
         NEW_INDEX = self.getNewIndex(INDEX, 1)
         try:
-            await message.edit_text(text=scheduleService.atDay(NEW_INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
+            await message.edit_text(text=scheduleService.at_day(NEW_INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
         except Exception as e:
             raise e
         finally:
@@ -58,7 +58,7 @@ class ScheduleController:
         NEW_INDEX = self.getNewIndex(INDEX, -1)
 
         try:
-            await message.edit_text(text=scheduleService.atDay(NEW_INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
+            await message.edit_text(text=scheduleService.at_day(NEW_INDEX), reply_markup=DAY_CHOOSING_KEYBOARD)
         except Exception as e:
             raise e
         finally:

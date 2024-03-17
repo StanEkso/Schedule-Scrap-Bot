@@ -6,7 +6,7 @@ class KeyboardFactory:
         pass
 
     @staticmethod
-    def createReplyMarkup(keyboard: list[InlineKeyboardButton], rowSize: int = 3) -> InlineKeyboardMarkup:
+    def create_reply_markup(keyboard: list[InlineKeyboardButton], rowSize: int = 3) -> InlineKeyboardMarkup:
         returned = InlineKeyboardMarkup()
         for i in range(0, len(keyboard), rowSize):
             returned.add(*keyboard[i:i + rowSize])
@@ -15,9 +15,9 @@ class KeyboardFactory:
         return returned
 
     @staticmethod
-    def createInlineKeyboardButton(text: str, callbackData: str) -> InlineKeyboardButton:
+    def create_inline_keyboard_button(text: str, callbackData: str) -> InlineKeyboardButton:
         return InlineKeyboardButton(text=text, callback_data=callbackData)
 
     @staticmethod
-    def generateButtonsFromList(keyboard: list[str], callbackData: str) -> list[InlineKeyboardButton]:
-        return [KeyboardFactory.createInlineKeyboardButton(i, callbackData) for i in keyboard]
+    def generate_buttons_from_list(keyboard: list[str], callbackData: str) -> list[InlineKeyboardButton]:
+        return [KeyboardFactory.create_inline_keyboard_button(i, callbackData) for i in keyboard]

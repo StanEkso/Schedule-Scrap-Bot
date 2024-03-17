@@ -10,4 +10,4 @@ KEYBOARD_CALLBACKS = [CallbackData.CloseExam.value]
 buttons = [types.InlineKeyboardButton(i[0], callback_data=i[1]) for i in zip(
     KEYBOARD_TEXTS, KEYBOARD_CALLBACKS)]
 
-CLOSE_EXAM_SCHEDULE = KeyboardFactory.createReplyMarkup(buttons, 1)
+CLOSE_EXAM_SCHEDULE = KeyboardFactory.create_reply_markup(buttons, 1)

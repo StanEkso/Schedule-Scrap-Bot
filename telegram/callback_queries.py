@@ -8,38 +8,38 @@ from .modules.exam.controller import exam_controller
 from .__init__ import dp
 
 
-@LogCall(SHOW_CHAT_TYPE=True)
+@LogCall(show_chat_type=True)
 async def handleShowSchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.showSchedule(call.message)
 
 
 @OnQueryFail(localization_service.get_message("day_is_chosen"))
-@LogCall(SHOW_CHAT_TYPE=True)
+@LogCall(show_chat_type=True)
 async def handleEditSchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.editSchedule(call.message, call.data)
 
 
-@LogCall(SHOW_CHAT_TYPE=True)
+@LogCall(show_chat_type=True)
 async def handleNextDaySchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.sendNextDaySchedule(call.message)
 
 
-@LogCall(SHOW_CHAT_TYPE=True)
+@LogCall(show_chat_type=True)
 async def handlePrevDaySchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.sendPrevDaySchedule(call.message)
 
 
-@LogCall(SHOW_CHAT_TYPE=True)
+@LogCall(show_chat_type=True)
 async def handleHideSchedule(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.hideSchedule(call.message)
 
 
-@LogCall(SHOW_CHAT_TYPE=True)
+@LogCall(show_chat_type=True)
 async def handleDeleteScheduleMessage(call: types.CallbackQuery, *args, **kwargs):
     return await scheduleController.deleteScheduleMessage(call.message)
 
 
-@LogCall(SHOW_CHAT_TYPE=True)
+@LogCall(show_chat_type=True)
 async def handleDeleteExamMessage(call: types.CallbackQuery, *args, **kwargs):
     return await exam_controller.close_exam_message(call.message)
 

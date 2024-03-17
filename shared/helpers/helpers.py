@@ -19,3 +19,7 @@ async def split_execution(tasks: list, packet_size=5) -> list:
             current_tasks = []
 
     return output
+
+
+def to_non_empty(list: list[str]) -> list[str]:
+    return [el for el in list if len(el) > 0]

@@ -14,7 +14,7 @@ EXCEPTIONS = localization_service.get_exceptions_dict()
 MESSAGES = localization_service.get_messages_dict()
 
 
-def getCurrentWeekNum() -> int:
+def to_current_week_num() -> int:
     currentTime = datetime.datetime.now()
     week_between_dates = currentTime.isocalendar().week - DATE_TIME.isocalendar().week
     return week_between_dates % 2 + 1
@@ -37,22 +37,22 @@ class ScheduleService:
     def get(self) -> list[str]:
         return self.schedule
 
-    def atDay(self, index: int) -> str:
-        FLAG = config_service.get("SHOW_CURRENT_WEEK_ONLY", False)
-        if not FLAG:
-            return MESSAGES["current_week_num"] + str(getCurrentWeekNum()) + "\n" + ScheduleAdapter.convert_lessons(self.schedule)[index]
+    def at_day(self, index: int) -> str:
+        show_current_week_only = config_service.get(
+            "SHOW_CURRENT_WEEK_ONLY", False)
+        if not show_current_week_only:
+            return MESSAGES["current_week_num"] + str(to_current_week_num()) + "\n" + ScheduleAdapter.convert_lessons(self.schedule)[index]
 
         mappedLessons = [
-            lesson for lesson in self.schedule if self.metaToBool(lesson["meta"])]
+            lesson for lesson in self.schedule if self.meta_to_bool(lesson["meta"])]
         return EXCEPTIONS["ONLY_CURRENT_WEEK"] + ScheduleAdapter.convert_lessons(mappedLessons)[index]
 
     @staticmethod
-    def metaToBool(meta: str) -> bool:
+    def meta_to_bool(meta: str) -> bool:
         if ("н" in meta):
-            CURRENT_WEEK = getCurrentWeekNum()
-            if (str(CURRENT_WEEK) in meta):
-                return True
-            return False
+            current_week = to_current_week_num()
+
+            return str(current_week) in meta
 
         return True
 

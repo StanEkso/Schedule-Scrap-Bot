@@ -10,4 +10,4 @@ KEYBOARD_CALLBACKS = [CallbackData.ShowSchedule.value]
 buttons = [types.InlineKeyboardButton(i[0], callback_data=i[1]) for i in zip(
     KEYBOARD_TEXTS, KEYBOARD_CALLBACKS)]
 
-SHOW_SCHEDULE_KEYBOARD = KeyboardFactory.createReplyMarkup(buttons, 1)
+SHOW_SCHEDULE_KEYBOARD = KeyboardFactory.create_reply_markup(buttons, 1)

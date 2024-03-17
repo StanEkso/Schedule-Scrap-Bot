@@ -1,7 +1,7 @@
 import asyncio
-from .callback_queries import init as callbackQueriesInit
+from .callback_queries import init as callback_queries_init
 from .messages import init as messagesInit
-from .errors import init as errorsInit
+from .errors import init as errors_init
 from aiogram import Dispatcher
 from aiogram.utils.executor import set_webhook
 from aiohttp.web import Application
@@ -14,8 +14,8 @@ from .__run__ import WEBHOOK_URL
 
 def bootstrap():
     messagesInit()
-    callbackQueriesInit()
-    errorsInit()
+    callback_queries_init()
+    errors_init()
     logger.init("Telegram bot is initialized")
 
     def initWebhook(WEBHOOK_PATH: str, app: Application):
